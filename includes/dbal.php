@@ -242,17 +242,11 @@ class dbal
 			$this->sql_transaction('rollback');
 		}
 		
-        $message  = 'SQL ERROR<br /><br />';
-        #$message .= 'Query: '   		. (($sql) ? sql_highlight($sql) : 'null') . '<br />';
-        $message .= 'Query: '   		. (($sql) ? $sql : 'null') . '<br />';
-        $message .= 'Message: ' 		. $error['message'] . '<br />';
-        $message .= 'Code: '    		. $error['code'] . '<br />';
-        $message .= 'Database : '    	. $dbname . '<br />';
-        $message .= 'Table Prefix: '	. $table_prefix . '<br />';
-        $message .= 'PHP: '			. phpversion() . ' | Mysql: '. mysql_get_client_info() . '<br /><br />';
-        $message .= 'is your EQdkp updated? <a href="'.$eqdkp_root_path.'admin/update.php">click to check</a> <hr/> ';
-        
-        return $message;
+		$message  = '<div class="sql_error">SQL ERROR<br /><br />';
+		$message .= 'Query: '   		. (($sql) ? $sql : 'null') . '<br />';
+		$message .= 'Message: ' 		. $error['message'] . '<br />';
+		$message .= 'Code: '    		. $error['code'] . '<br /></div>';
+		return $message;
     }
 
 
