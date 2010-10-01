@@ -74,7 +74,7 @@
 	//include tpl-system
 	$tpl = new Smarty;
 	$tpl->setTpl($config['default_template']);
-	$tpl->compile_check = false;
+	$tpl->compile_check = true;
 	$tpl->debugging = false;
 
 	//include sessions
@@ -82,6 +82,4 @@
 	//include usermanagment
 
 
-	$tpl->assign('title', $config['title']);
-	$tpl->display('index.tpl');
 ?>
