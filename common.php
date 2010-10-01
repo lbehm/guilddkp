@@ -7,7 +7,8 @@
 	/*
 	INCLUDES
 	*/
-	set_include_path(dirname(__FILE__).'/includes/');
+	$root_dir = dirname(__FILE__);
+	set_include_path($root_dir.'/includes/');
 	require_once('config.php');
 	require_once('IDS/Init.php');
 	require_once('input.php');
