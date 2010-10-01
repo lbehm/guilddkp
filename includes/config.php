@@ -10,7 +10,7 @@ if(!defined('intern'))
 }
 $config = array(
 	'main_page'	=>	'viewnews.php',
-	'title'	=>	'l|Requiem|l',
+	'title'	=>	'Guild-DKP',
 	'online'	=>	true,
 	'offline_msg'	=>	'Die Seite ist zur Zeit nicht verfügbar! Bitte versuchen Sie es später wieder. Danke!',
 	'default_template'	=>	'clean'
