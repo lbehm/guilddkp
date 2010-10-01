@@ -73,7 +73,7 @@ while( $news = $db->fetch_record($result) )
 	}
 	*/
 	$t = time()-$news['news_date'];
-	$t = ($t<60000) ? "Vor weniger als einer Minute" : (($t<3600000)?"Vor ".date("i",$t)." Minuten":date("G:i:s - d.m.Y"));
+	$t = ($t<60) ? "Vor weniger als einer Minute" : (($t<3600)?"Vor ".date("i",$t)." Minuten":date("G:i:s - d.m.Y"));
 	$news_array[] = array(
 		'HEADLINE' => stripslashes($news['news_headline']),
 		'AUTHOR' => $news['user_displayname'],
