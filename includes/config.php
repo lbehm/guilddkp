@@ -13,6 +13,7 @@ $config = array(
 	'title'	=>	'Guild-DKP',
 	'online'	=>	true,
 	'offline_msg'	=>	'Die Seite ist zur Zeit nicht verfügbar! Bitte versuchen Sie es später wieder. Danke!',
+	'default_lang'	=>	'de_de',
 	'default_template'	=>	'clean'
 );
 $ids_logs = array(

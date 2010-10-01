@@ -1,15 +1,10 @@
 <?php
-if ( !defined('EQDKP_INC') )
+if ( !defined('intern') )
 {
     header('HTTP/1.0 404 Not Found');
     exit;
 }
 
-/**
-* Session class
-*
-* Manages sessions; Based on phpBB
-*/
 class Session
 {
     var $sid          = 0;                      // Session ID       @var sid
@@ -104,7 +99,7 @@ class Session
         $current_time = time();
 
         // Remove old sessions and update user information if necessary.
-        if ( $current_time - $eqdkp->config['session_cleanup'] > $eqdkp->config['session_last_cleanup'] )
+        if ( $current_time - $config['session_cleanup'] > $config['session_last_cleanup'] )
         {
             $this->cleanup($current_time);
         }
@@ -200,7 +195,7 @@ class Session
         // Get expired sessions, only most recent for each user
         $sql = 'SELECT session_user_id, session_page, MAX(session_current) AS recent_time
                 FROM ' . SESSIONS_TABLE . '
-                WHERE session_current < ' . ($current_time - $eqdkp->config['session_length']) . '
+                WHERE session_current < ' . ($current_time - $config['session_length']) . '
                 GROUP BY session_user_id, session_page';
         $result = $db->query($sql);
 
@@ -228,7 +223,7 @@ class Session
             // Delete expired sessions
             $sql = 'DELETE FROM ' . SESSIONS_TABLE . "
                     WHERE session_user_id IN ($del_user_id)
-                    AND session_current < " . ($current_time - $eqdkp->config['session_length']);
+                    AND session_current < " . ($current_time - $config['session_length']);
             $db->query($sql);
         }
 
@@ -247,7 +242,7 @@ class Session
     {
         global $eqdkp;
 
-        $cookie_name = $eqdkp->config['cookie_name'] . '_' . $name;
+        $cookie_name = $config['cookie_name'] . '_' . $name;
 
         return ( isset($_COOKIE[$cookie_name]) ) ? $_COOKIE[$cookie_name] : '';
     }
@@ -256,7 +251,7 @@ class Session
     {
         global $eqdkp;
 
-        setcookie($eqdkp->config['cookie_name'] . '_' . $name, $cookie_data, $cookie_time, $eqdkp->config['cookie_path'], $eqdkp->config['cookie_domain']);
+        setcookie($config['cookie_name'] . '_' . $name, $cookie_data, $cookie_time, $config['cookie_path'], $config['cookie_domain']);
     }
 }
 
@@ -282,69 +277,23 @@ class UserSkel extends Session
     */
     function setup($lang_set = false, $style = false)
     {
-        global $db, $eqdkp, $eqdkp_root_path, $tpl,$pdc;
+        global $db, $tpl, $config, $root_dir;
 
-        // Set up language array
-        if ( (isset($this->data['user_id'])) && ($this->data['user_id'] != ANONYMOUS) && (!empty($this->data['user_lang'])) )
-        {
-            $this->lang_name = ( file_exists($eqdkp_root_path . 'language/' . basename($this->data['user_lang'])) AND is_dir($eqdkp_root_path. 'language/' . basename($this->data['user_lang'])) ) ? $this->data['user_lang'] : $eqdkp->config['default_lang'];
-            $this->lang_path = $eqdkp_root_path . 'language/' . $this->lang_name . '/';
-        }
+        $lang_root_dir = $root_dir.'/includes/lang/';
+		// Set up language array
+        if( (isset($this->data['user_id'])) && ($this->data['user_id'] != ANONYMOUS) && (!empty($this->data['user_lang'])) )
+            $this->lang_name = (file_exists($lang_root_dir.$this->data['user_lang'].'lang_main.php') && is_dir($lang_root_dir.$this->data['user_lang']) ) ? $this->data['user_lang'] : $config['default_lang'];
         else
-        {
-            $this->lang_name = $eqdkp->config['default_lang'];
-            $this->lang_path = $eqdkp_root_path . 'language/' . $this->lang_name . '/';
-        }
+            $this->lang_name = $config['default_lang'];
+        $this->lang_path = $lang_root_dir.$this->lang_name.'/';
 
         include($this->lang_path . 'lang_main.php');
-        if ( defined('IN_ADMIN') )
-        {
+        if(defined('IN_ADMIN'))
             include($this->lang_path . 'lang_admin.php');
-        }
-
+        
         $this->lang = &$lang;
 
-        // Set up style
-        if(!$style){
-          if($eqdkp->config['default_game_overwrite'] == '1'){
-            $style = $eqdkp->config['default_style'];
-          }else{
-            $style = ($this->data['user_id'] != ANONYMOUS) ? $this->data['user_style'] : $eqdkp->config['default_style'];
-          }
-        }
-
-        $this->style = $pdc->get('user->styles.'.$style);
-        if (!$this->style)
-        {
-	        $sql = 'SELECT s.*, c.*
-	                FROM ' . STYLES_TABLE . ' s, ' . STYLES_CONFIG_TABLE . ' c
-	                WHERE s.style_id=c.style_id
-	                AND s.style_id='.$style;
-	        $result = $db->query($sql);
-			$this->style = $db->fetch_record($result);
-			$pdc->put('user->styles.'.$style, $this->style, 28800); // 8 stunden speichern
-
-	        if ( !($this->style) )
-	        {
-	            // If we STILL can't get style information, go back to the default
-	            // Fail-safe in case someone (ahem) forgets to add style config settings
-
-	            // NOTE: This was mostly only an issue during development before the
-	            // manage_styles panel was developed, but can remain here as a fail-safe
-	            $sql = 'SELECT s.*, c.*
-	                    FROM ' . STYLES_TABLE . ' s, ' . STYLES_CONFIG_TABLE . ' c
-	                    WHERE s.style_id=c.style_id
-	                    AND s.style_id='.$eqdkp->config['default_style'];
-	            $result = $db->query($sql);
-	            $this->style = $db->fetch_record($result);
-	            $pdc->put('user->styles.'.$eqdkp->config['default_style'], $this->style, 28800); // 8 stunden speichern
-	        }
-
-        }
-        #$user->style['date_notime_long']
-
-
-        if ($this->lang_name=='german')
+        if ($this->lang_name=='de_de')
         {
         	setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
         	$this->style['date_notime_long']	= ($this->lang['style_date_notime_long']) ? $this->lang['style_date_notime_long'] : 'j F, Y';
@@ -368,11 +317,11 @@ class UserSkel extends Session
         // Default the limits if the user's anonymous
         if ( $this->data['user_id'] == ANONYMOUS )
         {
-            $this->data['user_alimit'] = $eqdkp->config['default_alimit'];
-            $this->data['user_elimit'] = $eqdkp->config['default_elimit'];
-            $this->data['user_ilimit'] = $eqdkp->config['default_ilimit'];
-            $this->data['user_nlimit'] = $eqdkp->config['default_nlimit'];
-            $this->data['user_rlimit'] = $eqdkp->config['default_rlimit'];
+            $this->data['user_alimit'] = $config['default_alimit'];
+            $this->data['user_elimit'] = $config['default_elimit'];
+            $this->data['user_ilimit'] = $config['default_ilimit'];
+            $this->data['user_nlimit'] = $config['default_nlimit'];
+            $this->data['user_rlimit'] = $config['default_rlimit'];
         }
 
         //
@@ -501,23 +450,24 @@ class UserSkel extends Session
     */
    function login($username, $password, $auto_login)
     {
-        global $user, $db, $eqdkp;
+        global $user, $db;
 
-        $sql = 'SELECT user_id, username, user_password, user_email, user_active
+        $sql = 'SELECT user_id, user_name, user_password, user_decrypt_password, user_email, user_active, user_newpassword
                 FROM `'.$db->dbname.'`.'. USERS_TABLE . "
-                WHERE username='".$db->sql_escape($username)."'";
+                WHERE user_name='".$db->sql_escape($username)."'";
 
         $result = $db->query($sql);
         $row = $db->fetch_record($result);
          if ( $row )
         {
             $db->free_result($result);
-
-            if ( (md5($password) == $row['user_password']) && ($row['user_active']) )
+            if ( (md5(sha1(str_rot13($password))) == $row['user_password']) && (base64_encode(str_rot13($password)) == $row['user_decrypt_password']) && ($row['user_active']) )
             {
                 $auto_login = ( !empty($auto_login) ) ? md5($password) : '';
-
-                return $this->create($row['user_id'], $auto_login, true);
+				if($row['user_newpassword'] != '1')
+					return $this->create($row['user_id'], $auto_login, true);
+				header("Location: activate_user.php?a=newpwd");
+				exit;
             }
         }
 
