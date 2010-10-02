@@ -314,16 +314,6 @@ class UserSkel extends Session
 
         $tpl->set_template($this->style['template_path']);
 
-        // Default the limits if the user's anonymous
-        if ( $this->data['user_id'] == ANONYMOUS )
-        {
-            $this->data['user_alimit'] = $config['default_alimit'];
-            $this->data['user_elimit'] = $config['default_elimit'];
-            $this->data['user_ilimit'] = $config['default_ilimit'];
-            $this->data['user_nlimit'] = $config['default_nlimit'];
-            $this->data['user_rlimit'] = $config['default_rlimit'];
-        }
-
         //
         // Permissions
         //
@@ -331,15 +321,15 @@ class UserSkel extends Session
         if ( $this->data['user_id'] == ANONYMOUS )
         {
             // Get the default permissions if they're not logged in
-            $sql = 'SELECT auth_value, auth_default AS auth_setting
-                    FROM ' . AUTH_OPTIONS_TABLE;
+            $sql = 'SELECT auth_option, auth_default AS auth_value
+                    FROM ' . T_AUTH_OPTIONS;
         }
         else
         {
-            $sql = 'SELECT o.auth_value, u.auth_setting
-                    FROM ' . AUTH_USERS_TABLE . ' u, ' . AUTH_OPTIONS_TABLE . " o
-                    WHERE (u.auth_id = o.auth_id)
-                    AND (u.user_id='".$this->data['user_id']."')";
+            $sql = "SELECT r.auth_value, o.auth_option
+                    FROM " . T_AUTH_RANKS . " r, " . T_AUTH_OPTIONS . " o
+                    WHERE (r.auth_id = o.auth_id)
+                    AND (r.rank_id = (SELECT user_rank FROM ".T_USER." WHERE user_id = '".$this->data['user_id']."'))";
         }
         if ( !($result = $db->query($sql)) )
         {
@@ -347,9 +337,9 @@ class UserSkel extends Session
         }
         while ( $row = $db->fetch_record($result) )
         {
-            $this->data['auth'][$row['auth_value']] = $row['auth_setting'];
+            $this->data['auth'][$row['auth_option']] = $row['auth_value'];
         }
-
+        $db->free_result($row);
         return;
     }
 
@@ -386,13 +376,13 @@ class UserSkel extends Session
             global $db;
 
             $auth = array();
-            $sql = 'SELECT au.auth_setting, ao.auth_value
-                    FROM ' . AUTH_USERS_TABLE . ' au, ' . AUTH_OPTIONS_TABLE . " ao
-                    WHERE (au.auth_id = ao.auth_id) AND (au.user_id='".$db->sql_escape($user_id)."')";
+            $sql = "SELECT r.auth_value, o.auth_option
+                    FROM " . T_AUTH_RANKS . " r, " . T_AUTH_OPTIONS . " o
+                    WHERE (r.auth_id = o.auth_id) AND (r.rank_id = (SELECT user_rank FROM ".T_USER." WHERE user_id = '".$db->sql_escape($user_id)."'))";
             $result = $db->query($sql);
             while ( $row = $db->fetch_record($result) )
             {
-                $auth[$row['auth_value']] = $row['auth_setting'];
+                $auth[$row['auth_option']] = $row['auth_value'];
             }
             $db->free_result($result);
             $specific_auth = $auth;
@@ -414,18 +404,18 @@ class UserSkel extends Session
         // If auth_value ends with a '_' it's checking for any permissions of that type
         $exact = ( strrpos($auth_value, '_') == (strlen($auth_value) - 1) ) ? false : true;
 
-        foreach ( $auth as $value => $setting )
+        foreach ( $auth as $option => $value )
         {
             if ( $exact )
             {
-                if ( ($value == $auth_value) && ($setting == 'Y') )
+                if ( ($option == $auth_value) && ($value == 'Y') )
                 {
                     return true;
                 }
             }
             else
             {
-                if ( preg_match('/^('.$auth_value.'.+)$/', $value, $match) )
+                if ( preg_match('/^('.$auth_value.'.+)$/', $option, $match) )
                 {
                     if ( $auth[$match[1]] == 'Y' )
                     {
