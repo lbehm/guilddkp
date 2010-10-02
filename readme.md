@@ -15,10 +15,10 @@ for example like:
                 die();
             $dbconf = array(
                 'host'  => 'localhost', //DB-Host
-                'user'  => 'root', //DB-Username
-                'pwd'   => '', //DB-User password
-                'pre'	=> 'dkp_', //DB-Table prefix
-		'name'  => 'guilddkp' //DB-Name
+                'user'  => 'root',      //DB-Username
+                'pwd'   => '',          //DB-User password
+                'pre'	=> 'dkp_',      //DB-Table prefix
+                'name'  => 'guilddkp'   //DB-Name
             );
         ?>
 
