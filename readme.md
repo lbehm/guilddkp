@@ -22,3 +22,16 @@ for example like:
             );
         ?>
 
+---
+
+*Setup*
+---
+currently only 5 table-templates are stable in /install/sql/ directory
+install all the sql-files in this order:
+
+* T_RANKS.sql
+* T_RANKS_RIGHTS.sql
+* T_USER.sql
+* T_NEWS.sql
+* T_SESSIONS.sql
+
