@@ -321,23 +321,22 @@ class UserSkel extends Session
         if ( $this->data['user_id'] == ANONYMOUS )
         {
             // Get the default permissions if they're not logged in
-            $sql = 'SELECT auth_option, auth_default AS auth_value
-                    FROM ' . T_AUTH_OPTIONS;
+            $sql = "SELECT *
+                    FROM " . T_RANK_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_RANK." WHERE rank_name='Guest');";
         }
         else
         {
-            $sql = "SELECT r.auth_value, o.auth_option
-                    FROM " . T_AUTH_RANKS . " r, " . T_AUTH_OPTIONS . " o
-                    WHERE (r.auth_id = o.auth_id)
-                    AND (r.rank_id = (SELECT user_rank FROM ".T_USER." WHERE user_id = '".$this->data['user_id']."'))";
+            $sql = "SELECT *
+                    FROM " . T_RANK_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_USER." WHERE user_id='".$this->data['user_id']."')";
         }
         if ( !($result = $db->query($sql)) )
         {
             die('Could not obtain permission data');
         }
-        while ( $row = $db->fetch_record($result) )
+        if( $row = $db->fetch_record($result) )
         {
-            $this->data['auth'][$row['auth_option']] = $row['auth_value'];
+            foreach($row as $right=>$value)
+				$this->data['auth'][$right] = $value;
         }
         $db->free_result($row);
         return;
