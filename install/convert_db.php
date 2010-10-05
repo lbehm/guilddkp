@@ -109,8 +109,8 @@ $guilddkp->query("DELETE FROM dkp_news;");
 foreach($data['news'] as $news)
 {
 $sql = "INSERT INTO dkp_news
-		(news_headline, news_message, news_date, nocomments, news_permissions, news_flags, user_id, user_name)
-		VALUES('".$guilddkp->sql_escape($news['news_headline'])."', '".$guilddkp->sql_escape($news['news_message'])."', '".$guilddkp->sql_escape($news['news_date'])."', '".$guilddkp->sql_escape($news['nocomments'])."', '".$guilddkp->sql_escape($news['news_permissions'])."', '".$guilddkp->sql_escape($news['news_flags'])."', (SELECT user_id FROM dkp_user WHERE user_name = '".$guilddkp->sql_escape($news['username'])."'), '".$guilddkp->sql_escape($news['username'])."');";
+		(news_headline, news_message, news_date, nocomments, news_permissions, news_flags, user_id)
+		VALUES('".$guilddkp->sql_escape($news['news_headline'])."', '".$guilddkp->sql_escape($news['news_message'])."', '".$guilddkp->sql_escape($news['news_date'])."', '".$guilddkp->sql_escape($news['nocomments'])."', '".$guilddkp->sql_escape($news['news_permissions'])."', '".$guilddkp->sql_escape($news['news_flags'])."', (SELECT user_id FROM dkp_user WHERE user_name = '".$guilddkp->sql_escape($news['username'])."'));";
 $guilddkp->query($sql);
 }
 
