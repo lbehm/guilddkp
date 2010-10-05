@@ -15,16 +15,13 @@ $total_news = $db->query_first('SELECT count(*) FROM ' . T_NEWS);
 
 if ($newsid)
 {
-	$sql = 'SELECT n.*, u.user_displayname
-			FROM ' . T_NEWS . ' n, ' . T_USER . ' u
-			WHERE n.user_id = u.user_id
-			AND news_id='.$db->sql_escape($newsid);
+	$sql = 'SELECT n.*, u.user_displayname as user_name FROM '.T_NEWS.' n, '.T_USER.' u WHERE n.user_id = u.user_id AND news_id='.$db->sql_escape($newsid);
 
 	$result = $db->query($sql);
 }
 else
 {
-	$sql = 'SELECT * FROM ' . T_NEWS . ' ORDER BY news_flags DESC, news_date DESC LIMIT ' . $start . ', '.intval($newsPerPage).';';
+	$sql = 'SELECT n.*, u.user_displayname as user_name FROM '.T_NEWS.' n, '.T_USER.' u WHERE n.user_id = u.user_id ORDER BY n.news_flags DESC, n.news_date DESC LIMIT '.$start.', '.intval($newsPerPage).';';
 	$result = $db->query($sql);
 	if ( $db->num_rows($result) == 0 )
 	{
@@ -90,6 +87,6 @@ foreach ($news_array as $news)
 }
 
 
-$tpl->assign('title', $config['title'].' - News');
+$tpl->assign('title', $config->get('title').' - News');
 $tpl->display('viewnews.tpl');
 ?>

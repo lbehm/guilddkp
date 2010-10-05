@@ -15,7 +15,7 @@ class Session
 
     function start()
     {
-        global $SID, $db, $eqdkp;
+        global $SID, $db;
 
         $current_time = time();
 
@@ -46,7 +46,7 @@ class Session
         if ( (!empty($this->sid)) || ((isset($_GET[URI_SESSION])) && ($this->sid == $_GET[URI_SESSION])) )
         {
             $sql = 'SELECT u.*, s.*
-                    FROM ' . SESSIONS_TABLE . ' s, ' . USERS_TABLE . " u
+                    FROM ' . T_SESSIONS . ' s, ' . T_USER . " u
                     WHERE s.session_id = '".$db->sql_escape($this->sid)."'
                     AND u.user_id = s.session_user_id";
             $result = $db->query($sql);
@@ -93,7 +93,7 @@ class Session
 
     function create(&$user_id, &$auto_login, $set_auto_login = false)
     {
-        global $SID, $db, $eqdkp;
+        global $SID, $db;
 
         $session_data = array();
         $current_time = time();
@@ -240,17 +240,12 @@ class Session
 
     function get_cookie($name)
     {
-        global $eqdkp;
-
         $cookie_name = $config['cookie_name'] . '_' . $name;
-
-        return ( isset($_COOKIE[$cookie_name]) ) ? $_COOKIE[$cookie_name] : '';
+		return ( isset($_COOKIE[$cookie_name]) ) ? $_COOKIE[$cookie_name] : '';
     }
 
     function set_cookie($name, $cookie_data, $cookie_time)
     {
-        global $eqdkp;
-
         setcookie($config['cookie_name'] . '_' . $name, $cookie_data, $cookie_time, $config['cookie_path'], $config['cookie_domain']);
     }
 }
@@ -291,7 +286,7 @@ class UserSkel extends Session
         if(defined('IN_ADMIN'))
             include($this->lang_path . 'lang_admin.php');
         
-        $this->lang = &$lang;
+        $this->lang = &$lang; // Import der $lang-files
 
         if ($this->lang_name=='de_de')
         {
@@ -312,7 +307,7 @@ class UserSkel extends Session
         	$this->style['strtime_date_short']  = ($this->lang['style_strtime_date_short']) ? $this->lang['style_strtime_date_short'] : '%a %m.%d %I:%M %p';
         }
 
-        $tpl->set_template($this->style['template_path']);
+        $tpl->setTpl(($this->style['template_path'] && (($this->style['template_path'])!=''))?($this->style['template_path']):$config['default_template']);
 
         //
         // Permissions
@@ -321,13 +316,11 @@ class UserSkel extends Session
         if ( $this->data['user_id'] == ANONYMOUS )
         {
             // Get the default permissions if they're not logged in
-            $sql = "SELECT *
-                    FROM " . T_RANK_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_RANK." WHERE rank_name='Guest');";
+            $sql = "SELECT * FROM " . T_RANKS_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_RANKS." WHERE rank_name='Guest');";
         }
         else
         {
-            $sql = "SELECT *
-                    FROM " . T_RANK_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_USER." WHERE user_id='".$this->data['user_id']."')";
+            $sql = "SELECT * FROM " . T_RANKS_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_USER." WHERE user_id='".$this->data['user_id']."')";
         }
         if ( !($result = $db->query($sql)) )
         {
@@ -343,18 +336,19 @@ class UserSkel extends Session
     }
 
     /**
-    * Checks if a user has permission to do ($auth_value)
+    * Checks if a user has permission ($p_need) to do ($right_option)
     *
-    * @param $auth_value Permission we want to check
-    * @param $die If they don't have permission, exit with message_die or just return false?
+    * @param $right_option Permission we want to check
+    * @param $p_need Needed power to return true
+	* @param $die If they don't have permission, exit with die() or just return false?
     * @param $user_id If set, checks $user_id's permission instead of $this->data['user_id']
     * @return bool
     */
-    function check_auth($auth_value, $die = true, $user_id = 0)
+    function check_auth($right_option, $p_need=0, $die=true, $user_id=0)
     {
         // To cut down the query count, store the auth settings
         // for $user_id in a static var if we need to
-        static $specific_auth = array();
+		static $specific_auth = array();
 
         // Lets us know if we're looking up data for a different user_id
         // than the last one
@@ -375,14 +369,11 @@ class UserSkel extends Session
             global $db;
 
             $auth = array();
-            $sql = "SELECT r.auth_value, o.auth_option
-                    FROM " . T_AUTH_RANKS . " r, " . T_AUTH_OPTIONS . " o
-                    WHERE (r.auth_id = o.auth_id) AND (r.rank_id = (SELECT user_rank FROM ".T_USER." WHERE user_id = '".$db->sql_escape($user_id)."'))";
+            $sql = "SELECT * FROM " . T_RANKS_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_USER." WHERE user_id='".$db->sql_escape($user_id)."')";
             $result = $db->query($sql);
-            while ( $row = $db->fetch_record($result) )
-            {
-                $auth[$row['auth_option']] = $row['auth_value'];
-            }
+            if( $row = $db->fetch_record($result) )
+            	foreach($row as $right=>$value)
+					$auth[$right] = $value;
             $db->free_result($result);
             $specific_auth = $auth;
         }
@@ -400,34 +391,60 @@ class UserSkel extends Session
             return ( $die ) ? message_die($this->lang['noauth_default_title'], $this->lang['noauth_default_title']) : false;
         }
 
-        // If auth_value ends with a '_' it's checking for any permissions of that type
-        $exact = ( strrpos($auth_value, '_') == (strlen($auth_value) - 1) ) ? false : true;
+        // If right_option ends with a '_' it's checking for any permissions of that type
+        $exact = ( strrpos($right_option, '_') == (strlen($right_option) - 1) ) ? false : true;
 
-        foreach ( $auth as $option => $value )
+        if( ($exact) && (isset($auth[$right_option])) && ($auth[$right_option] >= $p_need) )
+			return true;
+		else
+		{
+			foreach ( $auth as $right => $value )
+			{
+				if ( preg_match('/^('.$right_option.'.+)$/', $option, $match) )
+				{
+					if ( $auth[$match[1]] == 'Y' )
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+        $index = ( $exact ) ? (( isset($this->lang['noauth_'.$right_option]) ) ? 'noauth_'.$right_option : 'noauth_default_title') : 'noauth_default_title';
+
+        return ( $die ) ? die($this->lang['noauth_default_title']) : false;
+    }
+
+	function get_auth($right_option, $user_id=0)
+    {
+		static $specific_auth = array();
+        static $previous_user_id = 0;
+        if ( ($user_id > 0) && ($user_id != $previous_user_id) )
         {
-            if ( $exact )
-            {
-                if ( ($option == $auth_value) && ($value == 'Y') )
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if ( preg_match('/^('.$auth_value.'.+)$/', $option, $match) )
-                {
-                    if ( $auth[$match[1]] == 'Y' )
-                    {
-                        return true;
-                    }
-                }
-            }
+            $previous_user_id = $user_id;
+            $specific_auth = array();
         }
 
-        $index = ( $exact ) ? (( isset($this->lang['noauth_'.$auth_value]) ) ? 'noauth_'.$auth_value : 'noauth_default_title') : 'noauth_default_title';
-
-        return ( $die ) ? message_die($this->lang[$index], $this->lang['noauth_default_title']) : false;
-    }
+        if ( (intval($user_id) > 0) && (sizeof($specific_auth) == 0) )
+        {
+            global $db;
+            $auth = array();
+            $sql = "SELECT * FROM " . T_RANKS_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_USER." WHERE user_id='".$db->sql_escape($user_id)."')";
+            $result = $db->query($sql);
+            if( $row = $db->fetch_record($result) )
+            	foreach($row as $right=>$value)
+					$auth[$right] = $value;
+            $db->free_result($result);
+            $specific_auth = $auth;
+        }
+        elseif ( (intval($user_id) > 0) && (sizeof($specific_auth) > 0) )
+            $auth = $specific_auth;
+        else
+            $auth = $this->data['auth'];
+        if ( (!isset($auth)) || (!is_array($auth)) )
+            return false;
+        return (isset($auth[$right_option])) ? $auth[$right_option] : false;
+	}
 
     /**
     * Attempt to log in a user
