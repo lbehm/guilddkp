@@ -15,7 +15,6 @@
 	require_once('tpl/Smarty.class.php');
 
 	$config = new config_handler($root_dir."/includes/config.php");
-
 	// IDS
 	try{
 		$ids_init = IDS_Init::init($path.'includes/IDS/Config/Config.ini.php');
@@ -23,12 +22,11 @@
 		$ids_result = $ids->run();
 		if(!$ids_result->isEmpty())
 		{
-			//TRIGGER!
-			if(is_array($ids_logs))
+			if(is_array($config->get('IDS')))
 			{
 				require_once('IDS/Log/Composite.php');
 				$ids_logger = new IDS_Log_Composite();
-				foreach($ids_logs as $k => $v)
+				foreach($config->get('IDS') as $k => $v)
 					if($v)
 					{
 						require_once('IDS/Log/'.$k.'.php');

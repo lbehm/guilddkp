@@ -1,17 +1,13 @@
-; <?php die(); ?>
-main_page = viewnews.php
+main_page = "viewnews.php"
 title = "Guild-DKP"
-online = true
+online = 1
 offline_msg = "Die Seite ist zur Zeit nicht verfügbar! Bitte versuchen Sie es später wieder. Danke!"
-default_lang = de_de
-default_template = clean
-
+default_lang = "de_de"
+default_template = "clean"
 [IDS]
-; 0 or 1
 Database = 0
 Email = 0
-File = 0
-
+File = 1
 [define]
 ANONYMOUS = 0
-URI_SESSION = s
+URI_SESSION = "s"
