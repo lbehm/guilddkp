@@ -27,21 +27,18 @@ class config_handler
 			define($k, $v);
 		return true;
 	}
-	function get($key)
+	function get($key, $sec='general')
 	{
-		return $this->_config[$key];
+		return $this->_config[$sec][$key];
 	}
 	function get_config()
 	{
 		return $this->_config;
 	}
-	function put($key, $val, $sec=false)
+	function put($key, $val, $sec='general')
 	{
-		if(!$sec)
-			$this->_config[$key] = $val;
-		else
-			$this->_config[$sec][$key] = $val;
-		
+		$this->_config[$sec][$key] = $val;
+
 		$this->_write_php_ini($this->_config, $this->_filename);
 		$this->config_handler();
 	}
@@ -57,7 +54,7 @@ class config_handler
 			}
 			else $res[] = "$key = ".(is_numeric($val) ? $val : '"'.$val.'"');
 		}
-		$this->_safefilerewrite($file, "; <?php die(); ?>\r\n\r\n".implode("\r\n", $res)."\r\n");
+		$this->_safefilerewrite($file, "; <?php die(); ?>\r\n".implode("\r\n", $res)."\r\n");
 	}
 	function _safefilerewrite($filename, $dataToSave)
 	{    

@@ -11,7 +11,7 @@ class Session
     var $data         = array();                // Data array       @var data
     var $browser      = '';                     // User agent       @var browser
     var $ip_address   = 0;                      // User IP          @var ip_address
-    var $current_page = '';                     // EQdkp Page       @var current_page
+    var $current_page = '';                     // Last Page        @var current_page
 
     function start()
     {
@@ -66,7 +66,7 @@ class Session
                     // Only update session DB a minute or so after last update or if page changes
                     if ( ($current_time - $this->data['session_current'] > 60) || ($this->data['session_page'] != $this->current_page) )
                     {
-                        $sql = 'UPDATE ' . SESSIONS_TABLE . "
+                        $sql = 'UPDATE ' . T_SESSIONS . "
                                 SET session_current = '" . $current_time . "',
                                     session_page = '" . $db->escape($this->current_page) . "'
                                 WHERE session_id = '" . $this->sid . "'";
@@ -93,21 +93,21 @@ class Session
 
     function create(&$user_id, &$auto_login, $set_auto_login = false)
     {
-        global $SID, $db;
+        global $SID, $db, $config;
 
         $session_data = array();
         $current_time = time();
 
         // Remove old sessions and update user information if necessary.
-        if ( $current_time - $config['session_cleanup'] > $config['session_last_cleanup'] )
+        if ( $current_time - $config->get('session_cleanup') > $config->get('session_last_cleanup') )
         {
             $this->cleanup($current_time);
         }
 
         // Grab user data
          $sql = "SELECT u.*, s.session_current
-                FROM (`".$db->dbname."`." . USERS_TABLE . " u
-                LEFT JOIN `".$db->dbname."`." . SESSIONS_TABLE . " s
+                FROM (" . T_USER . " u
+                LEFT JOIN " . T_SESSIONS . " s
                 ON s.session_user_id = u.user_id)
                 WHERE u.user_id = '".$db->sql_escape($user_id)."'
                 ORDER BY s.session_current DESC";
@@ -134,7 +134,7 @@ class Session
             'session_current'    => $current_time,
             'session_page'       => $db->escape($this->current_page))
         );
-        $sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $query . " WHERE session_id='" . $this->sid . "'";
+        $sql = 'UPDATE ' . T_SESSIONS . ' SET ' . $query . " WHERE session_id='" . $this->sid . "'";
         if ( ($this->sid == '') || (!$db->query($sql)) || (!$db->affected_rows()) )
         {
             $this->sid = md5(uniqid($this->ip_address));
@@ -148,7 +148,7 @@ class Session
                 'session_ip'         => $this->ip_address,
                 'session_page'       => $db->escape($this->current_page))
             );
-            $db->query('INSERT INTO `'.$db->dbname.'`.' . SESSIONS_TABLE . $query);
+            $db->query('INSERT INTO ' . T_SESSIONS . $query);
         }
 
         $this->data['session_id'] = $this->sid;
@@ -164,7 +164,7 @@ class Session
 
     function destroy()
     {
-        global $SID, $db, $eqdkp;
+        global $SID, $db;
 
         $current_time = time();
 
@@ -173,12 +173,12 @@ class Session
         $SID = '?' . URI_SESSION . '=';
 
         // Delete existing session
-        $sql = 'UPDATE ' . USERS_TABLE . "
+        $sql = 'UPDATE ' . T_USER . "
                 SET user_lastvisit='" . intval($this->data['session_current']) . "'
                 WHERE user_id='" . $this->data['user_id'] . "'";
         $db->query($sql);
 
-        $sql = 'DELETE FROM ' . SESSIONS_TABLE . "
+        $sql = 'DELETE FROM ' . T_SESSIONS . "
                 WHERE session_id='" . $this->sid . "'
                 AND session_user_id='" . $this->data['user_id'] . "'";
         $db->query($sql);
@@ -190,12 +190,12 @@ class Session
 
     function cleanup(&$current_time)
     {
-        global $db, $eqdkp;
+        global $db, $config;
 
         // Get expired sessions, only most recent for each user
         $sql = 'SELECT session_user_id, session_page, MAX(session_current) AS recent_time
-                FROM ' . SESSIONS_TABLE . '
-                WHERE session_current < ' . ($current_time - $config['session_length']) . '
+                FROM ' . T_SESSIONS . '
+                WHERE session_current < ' . ($current_time - $config->get('session_length')) . '
                 GROUP BY session_user_id, session_page';
         $result = $db->query($sql);
 
@@ -207,7 +207,7 @@ class Session
             {
                 if ( intval($row['session_user_id']) != ANONYMOUS )
                 {
-                    $sql = 'UPDATE ' . USERS_TABLE . "
+                    $sql = 'UPDATE ' . T_USER . "
                             SET user_lastvisit='" . $row['recent_time'] . "', user_lastpage='" . $db->escape($row['session_page']) . "'
                             WHERE user_id = '" . $row['session_user_id'] . "'";
                     $db->query($sql);
@@ -221,9 +221,9 @@ class Session
         if ( $del_user_id != '' )
         {
             // Delete expired sessions
-            $sql = 'DELETE FROM ' . SESSIONS_TABLE . "
+            $sql = 'DELETE FROM ' . T_SESSIONS . "
                     WHERE session_user_id IN ($del_user_id)
-                    AND session_current < " . ($current_time - $config['session_length']);
+                    AND session_current < " . ($current_time - $config->get('session_length'));
             $db->query($sql);
         }
 
@@ -231,22 +231,21 @@ class Session
         {
             // Less than 5 sessions, update gc timer
             // Otherwise we want cleanup called again to delete other sessions
-            $sql = 'UPDATE ' . CONFIG_TABLE . "
-                    SET config_value='".$current_time."'
-                    WHERE config_name='session_last_cleanup'";
-            $db->query($sql);
+            $config->put('session_last_cleanup', $current_time);
         }
     }
 
     function get_cookie($name)
     {
-        $cookie_name = $config['cookie_name'] . '_' . $name;
+        global $config;
+		$cookie_name = $config->get('cookie_name') . '_' . $name;
 		return ( isset($_COOKIE[$cookie_name]) ) ? $_COOKIE[$cookie_name] : '';
     }
 
     function set_cookie($name, $cookie_data, $cookie_time)
     {
-        setcookie($config['cookie_name'] . '_' . $name, $cookie_data, $cookie_time, $config['cookie_path'], $config['cookie_domain']);
+        global $config;
+		setcookie($config->get('cookie_name') . '_' . $name, $cookie_data, $cookie_time, $config->get('cookie_path'), $config->get('cookie_domain'));
     }
 }
 
@@ -257,7 +256,7 @@ class Session
 * and language data
 */
 
-class UserSkel extends Session
+class User extends Session
 {
     var $lang      = array();               // Loaded language pack     @var lang
     var $lang_name = '';                    // Pack name (ie 'English') @var lang_name
@@ -277,9 +276,9 @@ class UserSkel extends Session
         $lang_root_dir = $root_dir.'/includes/lang/';
 		// Set up language array
         if( (isset($this->data['user_id'])) && ($this->data['user_id'] != ANONYMOUS) && (!empty($this->data['user_lang'])) )
-            $this->lang_name = (file_exists($lang_root_dir.$this->data['user_lang'].'lang_main.php') && is_dir($lang_root_dir.$this->data['user_lang']) ) ? $this->data['user_lang'] : $config['default_lang'];
+            $this->lang_name = (file_exists($lang_root_dir.$this->data['user_lang'].'lang_main.php') && is_dir($lang_root_dir.$this->data['user_lang']) ) ? $this->data['user_lang'] : $config->get('default_lang');
         else
-            $this->lang_name = $config['default_lang'];
+            $this->lang_name = $config->get('default_lang');
         $this->lang_path = $lang_root_dir.$this->lang_name.'/';
 
         include($this->lang_path . 'lang_main.php');
@@ -307,7 +306,7 @@ class UserSkel extends Session
         	$this->style['strtime_date_short']  = ($this->lang['style_strtime_date_short']) ? $this->lang['style_strtime_date_short'] : '%a %m.%d %I:%M %p';
         }
 
-        $tpl->setTpl(($this->style['template_path'] && (($this->style['template_path'])!=''))?($this->style['template_path']):$config['default_template']);
+        //$tpl->setTpl(($this->style['template_path'] && (($this->style['template_path'])!=''))?($this->style['template_path']):$config->get('default_template'));
 
         //
         // Permissions
@@ -331,7 +330,7 @@ class UserSkel extends Session
             foreach($row as $right=>$value)
 				$this->data['auth'][$right] = $value;
         }
-        $db->free_result($row);
+        $db->free_result($result);
         return;
     }
 
@@ -459,7 +458,7 @@ class UserSkel extends Session
         global $user, $db;
 
         $sql = 'SELECT user_id, user_name, user_password, user_decrypt_password, user_email, user_active, user_newpassword
-                FROM `'.$db->dbname.'`.'. USERS_TABLE . "
+                FROM `'.$db->dbname.'`.'. T_USER . "
                 WHERE user_name='".$db->sql_escape($username)."'";
 
         $result = $db->query($sql);

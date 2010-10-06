@@ -12,6 +12,7 @@
 	require_once('input.php');
 	require_once('db_conf.php'); // contains an array
 	require_once('mysql.php');
+	require_once('session.php');
 	require_once('tpl/Smarty.class.php');
 
 	$config = new config_handler($root_dir."/includes/config.php");
@@ -75,6 +76,10 @@
 	$tpl->debugging = false;
 
 	$SID = '';
+	$user = new User;
+	$user->start();
+	$user->setup();
+
 	//include sessions
 	//include login
 	//include usermanagment
