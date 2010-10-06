@@ -52,12 +52,12 @@ class config_handler
 		{
 			if(is_array($val))
 			{
-				$res[] = "[$key]";
+				$res[] = "\r\n[$key]";
 				foreach($val as $skey => $sval) $res[] = "$skey = ".(is_numeric($sval) ? $sval : '"'.$sval.'"');
 			}
 			else $res[] = "$key = ".(is_numeric($val) ? $val : '"'.$val.'"');
 		}
-		$this->_safefilerewrite($file, implode("\r\n", $res));
+		$this->_safefilerewrite($file, "; <?php die(); ?>\r\n\r\n".implode("\r\n", $res)."\r\n");
 	}
 	function _safefilerewrite($filename, $dataToSave)
 	{    
@@ -79,7 +79,6 @@ class config_handler
 			}
 			fclose($fp);
 		}
-
 	}
 }
 ?>
