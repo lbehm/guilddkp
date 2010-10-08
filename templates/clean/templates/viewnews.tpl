@@ -1,8 +1,4 @@
-<html>
-	<head>
-		<title>{$title}</title>
-	</head>
-	<body>
+{include file="header.html"}
 		<ul>
 {section name=news_list loop=$news_obj}
 			<li class="news{if $news_obj[news_list].STICKY} news_sticky{/if}">
@@ -12,5 +8,4 @@
 			</li>
 {/section}
 		</ul>
-	</body>
-</html>
+{include file="footer.html"}
