@@ -1,3 +1,2 @@
 templates/clean/compile/
 !templates/clean/compile/index.html
-includes/db_conf.php

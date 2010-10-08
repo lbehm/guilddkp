@@ -10,7 +10,6 @@
 	require_once('filehandler.php');
 	require_once('IDS/Init.php');
 	require_once('input.php');
-	require_once('db_conf.php'); // contains an array
 	require_once('mysql.php');
 	require_once('session.php');
 	require_once('tpl/Smarty.class.php');
@@ -46,29 +45,10 @@
 	$in = new Input;
 	//include db-connection
 	$db = new dbal_mysql;
-	$db->sql_connect($dbconf['host'], $dbconf['name'], $dbconf['user'], $dbconf['pwd'], false);
+	$conn = new config_handler($root_dir."/includes/db_conf.php");
+	$db->sql_connect($conn->get('host'), $conn->get('name'), $conn->get('user'), $conn->get('pwd'), false);
 	// Database Table names
-		define('T_USER',			$dbconf['pre'].'user');
-		define('T_SESSIONS',		$dbconf['pre'].'sessions');
-		define('T_RANKS_RIGHTS',	$dbconf['pre'].'ranks_rights');
-		define('T_RANKS',			$dbconf['pre'].'ranks');
-		define('T_NEWS',			$dbconf['pre'].'news');
-		//define('T_EVENTS',			$dbconf['pre'].'events');
-		//define('T_MULTIDKP',		$dbconf['pre'].'multidkp');
-		//define('T_MULTIDKP2EVENTS',	$dbconf['pre'].'multidkp2event');
-		//define('T_MEMBER',			$dbconf['pre'].'member');
-		//define('T_ADJUSTMENTS',		$dbconf['pre'].'adjustments');
-		//define('T_F_POSTS',			$dbconf['pre'].'forum_posts');
-		//define('T_F_TOPICS',		$dbconf['pre'].'forum_topics');
-		//define('T_F_FORUMS',		$dbconf['pre'].'forum_forums');
-		//define('T_LOOT',			$dbconf['pre'].'loot');
-		//define('T_RAIDS',			$dbconf['pre'].'raids');
-		//define('T_LOGS',			$dbconf['pre'].'logs');
-		//define('T_RAID_ATTENDEES',	$dbconf['pre'].'raid_attendees');
-		//define('T_ITEMS',			$dbconf['pre'].'items');
-		//define('T_COMMENTS',		$dbconf['pre'].'comments');
-		//define('T_UPLOADS',		$dbconf['pre'].'uploads');
-	unset($dbconf);
+	unset($conn);
 	//include tpl-system
 	$tpl = new Smarty;
 	$tpl->setTpl($config->get('default_template'));
