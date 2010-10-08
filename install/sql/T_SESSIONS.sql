@@ -7,7 +7,6 @@ CREATE TABLE `dkp_sessions` (
 `session_page`  varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '0' ,
 `session_ip`  varchar(15) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 PRIMARY KEY (`session_id`),
-FOREIGN KEY (`session_user_id`) REFERENCES `dkp_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 UNIQUE INDEX `session_id` USING BTREE (`session_id`), 
 INDEX `session_current` USING BTREE (`session_current`), 
 INDEX `session_user_id` USING BTREE (`session_user_id`) 
