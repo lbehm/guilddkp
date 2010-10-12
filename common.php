@@ -53,7 +53,7 @@
 	$tpl = new Smarty;
 	$tpl->setTpl($config->get('default_template'));
 	$tpl->compile_check = true;
-	$tpl->debugging = false;
+	$tpl->debugging = true;
 
 	$SID = '';
 	$user = new User;

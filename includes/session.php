@@ -339,11 +339,10 @@ class User extends Session
     *
     * @param $right_option Permission we want to check
     * @param $p_need Needed power to return true
-	* @param $die If they don't have permission, exit with die() or just return false?
-    * @param $user_id If set, checks $user_id's permission instead of $this->data['user_id']
+	* @param $user_id If set, checks $user_id's permission instead of $this->data['user_id']
     * @return bool
     */
-    function check_auth($right_option, $p_need=0, $die=true, $user_id=0)
+    function check_auth($right_option, $p_need=1, $user_id=0)
     {
         // To cut down the query count, store the auth settings
         // for $user_id in a static var if we need to
@@ -387,7 +386,7 @@ class User extends Session
 
         if ( (!isset($auth)) || (!is_array($auth)) )
         {
-            return ( $die ) ? message_die($this->lang['noauth_default_title'], $this->lang['noauth_default_title']) : false;
+            return false;
         }
 
         // If right_option ends with a '_' it's checking for any permissions of that type
@@ -401,17 +400,14 @@ class User extends Session
 			{
 				if ( preg_match('/^('.$right_option.'.+)$/', $option, $match) )
 				{
-					if ( $auth[$match[1]] == 'Y' )
+					if ( $auth[$match[1]] >= $p_need )
 					{
 						return true;
 					}
 				}
 			}
 		}
-
-        $index = ( $exact ) ? (( isset($this->lang['noauth_'.$right_option]) ) ? 'noauth_'.$right_option : 'noauth_default_title') : 'noauth_default_title';
-
-        return ( $die ) ? die($this->lang['noauth_default_title']) : false;
+        return false;
     }
 
 	function get_auth($right_option, $user_id=0)

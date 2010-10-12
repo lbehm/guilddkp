@@ -15,13 +15,13 @@ $total_news = $db->query_first('SELECT count(*) FROM ' . T_NEWS);
 
 if ($newsid)
 {
-	$sql = 'SELECT n.*, u.user_displayname as user_name FROM '.T_NEWS.' n, '.T_USER.' u WHERE n.user_id = u.user_id AND news_id='.$db->sql_escape($newsid);
+	$sql = "SELECT n.*, u.user_displayname as user_name FROM ".T_NEWS." n, ".T_USER." u WHERE n.user_id = u.user_id AND n.news_id='".$db->sql_escape($newsid)."' AND n.news_permissions <= '".$user->get_auth('rank_read_news')."'";
 
 	$result = $db->query($sql);
 }
 else
 {
-	$sql = 'SELECT n.*, u.user_displayname as user_name FROM '.T_NEWS.' n, '.T_USER.' u WHERE n.user_id = u.user_id ORDER BY n.news_flags DESC, n.news_date DESC LIMIT '.$start.', '.intval($newsPerPage).';';
+	$sql = "SELECT n.*, u.user_displayname as user_name FROM ".T_NEWS." n, ".T_USER." u WHERE n.user_id = u.user_id AND n.news_permissions <= '".$user->get_auth('rank_read_news')."' ORDER BY n.news_flags DESC, n.news_date DESC LIMIT ".$start.", ".intval($newsPerPage).";";
 	$result = $db->query($sql);
 	if ( $db->num_rows($result) == 0 )
 	{
@@ -33,59 +33,47 @@ $sticky_news = 0;
 $news_array = array();
 while( $news = $db->fetch_record($result) )
 {
-	$message = $news['news_message'];
-
-	$SHOWCOMMENT = false;
-	/*
-	if (!$news['nocomments']==1)
+	if ($news['nocomments']==0)
 	{
-		// get the count of comments per news:
-		$comm_settings = array('attach_id'=>$news['news_id'], 'page'=>'news');
-		$pcomments->SetVars($comm_settings);
-		$comcount = $pcomments->Count();
-		$COMMENTS_COUNTER = ($comcount == 1 ) ? $comcount.' '.$user->lang['news_comment'] : $comcount.' '.$user->lang['news_comments'] ;
-		$COMMENT = $pcomments->Show() ;
-		$SHOWCOMMENT = true;
+		if($user->check_auth('rank_read_comment'))
+		{
+			$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND c.comment_page = 'news' AND c.comment_attach_id = '".$news['news_id']."';";
+			$comment_result = $db->query($sql);
+			$comments_counter = 0;
+			while($comments = $db->fetch_record($comment_result))
+			{
+				$tpl->append('comments_obj', 
+					array(
+						'news_id' => $news['news_id'],
+						'comment_id' => $comments['comment_id'],
+						'user_name' => ($comments['user_displayname']!='')?$comments['user_displayname'] : $comments['user_name'],
+						'comment_text' => $comments['comment_text'],
+						'comment_ranking' => $comments['comment_ranking'],
+						'comment_date' => date('G:i - d.m.', $comments['comment_date'])
+					)
+				);
+				$comments_counter ++;
+			}
+			$db->free_result($comment_result);
+		}
 	}
-	*/
-	$t = time()-$news['news_date'];
-	$t = ($t<60) ? "Vor weniger als einer Minute" : (($t<3600)?"Vor ".date("i",$t)." Minuten":date("G:i:s - d.m.Y", $news['news_date']));
-	$news_array[] = array(
-		'HEADLINE' => stripslashes($news['news_headline']),
-		'AUTHOR' => $news['user_name'],
-		'TIME' => $t,
-		'ID' => $news['news_id'],
-		'DETAIL' => ($newsid > 0 ) ? true : false,
-		'SHOWCOMMENT' => $SHOWCOMMENT,
-		'COMMENTS_COUNTER' => $COMMENTS_COUNTER,
-		'COMMENT'  => $COMMENT,
-		'MESSAGE' => $message,
-		'news' => $news);
-}
 
-$db->free_result($result);	
-//ok now lets check the cached array
-foreach ($news_array as $news)
-{
-#	if($user->data['user_rank'] < $news['news']['news_permissions'])
+	$t = time()-$news['news_date'];
+	$t = ($t<60) ? "Vor weniger als einer Minute" : (($t<3600)?"Vor ".date("i",$t)." Minuten":date("G:i - d.m.Y", $news['news_date']));
 	$tpl->append('news_obj', 
 		array(
-			'STICKY' => ($news['news']['news_flags']) ? true : false,
-			'HEADLINE' => $news['news']['news_headline'],
-			'AUTHOR' => $news['AUTHOR'],
-			'TIME' => $news['TIME'],
-			'SUBMITTER' => $news['SUBMITTER'] ,
-			'SUBMITAT' => $news['SUBMITAT'] ,
-			'ID' => $news['ID'],
-			'DETAIL' => $news['DETAIL'],
-			'SHOWCOMMENT' => $news['SHOWCOMMENT'],
-			'COMMENTS_COUNTER' => $news['COMMENTS_COUNTER'],
-			'COMMENT'  => $news['COMMENT'],
-			'MESSAGE' => $news['MESSAGE']
+			'STICKY' => ($news['news_flags']) ? true : false,
+			'HEADLINE' => stripslashes($news['news_headline']),
+			'AUTHOR' => $news['user_name'],
+			'TIME' => $t,
+			'ID' => $news['news_id'],
+			'DETAIL' => ($newsid > 0 ) ? true : false,
+			'COMMENTS_COUNTER' => $comments_counter,
+			'MESSAGE' => nl2br($news['news_message'])
 		)
 	);
 }
-
+$db->free_result($result);	
 
 $tpl->assign('title', $config->get('title').' - News');
 $tpl->display('viewnews.tpl');
