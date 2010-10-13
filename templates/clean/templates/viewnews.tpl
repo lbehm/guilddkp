@@ -19,6 +19,8 @@
 							$("ul#comments_sec").append(html);
 							$("ul#comments_sec").fadeIn(2000);
 							$("ul#comments_sec li").fadeIn("slow");
+							$("ul#comments_sec li:last").hide();
+							
 						}
 					});
 		
@@ -28,8 +30,8 @@
 					$(".submit").click(function()
 					{
 						var comment = $("#comment").val();
-						var last_id = $("li:last").val();
-						alert("ID:"+last_id);
+						var last_id = $(".last_id:last")[0].value;
+						alert('ID:' + last_id);
 						var dataString = 'page=news&attach={/literal}{$news_obj[news_list].ID}{literal}&last_id='+ last_id +'&comment=' + comment;
 						
 						if(comment=='')
@@ -48,7 +50,8 @@
 								cache: false,
 								success: function(html){
 									$("ul#comments_sec").append(html);
-									$("ul#comments_sec li:last").fadeIn("slow");
+									$("ul#comments_sec li").fadeIn("slow");
+									$(".last_id").hide();
 									$("#comment_progress").hide();
 									$("#comment_form").fadeIn(400);
 								}
@@ -64,7 +67,6 @@
 						<form action="#" method="post" id="comment_form">
 							<textarea id="comment"></textarea><br />
 							<input type="submit" class="submit" value=" Submit Comment " />
-							<input type="hidden" id="last_id" />
 						</form>
 					</li>
 				</ul>

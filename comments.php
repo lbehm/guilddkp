@@ -10,8 +10,9 @@
 
 	if($user->check_auth('rank_read_comment'))
 	{
-		$q_last_id = ($in->get('last_id', 0)) ? " AND comment_id > ".$last_id : "";
-		$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND c.comment_page = '".$in->get('page')."' AND c.comment_attach_id = '".$in->get('attach', 0)."'".$q_last_id." ORDER BY c.comment_date DESC;";
+		$last_id = $in->get('last_id', 0);
+		$q_last_id = ($last_id) ? " AND comment_id > ".$last_id : "";
+		$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND c.comment_page = '".$in->get('page')."' AND c.comment_attach_id = '".$in->get('attach', 0)."'".$q_last_id." ORDER BY c.comment_date ASC;";
 		$comment_result = $db->query($sql);
 		$comments_counter = 0;
 		$arr=array();
@@ -35,8 +36,9 @@
 		<span class="comment_body">$comment[comment_text]</span>
 	</li>
 END;
+			$last_id = $comment['comment_id'];
 		}
-		echo '<li style="display:none;" class="last_id">'.$comment['comment_id'].'</li>';
+		echo '<li style="display:none;" class="last_id" value="'.$last_id.'">'.$last_id.'</li>';
 	}
 
 ?>
