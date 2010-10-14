@@ -15,12 +15,27 @@ table#body {
 }
 tr.header {
 	background:url('./../images/header.png') repeat-x;
+	height:78px;
 }
 img.logo {
 	opacity:0.5;
+	float:left;
 }
 img.logo:hover {
 	opacity:0.8;
+}
+.user_menu{
+	float:right;
+}
+.user_menu a {
+	opacity:0.3;
+	color:#F0F0F0;
+}
+.user_menu a:hover{
+	opacity:0.8;
+}
+.main-title{
+	min-width:200px;
 }
 #calendar {
 	bottom:30px;
@@ -33,7 +48,7 @@ img.logo:hover {
 	clean:left;
 	float:left;
 	margin-top:25px;
-	min-width:250px;
+	min-width:215px;
 	line-height:1.4em;
 }
 .topsearch form, .topsearch ul.nav {
@@ -76,9 +91,6 @@ img.logo:hover {
 }
 .topsearch form input.search.notnative.placeholder {
 	background-position:0 0;
-}
-.user_menu a {
-	color:#666666;
 }
 .headline {
 	 width:100%;
