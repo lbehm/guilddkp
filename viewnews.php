@@ -33,7 +33,7 @@ $sticky_news = 0;
 $news_array = array();
 while( $news = $db->fetch_record($result) )
 {
-	if ($news['nocomments']==0)
+	if ($news['nocomments']==0 && $newsid)
 	{
 		if($user->check_auth('rank_read_comment'))
 		{
@@ -55,6 +55,7 @@ while( $news = $db->fetch_record($result) )
 				$comments_counter ++;
 			}
 			$db->free_result($comment_result);
+			$tpl->assign('SHOW_COMMENTS', true);
 		}
 	}
 
@@ -67,8 +68,6 @@ while( $news = $db->fetch_record($result) )
 			'AUTHOR' => $news['user_name'],
 			'TIME' => $t,
 			'ID' => $news['news_id'],
-			'DETAIL' => ($newsid > 0 ) ? true : false,
-			'COMMENTS_COUNTER' => $comments_counter,
 			'MESSAGE' => nl2br($news['news_message'])
 		)
 	);
