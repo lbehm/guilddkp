@@ -23,7 +23,7 @@
 		$last_id = $in->get('last_id', 0);
 		$q_last_id = ($last_id) ? " AND comment_id > ".$last_id : "";
 		
-		$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$in->get('page')."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$in->get('attach', 0)."'".$q_last_id." ORDER BY c.comment_date ASC;";
+		$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$in->get('page')."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$in->get('attach', 0)."'".$q_last_id." ORDER BY c.comment_date DESC;";
 		$comment_result = $db->query($sql);
 		$comments_counter = 0;
 		$comm=array();
@@ -65,7 +65,7 @@
 				if($anwser['respond_to']==$commarr['comment_id'])
 				{
 					echo <<< END
-			<li class="comment" style="display:none;" id="$anwser[comment_id]"><a name="co_$anwser[comment_id]" href="#co_$anwser[comment_id]"><span class="comment_head">$anwser[user_name] @ $anwser[comment_date]</span></a> <a class="anwser_link" href="javascript:anwser_comment($anwser[comment_id]);">Antworten</a><br />
+			<li class="comment" respond_to="$commarr[comment_id]" style="display:none;" id="$anwser[comment_id]"><a name="co_$anwser[comment_id]" href="#co_$anwser[comment_id]"><span class="comment_head">$anwser[user_name] @ $anwser[comment_date]</span></a> <a class="anwser_link" href="javascript:anwser_comment($anwser[comment_id]);">Antworten</a><br />
 				<span class="comment_body">$anwser[comment_text]</span>
 END;
 					print_subanwsers($anwser);
