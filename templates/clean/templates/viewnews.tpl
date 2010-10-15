@@ -6,7 +6,6 @@
 				<hr />
 				<p>{$news_obj[news_list].MESSAGE}</p>
 			</li>
-		</ul>
 		{if $SHOW_COMMENTS}
 		<script type="text/javascript" >
 			{literal}
