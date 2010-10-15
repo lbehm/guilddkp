@@ -15,7 +15,7 @@ class Session
 
     function start()
     {
-        global $SID, $db;
+        global $SID, $db, $tpl;
 
         $current_time = time();
 
@@ -72,6 +72,7 @@ class Session
                                 WHERE session_id = '" . $this->sid . "'";
                         $db->query($sql);
                     }
+					$tpl->assign('LOGIN', true);
                     return true;
                 }
             }

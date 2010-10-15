@@ -15,7 +15,7 @@
 			<tr class="header">
 				<td colspan="2" style="width:950px; text-align:right;">
 					<img src="templates/clean/images/logo.png" class="logo" alt="Logo">
-					<span class="user_menu"><a href="login.php?re={$redirect}">Login</a> | <a href="">Nachrichten</a> | <a href="">Einstellungen</a></span>
+					<span class="user_menu">{if $LOGIN}<a href="login.php?logout=1&re={$redirect}">Logout</a>{else}<a href="login.php?re={$redirect}">Login</a>{/if} | <a href="">Nachrichten</a> | <a href="">Einstellungen</a></span>
 				</td>
 				<td class="topsearch">
 					<form method="get" id="top_search_form" action="search.php">
