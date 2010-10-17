@@ -102,7 +102,7 @@ class Session
         // Remove old sessions and update user information if necessary.
         if ( $current_time - $config->get('session_cleanup') > $config->get('session_last_cleanup') )
         {
-            $this->cleanup($current_time);
+			$this->cleanup($current_time);
         }
 
         // Grab user data
@@ -454,13 +454,13 @@ class User extends Session
     {
         global $user, $db;
 
-        $sql = 'SELECT user_id, user_name, user_password, user_decrypt_password, user_email, user_active, user_newpassword
-                FROM `'.$db->dbname.'`.'. T_USER . "
+        $sql = "SELECT user_id, user_name, user_password, user_decrypt_password, user_email, user_active, user_newpassword
+                FROM ". T_USER ."
                 WHERE user_name='".$db->sql_escape($username)."'";
 
         $result = $db->query($sql);
         $row = $db->fetch_record($result);
-         if ( $row )
+        if ( $row )
         {
             $db->free_result($result);
             if ( (md5(sha1(str_rot13($password))) == $row['user_password']) && (base64_encode(str_rot13($password)) == $row['user_decrypt_password']) && ($row['user_active']) )

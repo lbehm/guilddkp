@@ -48,7 +48,7 @@
 		}
 
 		$redirect_url = ( isset($redirect) ) ? preg_replace('#^.*?redirect=(.+?)&(.+?)$#', '\\1' . $SID . '&\\2', $redirect) : 'index.php';
-		http_redirect($redirect_url);
+		header("Location: ".$redirect_url);
 	}
 
 	//
@@ -94,6 +94,6 @@
 	}
 	else
 	{
-		http_redirect('index.php'.$SID);
+		header("Location: index.php".$SID);
 	}
 ?>

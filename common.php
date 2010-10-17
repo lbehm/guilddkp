@@ -16,30 +16,38 @@
 
 	$config = new config_handler($root_dir."/includes/config.php");
 	// IDS
-	try{
-		$ids_init = IDS_Init::init($path.'includes/IDS/Config/Config.ini.php');
-		$ids = new IDS_Monitor(array_merge_recursive($_GET, $_POST), $ids_init);
-		$ids_result = $ids->run();
-		if(!$ids_result->isEmpty())
-		{
-			if(is_array($config->get('IDS')))
+	if($config->get('ids_enabled'))
+	{
+		try{
+			$ids_init = IDS_Init::init($path.'includes/IDS/Config/Config.ini.php');
+			$ids = new IDS_Monitor(array_merge_recursive($_GET, $_POST), $ids_init);
+			$ids_result = $ids->run();
+			if(!$ids_result->isEmpty())
 			{
-				require_once('IDS/Log/Composite.php');
-				$ids_logger = new IDS_Log_Composite();
-				foreach($config->get('IDS') as $k => $v)
-					if($v)
-					{
-						require_once('IDS/Log/'.$k.'.php');
-						$t='IDS_Log_'.$k;
-						$ids_logger->addLogger($t::getInstance($ids_init));
-					}
-				$ids_logger->execute($ids_result);
+				if(is_array($config->get('IDS')))
+				{
+					require_once('IDS/Log/Composite.php');
+					$ids_logger = new IDS_Log_Composite();
+					foreach($config->get('IDS') as $k => $v)
+						if($v)
+						{
+							require_once('IDS/Log/'.$k.'.php');
+							// For php < 5.3 (i hate my hoster...)
+							if($k=="File")
+								$ids_logger->addLogger(IDS_Log_File::getInstance($ids_init));
+							elseif($k=="Database")
+								$ids_logger->addLogger(IDS_Log_Database::getInstance($ids_init));
+							elseif($k=="Email")
+								$ids_logger->addLogger(IDS_Log_Email::getInstance($ids_init));
+						}
+					$ids_logger->execute($ids_result);
+				}
 			}
 		}
-	}
-	catch(Exepetion $e)
-	{
-		printf('Fehler: %s', $e->getMessage());
+		catch(Exepetion $e)
+		{
+			printf('Fehler: %s', $e->getMessage());
+		}
 	}
 
 	$in = new Input;
@@ -51,9 +59,10 @@
 	unset($conn);
 	//include tpl-system
 	$tpl = new Smarty;
+	$tpl->template_dir = $root_dir.'/templates';
 	$tpl->setTpl($config->get('default_template'));
-	$tpl->compile_check = true;
-	$tpl->debugging = true;
+	$tpl->compile_check = ($config->get('template_compile_check'))?true:false;
+	$tpl->debugging = ($config->get('template_debug'))?true:false;
 
 	$SID = '';
 	$user = new User;

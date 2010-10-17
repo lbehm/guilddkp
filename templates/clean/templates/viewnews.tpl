@@ -31,8 +31,52 @@
 					function comments_refresh()
 					{
 						var page = 0;
-						
+						$.ajax(
+							{
+								type: "GET",
+								url: "comments.php",
+								data: 'page=news&attach={/literal}{$news_obj[news_list].ID}{literal}',
+								cache: false,
+								success: function(html)
+								{
+									$("ul#comments_sec_tmp").html(html);
+									$("ul#comments_sec_tmp li.comment").show();
+									//if($("ul#comments_sec_tmp").html() != $("ul#comments_sec").html())
+									
+									$("ul#comments_sec_tmp > li").each(function(index, E){
+										//alert(E.id);
+										//alert( $("ul#comments_sec_tmp > li")[index].innerHTML );
+										if($("ul#comments_sec > li")[index].innerHTML == $("ul#comments_sec_tmp > li")[index].innerHTML)
+										{
+											//alert("no differents! ");
+										}
+										else
+										{
+											$("ul#comments_sec_tmp > li > ul.comment_anw > li").each(function(index, E){
+												//alert(E.id);
+												if($("ul#comments_sec_tmp > li > ul.comment_anw > li")[index].innerHTML == $("ul#comments_sec > li > ul.comment_anw > li")[index].innerHTML)
+												{
+													//alert("no differents! ");
+												}
+												else
+												{
+													//alert("differents! ");
+												}
+											});
+										}
+									});
+									/*
+									if($("ul#comments_sec_tmp").children() != $("ul#comments_sec_tmp").children())
+									{
+										$(".error_box").html($("ul#comments_sec_tmp").children());
+										alert("differents");
+									}
+									*/
+								}
+							}
+						);
 					}
+					comments_refresh();
 					$(document).ready(
 						function()
 						{
@@ -45,12 +89,12 @@
 									success: function(html)
 									{
 										$("ul#comments_sec").html(html);
-										$("ul#comments_sec").fadeIn(2000);
-										$("ul#comments_sec li.comment").fadeIn("slow");
+										//$("ul#comments_sec").fadeIn(2000);
+										//$("ul#comments_sec li.comment").fadeIn("slow");
 									}
 								}
 							);
-							var refreshId = setInterval(
+					/*		var refreshId = setInterval(
 								function()
 								{
 									$.ajax(
@@ -70,6 +114,7 @@
 								},
 								10000
 							);
+					*/
 						}
 					);
 					

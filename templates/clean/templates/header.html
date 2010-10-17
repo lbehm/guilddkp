@@ -3,25 +3,25 @@
 	<head>
 		<title>{$title}</title>
 		<link type="text/css" rel="stylesheet" href="templates/clean/templates/main.css">
-		<meta content="text/html;charset=UTF-8" http-equiv="content-type">
-		
+		<meta content="text/html" http-equiv="content-type">
+		<meta charset="utf-8">
 		<link type="text/css" href="templates/clean/script/ui/themes/smoothness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
 		<script type="text/javascript" src="templates/clean/script/js/jquery-1.4.2.min.js"></script>
 		<script type="text/javascript" src="templates/clean/script/js/jquery-ui-1.8.5.custom.min.js"></script>
 		<script type="text/javascript" src="templates/clean/script/header.js"></script>
 	</head>
 	<body>
+		<div id="box"></div>
 		<table id="body" cellpadding="0" cellspacing="0">
 			<tr class="header">
 				<td colspan="2" style="width:950px; text-align:right;">
 					<img src="templates/clean/images/logo.png" class="logo" alt="Logo">
-					<span class="user_menu">{if $LOGIN}<a href="login.php?logout=1&re={$redirect}">Logout</a>{else}<a href="login.php?re={$redirect}">Login</a>{/if} | <a href="">Nachrichten</a> | <a href="">Einstellungen</a></span>
+					<span class="user_menu">{if $LOGIN}<a id="logout_btn" href="login.php?logout=t">Logout</a>{else}<a id="login_btn" href="">Login</a>{/if} | <a href="">Nachrichten</a> | <a href="">Einstellungen</a></span>
 				</td>
 				<td class="topsearch">
 					<form method="get" id="top_search_form" action="search.php">
-						<a title="Advanced Search" class="advanced-search tooltipped downwards" href="search.php">Advanced Search</a>
-						<input type="search" placeholder="Suche." results="5" name="q" class="search my_repos_autocompleter notnative ac_input" autocomplete="off"> <input type="submit" class="button" value="Search">
-						<input type="hidden" value="Everything" name="type">
+						<!--<a title="Advanced Search" class="advanced-search tooltipped downwards" href="search.php">Advanced Search</a>-->
+						<input type="search" name="q" class="search my_repos_autocompleter notnative ac_input"><input type="submit" class="button" value="Search">
     				</form>
 				</td>
 			</tr>
