@@ -23,7 +23,7 @@
 		$last_id = $in->get('last_id', 0);
 		$q_last_id = ($last_id) ? " AND comment_id > ".$last_id : "";
 		
-		$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$in->get('page')."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$in->get('attach', 0)."'".$q_last_id." ORDER BY c.comment_date DESC;";
+		$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$in->get('page')."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$in->get('attach', 0)."'".$q_last_id." ORDER BY c.comment_date ASC;";
 		$comment_result = $db->query($sql);
 		$comments_counter = 0;
 		$comm=array();

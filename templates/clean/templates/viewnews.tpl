@@ -76,7 +76,7 @@
 							}
 						);
 					}
-					comments_refresh();
+					//comments_refresh();
 					$(document).ready(
 						function()
 						{
@@ -89,8 +89,9 @@
 									success: function(html)
 									{
 										$("ul#comments_sec").html(html);
-										//$("ul#comments_sec").fadeIn(2000);
-										//$("ul#comments_sec li.comment").fadeIn("slow");
+										$("ul#comments_sec li.comment").show();
+										$("ul#comments_sec").show();
+										//$("ul#comments_sec").show('slide', {direction: 'up'}, 5000, function(){});
 									}
 								}
 							);

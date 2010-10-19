@@ -45,7 +45,7 @@ class Session
 
         if ( (!empty($this->sid)) || ((isset($_GET[URI_SESSION])) && ($this->sid == $_GET[URI_SESSION])) )
         {
-            $sql = 'SELECT u.*, s.*
+			$sql = 'SELECT u.*, s.*
                     FROM ' . T_SESSIONS . ' s, ' . T_USER . " u
                     WHERE s.session_id = '".$db->sql_escape($this->sid)."'
                     AND u.user_id = s.session_user_id";
@@ -66,10 +66,10 @@ class Session
                     // Only update session DB a minute or so after last update or if page changes
                     if ( ($current_time - $this->data['session_current'] > 60) || ($this->data['session_page'] != $this->current_page) )
                     {
-                        $sql = 'UPDATE ' . T_SESSIONS . "
-                                SET session_current = '" . $current_time . "',
-                                    session_page = '" . $db->escape($this->current_page) . "'
-                                WHERE session_id = '" . $this->sid . "'";
+                        $sql = "UPDATE " . T_SESSIONS . " 
+								SET session_current = '" . $current_time . "', 
+									session_page = '" . $db->escape($this->current_page) . "' 
+								WHERE session_id = '" . $this->sid . "'";
                         $db->query($sql);
                     }
 					$tpl->assign('LOGIN', true);
@@ -77,7 +77,6 @@ class Session
                 }
             }
         }
-
         // If we reach here then no (valid) session exists.  So we'll create a new one,
         // using the cookie user_id if available to pull basic user prefs.
         // Prevent security vulnerability
@@ -131,7 +130,7 @@ class Session
         $query = $db->build_query('UPDATE', array(
             'session_user_id'    => $user_id,
             'session_last_visit' => $this->data['session_last_visit'],
-            'session_start'      => $current_time,
+            //'session_start'      => $current_time,
             'session_current'    => $current_time,
             'session_page'       => $db->escape($this->current_page))
         );
