@@ -5,117 +5,72 @@
 			{if $SHOW_COMMENTS}
 				<script type="text/javascript" >
 					{literal}
-					/*
-					$(document).ready(
-						function()
-						{
-							$("ul#comments_sec").load("comments.php?page=news&attach={/literal}{$news_obj[news_list].ID}{literal}");
-							$("ul#comments_sec li.comment").show().fadeIn();
-							$("ul#comments_sec").fadeIn(2000);
-							var refreshId = setInterval(
-								function()
-								{
-									$("ul#comments_sec_tmp").load("comments.php?page=news&attach={/literal}{$news_obj[news_list].ID}{literal}");
-									$("ul#comments_sec_tmp").show();
-									$("ul#comments_sec").hide();
-									$("ul#comments_sec_tmp")[0].id = "comments_sec_temp";
-									$("ul#comments_sec")[0].id = "comments_sec_tmp";
-									$("ul#comments_sec_temp")[0].id = "comments_sec";
-									$("ul#comments_sec_tmp").html("");
-									$("ul#comments_sec li.comment").fadeIn("slow");
-								},
-							10000);
-						}
-					);
-					*/
+					var last_id = "0";
 					function comments_refresh()
 					{
-						var page = 0;
-						$.ajax(
+						$.getJSON('comments.php?page=news&attach={/literal}{$news_obj[news_list].ID}{literal}&format=json&last_id='+last_id,
+							function(data)
 							{
-								type: "GET",
-								url: "comments.php",
-								data: 'page=news&attach={/literal}{$news_obj[news_list].ID}{literal}',
-								cache: false,
-								success: function(html)
-								{
-									$("ul#comments_sec_tmp").html(html);
-									$("ul#comments_sec_tmp li.comment").show();
-									//if($("ul#comments_sec_tmp").html() != $("ul#comments_sec").html())
-									
-									$("ul#comments_sec_tmp > li").each(function(index, E){
-										//alert(E.id);
-										//alert( $("ul#comments_sec_tmp > li")[index].innerHTML );
-										if($("ul#comments_sec > li")[index].innerHTML == $("ul#comments_sec_tmp > li")[index].innerHTML)
+								$.each(data.comm,
+									function(i, comment)
+									{
+										var new_post = '<li id="'+comment.id+'" class="comment" style="display:none;">'+'<a name="co_'+comment.id+'" href="#co_'+comment.id+'"><span class="comment_head">'+comment.autor+' @ '+comment.date+'</span></a> <a class="anwser_link" href="javascript:anwser_comment('+comment.id+');">Antworten</a><br />'+'<span class="comment_body">'+comment.msg+'</span>'+'<ul></ul></li>';
+										if(!comment.respond_to)
 										{
-											//alert("no differents! ");
+											$("ul#comments_sec").append(new_post);
+											if(last_id < comment.id)
+											{
+												last_id = comment.id;
+											}
 										}
 										else
 										{
-											$("ul#comments_sec_tmp > li > ul.comment_anw > li").each(function(index, E){
-												//alert(E.id);
-												if($("ul#comments_sec_tmp > li > ul.comment_anw > li")[index].innerHTML == $("ul#comments_sec > li > ul.comment_anw > li")[index].innerHTML)
-												{
-													//alert("no differents! ");
-												}
-												else
-												{
-													//alert("differents! ");
-												}
-											});
+											$("ul#comments_sec li#"+comment.respond_to+" > ul").append(new_post);
 										}
-									});
-									/*
-									if($("ul#comments_sec_tmp").children() != $("ul#comments_sec_tmp").children())
-									{
-										$(".error_box").html($("ul#comments_sec_tmp").children());
-										alert("differents");
+										if(last_id < comment.id)
+										{
+											last_id = comment.id;
+										}
+										$("ul#comments_sec li#"+comment.id).show('slide', {direction: 'up'}, 2000, function(){});
 									}
-									*/
-								}
+								);
 							}
 						);
 					}
-					//comments_refresh();
 					$(document).ready(
 						function()
 						{
-							$.ajax(
+							$.getJSON('comments.php?page=news&attach={/literal}{$news_obj[news_list].ID}{literal}&format=json',
+								function(data)
 								{
-									type: "GET",
-									url: "comments.php",
-									data: 'page=news&attach={/literal}{$news_obj[news_list].ID}{literal}',
-									cache: false,
-									success: function(html)
-									{
-										$("ul#comments_sec").html(html);
-										$("ul#comments_sec li.comment").show();
-										$("ul#comments_sec").show();
-										//$("ul#comments_sec").show('slide', {direction: 'up'}, 5000, function(){});
-									}
-								}
-							);
-					/*		var refreshId = setInterval(
-								function()
-								{
-									$.ajax(
+									$.each(data.comm,
+										function(i, comment)
 										{
-											type: "GET",
-											url: "comments.php",
-											data: 'page=news&attach={/literal}{$news_obj[news_list].ID}{literal}',
-											cache: false,
-											success: function(html)
+											var new_post = '<li id="'+comment.id+'" class="comment" style="display:none;">'+'<a name="co_'+comment.id+'" href="#co_'+comment.id+'"><span class="comment_head">'+comment.autor+' @ '+comment.date+'</span></a> <a class="anwser_link" href="javascript:anwser_comment('+comment.id+');">Antworten</a><br />'+'<span class="comment_body">'+comment.msg+'</span>'+'<ul></ul></li>';
+											if(!comment.respond_to)
 											{
-												$("ul#comments_sec").html(html);
-												$("ul#comments_sec").fadeIn(2000);
-												$("ul#comments_sec li.comment").fadeIn("slow");
+												$("ul#comments_sec").append(new_post);
+												if(last_id < comment.id)
+												{
+													last_id = comment.id;
+												}
+											}
+											else
+											{
+												$("ul#comments_sec li#"+comment.respond_to+" > ul").append(new_post);
+												if(last_id < comment.id)
+												{
+													last_id = comment.id;
+												}
 											}
 										}
-									)
-								},
-								10000
+									);
+									$("ul#comments_sec li").show();
+									$("ul#comments_sec").show();
+									last_id = data.last_id;
+								}
 							);
-					*/
+						//	var refreshId = setInterval(function(){comments_refresh();}, 10000);
 						}
 					);
 					
@@ -143,15 +98,7 @@
 									data: dataString,
 									cache: false,
 									success: function(html){
-										$("ul#comments_sec_tmp").html(html);
-										$("ul#comments_sec_tmp").show();
-										$("ul#comments_sec").hide();
-										$("ul#comments_sec_tmp")[0].id = "comments_sec_temp";
-										$("ul#comments_sec")[0].id = "comments_sec_tmp";
-										$("ul#comments_sec_temp")[0].id = "comments_sec";
-										$("ul#comments_sec_tmp").html("");
-										$("ul#comments_sec li").fadeIn("slow");
-										$("#comment_progress").fadeOut(400, function(){$("#comment_form").fadeIn(400);});
+										comments_refresh();
 									}
 								});
 							}
@@ -183,16 +130,7 @@
 									data: dataString,
 									cache: false,
 									success: function(html){
-										$("ul#comments_sec_tmp").html(html);
-										$("ul#comments_sec_tmp").show();
-										$("ul#comments_sec").hide();
-										$("ul#comments_sec_tmp")[0].id = "comments_sec_temp";
-										$("ul#comments_sec")[0].id = "comments_sec_tmp";
-										$("ul#comments_sec_temp")[0].id = "comments_sec";
-										$("ul#comments_sec_tmp").html("");
-										$("ul#comments_sec li").fadeIn("slow");
-										$("#news_comment_text").text("");
-										$("#comment_progress").fadeOut(400, function(){$("#comment_form").fadeIn(400);});
+										comments_refresh();
 									}
 								});
 							}
@@ -206,12 +144,11 @@
 			<p>{$news_obj[news_list].MESSAGE}</p>
 			{if $SHOW_COMMENTS}
 			<div class="comments_div">
+				<ul id="comments_sec" style="display:none;"></ul>
 				<div id="comment_progress" style="display:none; height: 24px;">Loading...</div>
 				<form action="#" method="post" id="comment_form">
 					<input type="text" id="news_comment_text"></input><input type="submit" class="submit_comment_news" value=" Submit Comment " />
 				</form>
-				<ul id="comments_sec" style="display:none;"></ul>
-				<ul id="comments_sec_tmp" style="display:none;"></ul>
 			</div>
 			{/if}
 		</li>

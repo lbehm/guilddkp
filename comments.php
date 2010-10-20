@@ -16,6 +16,7 @@
 				$db->query($sql);
 			}
 		}
+		die();
 	}
 
 	if($user->check_auth('rank_read_comment'))
@@ -30,67 +31,31 @@
 		$answ=array();
 		while($comments = $db->fetch_record($comment_result))
 		{
-			if($comments['comment_respond_to_id']!='' && $comments['comment_respond_to_id'])
+			$comm['last_id'] = ($comments['comment_id'] > $comm['last_id'])?$comments['comment_id']:$comm['last_id'];
+			
+			$tmp_comment = array(
+				'id' => $comments['comment_id'],
+				'autor' => ($comments['user_displayname']!='')?$comments['user_displayname']:(($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
+				'msg' => $comments['comment_text'],
+				'rank' => $comments['comment_ranking'],
+				'date' => date('G:i - d.m.', $comments['comment_date'])
+			);
+			$comm['data'][$tmp_comment['id']]=$tmp_comment;
+			if($comments['comment_respond_to_id']!='')
 			{
-				$answ[$comments['comment_id']] = array(
-					'comment_id' => $comments['comment_id'],
-					'respond_to' => $comments['comment_respond_to_id'],
-					'user_name' => ($comments['user_displayname']!='')?$comments['user_displayname'] : (($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
-					'comment_text' => $comments['comment_text'],
-					'comment_ranking' => $comments['comment_ranking'],
-					'comment_date' => date('G:i - d.m.', $comments['comment_date'])
-				);
+				$comm['data'][$tmp_comment['id']]['respond_to']=$comments['comment_respond_to_id'];
+				$comm['data'][$comments['comment_respond_to_id']]['childs'][]=$tmp_comment['id'];
 			}
-			else
-			{
-				$comm[$comments['comment_id']] = array(
-					'comment_id' => $comments['comment_id'],
-					'user_name' => ($comments['user_displayname']!='')?$comments['user_displayname'] : (($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
-					'comment_text' => $comments['comment_text'],
-					'comment_ranking' => $comments['comment_ranking'],
-					'comment_date' => date('G:i - d.m.', $comments['comment_date'])
-				);
-			}
-			$comments_counter ++;
 		}
 		$db->free_result($comment_result);
 
-		function print_subanwsers($commarr)
-		{
-			echo('
-	<ul class="comment_anw">');
-			global $answ;
-			foreach($answ as $anwser)
-			{
-				if($anwser['respond_to']==$commarr['comment_id'])
-				{
-					echo <<< END
-			<li class="comment" respond_to="$commarr[comment_id]" style="display:none;" id="$anwser[comment_id]"><a name="co_$anwser[comment_id]" href="#co_$anwser[comment_id]"><span class="comment_head">$anwser[user_name] @ $anwser[comment_date]</span></a> <a class="anwser_link" href="javascript:anwser_comment($anwser[comment_id]);">Antworten</a><br />
-				<span class="comment_body">$anwser[comment_text]</span>
-END;
-					print_subanwsers($anwser);
-					echo <<< END
-			</li>
-END;
-				}
-			}
-			echo('
-		</ul>');
-		}
+		$json = array();
+		$json['comm'] = $comm['data'];
+		$json['last_id'] = $comm['last_id'];
+		if($_GET['debug'])
+			print_r($json);
+		else
+			print(json_encode($json));
 
-		foreach($comm as $comment)
-		{
-			echo <<< END
-	<li class="comment" style="display:none;" id="$comment[comment_id]"><a name="co_$comment[comment_id]" href="#co_$comment[comment_id]"><span class="comment_head">$comment[user_name] @ $comment[comment_date]</span></a> <a class="anwser_link" href="javascript:anwser_comment($comment[comment_id]);">Antworten</a><br />
-		<span class="comment_body">$comment[comment_text]</span>
-END;
-			print_subanwsers($comment);
-			echo <<< END
-	</li>
-END;
-
-			$last_id = $comment['comment_id'];
-		}
 	}
-
 ?>
