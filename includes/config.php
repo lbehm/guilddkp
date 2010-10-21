@@ -12,7 +12,8 @@ template_debug = 0
 ids_enabled = 0
 session_cleanup = 60
 session_length = 1200
-session_last_cleanup = 1287503809
+session_last_cleanup = 0
+cache_last_comment_id = 90
 
 [IDS]
 Database = 0

@@ -95,3 +95,7 @@ img.logo:hover {
 .login_loading {
 	display:none;
 }
+
+form.comment_box > input {
+	margin-left:40px;
+}
