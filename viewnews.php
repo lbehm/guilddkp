@@ -65,6 +65,7 @@ while( $news = $db->fetch_record($result) )
 		array(
 			'STICKY' => ($news['news_flags']) ? true : false,
 			'HEADLINE' => stripslashes($news['news_headline']),
+			'CLEANTITLE' => str_replace(array('|',' ','-'),array('','_','_'),$news['news_headline']),
 			'AUTHOR' => $news['user_name'],
 			'TIME' => $t,
 			'ID' => $news['news_id'],

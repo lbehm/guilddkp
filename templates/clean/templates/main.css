@@ -49,7 +49,7 @@ img.logo:hover {
 	clear:left;
 	float:left;
 	margin-top:25px;
-	min-width:215px;
+	min-width:250px;
 	line-height:1.4em;
 }
 .topsearch form, .topsearch ul.nav {
@@ -98,4 +98,10 @@ img.logo:hover {
 
 form.comment_box > input {
 	margin-left:40px;
+}
+form.reg_form {
+	text-align:center;
+}
+form.reg_form td{
+	text-align:left;
 }

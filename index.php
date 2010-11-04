@@ -1,4 +1,4 @@
 <?php
-	header("Location: viewnews.php");
+	header("Location: news");
 	exit;
 ?>

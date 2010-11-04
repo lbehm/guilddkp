@@ -150,9 +150,8 @@
 					}
 				{/literal}</script>
 			{/if}
-			<span class="news_headline"><a href="viewnews.php?id={$news_obj[news_list].ID}">{$news_obj[news_list].HEADLINE}</a></span><span class="news_date">{$news_obj[news_list].AUTHOR} @ {$news_obj[news_list].TIME}</span>
-			<hr />
-			<p>{$news_obj[news_list].MESSAGE}</p>
+			<span class="news_headline"><a href="http://localhost/guilddkp/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}">{$news_obj[news_list].HEADLINE}</a></span><span class="news_date">{$news_obj[news_list].AUTHOR} @ {$news_obj[news_list].TIME}</span>
+			<span class="fb_like" style="float:right;"><fb:like href="http://localhost/guilddkp/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}" layout="button_count" font="lucida grande"></fb:like></span><p>{$news_obj[news_list].MESSAGE}</p>
 			{if $SHOW_COMMENTS}
 			<div class="comments_div">
 				<ul id="comments_sec" style="display:none;"></ul>
