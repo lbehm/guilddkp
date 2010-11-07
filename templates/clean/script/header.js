@@ -89,6 +89,7 @@ $(document).ready(
 			if(!$("div#reg_box")[0])
 				$("body").append('<div id="reg_box" />');
 			$("div#reg_box")[0].title = "Registrieren";
+			//var captcha = get_captcha();
 			$("div#reg_box")[0].innerHTML = '<form class="reg_form" action="register.php" methode="Post"><table class="reg_tbl">'+
 			'<tr><td>Loginname:</td><td><input type="text" name="username" id="user_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'+
 			'<tr><td>Benutzername:</td><td><input type="text" name="display_name" id="display_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'+
@@ -97,8 +98,7 @@ $(document).ready(
 			'<tr><td>E-Mail:</td><td><input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
 			'<tr><td>Geburtsdatum:</td><td><input type="text" name="date" id="birthday_c" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
 			'<tr><td>Profilbild:</td><td><input type="text" name="pic_url" id="pic_url" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
-			'<tr><td>Captcha:</td><td>'+get_captcha()+'</td></tr>'+
-			
+			'<tr><td>Captcha:</td><td><script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=6Lcldr4SAAAAAI0ZPMrDCPMAoNE9ktKkwz0ZRaDE"></script></td></tr>'+
 			'<tr><td><input type="submit" value="Registrieren"/></td><td><input type="reset" value="Abbrechen"/></td></tr>'+
 			'</table></form><div class="login_loading" />';
 			$("#birthday_c").datepicker({showOtherMonths: true,selectOtherMonths: true,dateFormat: 'dd.mm.yy'});
@@ -193,7 +193,7 @@ $(document).ready(
 );
 function get_captcha()
 {
-	var html='';
+	/*var html='';
 	$.ajax({
 		type: 'GET',
 		url: "register.php",
@@ -204,5 +204,7 @@ function get_captcha()
 			html = code;
 		}
 	});
-	return html;
+	*/
+	
+	//return html;
 }
