@@ -1,5 +1,6 @@
 <?php
 	define('loadet', true);
+	define('api', true);
 	require_once(dirname(__FILE__).'/common.php');
 
 	if($_POST)

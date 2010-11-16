@@ -6,6 +6,14 @@ require_once(dirname(__FILE__).'/common.php');
  * viewnews.php
  * **********
  */
+
+if(defined('CACHING'))
+{
+$expires = 60*15;
+header("Pragma: private");
+header("Cache-Control: maxage=".$expires);
+header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
+}
 $newsPerPage = 5;
 
 $start = $in->get('start', 0);

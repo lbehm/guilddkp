@@ -76,7 +76,7 @@ $(document).ready(
 				modal: true,
 				buttons: {
 					"Ja, ausloggen": function() {
-						window.location = "login.php?logout&re=viewnews.php";
+						window.location = "login.php?logout&re=news";
 					},
 					"Abbrechen!": function() {
 						$( this ).dialog( "close" );
@@ -87,29 +87,20 @@ $(document).ready(
 		});
 		$("#reg_btn").click(function(){
 			if(!$("div#reg_box")[0])
-				$("body").append('<div id="reg_box" />');
+				$("body").append('<div id="reg_box" style="padding:0px; display:none;"/>');
 			$("div#reg_box")[0].title = "Registrieren";
 			//var captcha = get_captcha();
-			$("div#reg_box")[0].innerHTML = '<form class="reg_form" action="register.php" methode="Post"><table class="reg_tbl">'+
-			'<tr><td>Loginname:</td><td><input type="text" name="username" id="user_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'+
-			'<tr><td>Benutzername:</td><td><input type="text" name="display_name" id="display_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'+
-			'<tr><td>Passwort:</td><td><input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
-			'<tr><td>Passwort bestätigen:</td><td><input type="password" name="password_b" id="password_b" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
-			'<tr><td>E-Mail:</td><td><input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
-			'<tr><td>Geburtsdatum:</td><td><input type="text" name="date" id="birthday_c" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
-			'<tr><td>Profilbild:</td><td><input type="text" name="pic_url" id="pic_url" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
-			'<tr><td>Captcha:</td><td><script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=6Lcldr4SAAAAAI0ZPMrDCPMAoNE9ktKkwz0ZRaDE"></script></td></tr>'+
-			'<tr><td><input type="submit" value="Registrieren"/></td><td><input type="reset" value="Abbrechen"/></td></tr>'+
-			'</table></form><div class="login_loading" />';
-			$("#birthday_c").datepicker({showOtherMonths: true,selectOtherMonths: true,dateFormat: 'dd.mm.yy'});
+			$("div#reg_box")[0].innerHTML = '<iframe src="register.php?a=w" style="border:0px; width:425px; height:350px" />';
+			//$("#birthday_c").datepicker({showOtherMonths: true,selectOtherMonths: true,dateFormat: 'dd.mm.yy'});
 			$("div#reg_box").dialog(
 			{
 				resizable: false,
-				width: 285,
-				height: 250,
+				width: 425,
+				height: 378,
 				closeOnEscape: true,
 				modal: true,
 			});
+			/*
 			$("form.reg_form #user_name").blur(function(){
 				if(this.value != '')
 				{
@@ -187,6 +178,7 @@ $(document).ready(
 					return false;
 				}
 			);
+			*/
 			return false;
 		});
 	}

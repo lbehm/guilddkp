@@ -12,7 +12,8 @@
 	require_once('input.php');
 	require_once('mysql.php');
 	require_once('session.php');
-	require_once('tpl/Smarty.class.php');
+	if(!defined('api'))
+		require_once('tpl/Smarty.class.php');
 
 	$config = new config_handler($root_dir."/includes/config.php");
 	// IDS
@@ -58,16 +59,22 @@
 	// Database Table names
 	unset($conn);
 	//include tpl-system
-	$tpl = new Smarty;
-	$tpl->template_dir = $root_dir.'/templates';
-	$tpl->setTpl($config->get('default_template'));
-	$tpl->compile_check = ($config->get('template_compile_check'))?true:false;
-	$tpl->debugging = ($config->get('template_debug'))?true:false;
+	if(!defined('api'))
+	{
+		$tpl = new Smarty;
+		$tpl->template_dir = $root_dir.'/templates';
+		$tpl->setTpl($config->get('default_template'));
+		$tpl->compile_check = ($config->get('template_compile_check'))?true:false;
+		$tpl->debugging = ($config->get('template_debug'))?true:false;
+		$tpl->assign('base_page', $config->get('main_page'));
+	}
 
 	$SID = '';
 	$user = new User;
 	$user->start();
 	$user->setup();
+	if(!defined('api'))
+		$tpl->assign('SID', ($SID!='?s=')?$SID:'');
 
 	//include sessions
 	//include login

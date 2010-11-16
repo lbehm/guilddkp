@@ -1,10 +1,14 @@
 ; <?php die(); ?>
 
 [general]
-main_page = "viewnews.php"
+main_page = "news"
 title = "Guild-DKP"
 online = 1
 offline_msg = "Die Seite ist zur Zeit nicht verfuegbar! Bitte versuchen Sie es spaeter wieder. Danke!"
+gc_pubkey = ""
+gc_privkey = ""
+allow_reg = 1
+user_active = "admin"
 default_lang = "de_de"
 default_template = "clean"
 template_compile_check = 1
