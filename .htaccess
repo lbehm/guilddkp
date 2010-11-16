@@ -1,0 +1,6 @@
+RewriteEngine On
+
+RewriteRule ^([^/]*)index.php $1news
+
+RewriteRule ^([^/]*)news-([^-]*)-([^-]*)$ $1viewnews.php?id=$2&n=$3 [L]
+RewriteRule ^([^/]*)news$ $1viewnews.php [L]

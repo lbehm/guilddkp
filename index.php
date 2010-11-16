@@ -1,4 +1,3 @@
 <?php
-	header("Location: news");
-	exit;
+	die();
 ?>
