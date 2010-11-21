@@ -20,13 +20,13 @@
 									$.each(j.d,
 										function(i, c)
 										{
-											var new_post = '<li id="'+c.id+'" class="comment" style="display:none;">'+'<a name="co_'+c.id+'" href="#co_'+c.id+'"><span class="comment_head">'+c.u+' @ '+c.d+'</span></a> <a class="anwser_link" href="javascript:anwser_comment('+c.id+');">Antworten</a><br />'+'<span class="comment_body">'+c.m+'</span>'+'<ul></ul></li>';
+											var new_post = '<li id="'+c.id+'" class="comment" style="display:none;">'+'<a name="co_'+c.id+'" href="#co_'+c.id+'"><span class="comment_head">'+c.u+' @ '+c.d+'</span></a> <a class="anwser_link" href="javascript:anwser_comment('+parseInt(c.id)+');">Antworten</a><br />'+'<span class="comment_body">'+c.m+'</span>'+'<ul></ul></li>';
 											if(!c.re)
 											{
 												$("ul#comments_sec").append(new_post);
-												if(last_id < c.id)
+												if(last_id < parseInt(c.id))
 												{
-													last_id = c.id;
+													last_id = parseInt(c.id);
 												}
 											}
 											else
@@ -150,8 +150,8 @@
 					}
 				{/literal}</script>
 			{/if}
-			<span class="news_headline"><a href="http://localhost/guilddkp/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}">{$news_obj[news_list].HEADLINE}</a></span><span class="news_date">{$news_obj[news_list].AUTHOR} @ {$news_obj[news_list].TIME}</span>
-			<span class="fb_like" style="float:right;"><fb:like href="http://localhost/guilddkp/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}" layout="button_count" font="lucida grande"></fb:like></span><p>{$news_obj[news_list].MESSAGE}</p>
+			<span class="news_headline"><a href="{$domain}/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}">{$news_obj[news_list].HEADLINE}</a></span><span class="news_date">{$news_obj[news_list].AUTHOR} @ {$news_obj[news_list].TIME}</span>
+			<span class="fb_like" style="float:right;"><fb:like href="{$domain}/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}" layout="button_count" font="lucida grande"></fb:like></span><p>{$news_obj[news_list].MESSAGE}</p>
 			{if $SHOW_COMMENTS}
 			<div class="comments_div">
 				<ul id="comments_sec" style="display:none;"></ul>

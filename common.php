@@ -67,6 +67,7 @@
 		$tpl->compile_check = ($config->get('template_compile_check'))?true:false;
 		$tpl->debugging = ($config->get('template_debug'))?true:false;
 		$tpl->assign('base_page', $config->get('main_page'));
+		$tpl->assign('domain', $config->get('domain'));
 	}
 
 	$SID = '';

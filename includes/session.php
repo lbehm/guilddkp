@@ -72,7 +72,8 @@ class Session
 								WHERE session_id = '" . $this->sid . "'";
                         $db->query($sql);
                     }
-					$tpl->assign('LOGIN', true);
+					if(!defined('api'))
+						$tpl->assign('LOGIN', true);
                     return true;
                 }
             }
