@@ -15,7 +15,7 @@
 			{
 				$sql = "INSERT INTO `".T_COMMENTS."` (user_id, user_name, comment_date, comment_text, comment_ranking, comment_page, comment_attach_id".(($comment_respond)?", comment_respond_to_id":"").") VALUES ('".$user->data['user_id']."', '".(($user->data['user_displayname']!='')?$user->data['user_displayname'] : $user->data['user_name'])."', '".time()."', '".$comment_text."', 0, '".$comment_page."', '".$comment_attach."'".(($comment_respond)?", '".$comment_respond."'":"").")";
 				echo (($db->query($sql))? "Success":"Error");
-				$config->put('cache_last_comment_id', $db->sql_lastid());
+				$cache->set('comment_last_id_'.$comment_page.'_'.$comment_attach, $db->sql_lastid());
 			}
 		}
 	}
@@ -24,7 +24,9 @@
 		if($user->check_auth('rank_read_comment'))
 		{
 			$last_id = $in->get('li', 0);
-			if($config->get('cache_last_comment_id')==$last_id && $last_id)
+			$comment_page=$db->sql_escape($in->get('p', ''));
+			$comment_attach=$db->sql_escape($in->get('a', ''));
+			if($cache->get('comment_last_id_'.$comment_page.'_'.$comment_attach)==$last_id && $last_id)
 			{
 				$json = array('e'=>1);
 				header('Content-Type: application/json; charset=utf8');
@@ -54,12 +56,10 @@
 				$comm['data'][$tmp_comment['id']]=$tmp_comment;
 			}
 			$db->free_result($comment_result);
+			$cache->set('comment_last_id_'.$comment_page.'_'.$comment_attach, $last_id);
 
 			if($comm['data'])
-			{
 				$json=array('li'=>$last_id, 'e'=>0,'d'=>$comm['data']);
-				$config->put('cache_last_comment_id', $last_id);
-			}
 			else
 				$json = array('e'=>1);
 			header('Content-Type: application/json; charset=utf8');

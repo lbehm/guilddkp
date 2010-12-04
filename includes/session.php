@@ -454,9 +454,7 @@ class User extends Session
     {
         global $user, $db;
 
-        $sql = "SELECT user_id, user_name, user_password, user_decrypt_password, user_email, user_active, user_newpassword
-                FROM ". T_USER ."
-                WHERE user_name='".$db->sql_escape($username)."'";
+        $sql = "SELECT user_id, LOWER(user_name), user_password, user_decrypt_password, user_email, user_active, user_newpassword FROM ". T_USER ." WHERE user_name = '".strtolower($db->sql_escape($username))."'";
 
         $result = $db->query($sql);
         $row = $db->fetch_record($result);
@@ -474,19 +472,6 @@ class User extends Session
         }
 
         return false;
-    }
-
-    /**
-     * Static function to abstract password encryption
-     *
-     * @param string $string String to encrypt
-     * @param string $salt Salt value; not yet in use
-     * @return string
-     * @static
-     */
-    function Encrypt($string, $salt = '')
-    {
-        return md5($salt . $string);
     }
 }
 ?>

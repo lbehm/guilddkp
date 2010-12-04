@@ -7,16 +7,6 @@
 	}
 	if($_GET['a']=='r')
 	{
-		require_once('recaptchalib.php');
-		$privatekey = $config->get('gc_privkey');
-		$resp = recaptcha_check_answer ($privatekey,$_SERVER["REMOTE_ADDR"],$_POST["recaptcha_challenge_field"],$_POST["recaptcha_response_field"]);
-		if (!$resp->is_valid)
-		{
-			print('captcha');
-			die();
-		}
-
-
 		//GET data to create acc and valide this data
 		// var data - needed data to create acc
 		if(strlen($in->get('birthday', '')) < 8)

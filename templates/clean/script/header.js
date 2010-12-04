@@ -7,12 +7,13 @@ $(document).ready(
 	{
 		$("#login_btn").click(function(){
 			$("div#box")[0].title = "Login";
-			$("div#box")[0].innerHTML = '<form class="login_form" action="login.php" methode="Post"><table class="login_data"><tr><td>Benutzername:</td><td><input type="text" name="username" id="name" class="text ui-widget-content ui-corner-all" value="" /></td></tr><tr><td>Passwort:</td><td><input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" /></td></tr></table><input type="submit" style="display:none;" /></form><div class="login_loading">Loading...</div>';
+			$("div#box")[0].innerHTML = '<form class="login_form" action="login.php" methode="Post"><table class="login_data"><tr><td>Benutzername:</td><td><input type="text" name="username" id="name" class="text ui-widget-content ui-corner-all" value="" /></td></tr><tr><td>Passwort:</td><td><input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" /></td></tr><tr><td colspan="2" class="login_btns"><input type="submit" value="Login" /><input type="button" value="Passwort vergessen"/></tr></table></form><div class="login_loading">Loading...</div>';
+			$("form.login_form .login_btns").buttonset();
 			$("div#box").dialog(
 			{
 				resizable: false,
 				width: 260,
-				height: 100,
+				height: 125,
 				closeOnEscape: true,
 				modal: true,
 			});
@@ -25,7 +26,7 @@ $(document).ready(
 							$.ajax({
 								type: "POST",
 								url: "login.php",
-								data: "external=yes&username="+$("form.login_form table.login_data #name").val()+"&password="+$("form.login_form table.login_data #password").val(),
+								data: "login=1&username="+$("form.login_form table.login_data #name").val()+"&password="+$("form.login_form table.login_data #password").val(),
 								cache: false,
 								success: function(html)
 								{
@@ -44,16 +45,16 @@ $(document).ready(
 									{
 										$("div.login_loading").hide('slide', {}, 200, function()
 										{
-											$("div.login_loading").html('Login fehlgeschlagen!<br />Bitte &uuml;berprüfen Sie Ihre Logindaten!<br /><div><button id="btn_back">Zurück</button><button id="btn_lostpwd">Passwort vergessen</button></div>');
-											$("div.login_loading > div button").button();
-											$("div.login_loading > div button#btn_back").click(function(){
+											$("div.login_loading").html('<div style="padding:3px;" class="ui-state-error ui-corner-all">Login fehlgeschlagen!<br />Bitte &uuml;berprüfen Sie Ihre Logindaten!</div><div class="loginfailbtns"><button width="100%" id="btn_back">Zurück</button><button id="btn_lostpwd">Passwort vergessen</button></div>');
+											$("div.login_loading > div.loginfailbtns button").button();
+											$("div.login_loading > div.loginfailbtns button#btn_back").click(function(){
 												$("div.login_loading").hide('slide', {}, 200, function()
 												{
 													$("table.login_data").show('slide', {}, 200, function(){});
 												});
 											});
-											$("div.login_loading > div button#btn_lostpwd").click(function(){});
-											$("div.login_loading > div").buttonset();
+											$("div.login_loading > div.loginfailbtns button#btn_lostpwd").click(function(){});
+											$("div.login_loading > div.loginfailbtns").buttonset();
 											$("div.login_loading").show('slide', {}, 200, function(){});
 										});
 									}
@@ -76,7 +77,16 @@ $(document).ready(
 				modal: true,
 				buttons: {
 					"Ja, ausloggen": function() {
-						window.location = "login.php?logout&re=news";
+						$.ajax({
+								type: "GET",
+								url: "login.php",
+								data: "logout=1",
+								cache: false,
+								success: function(h)
+								{
+									window.location = window.location.href;
+								}
+						});
 					},
 					"Abbrechen!": function() {
 						$( this ).dialog( "close" );
@@ -87,20 +97,27 @@ $(document).ready(
 		});
 		$("#reg_btn").click(function(){
 			if(!$("div#reg_box")[0])
-				$("body").append('<div id="reg_box" style="padding:0px; display:none;"/>');
+				$("body").append('<div id="reg_box" />');
 			$("div#reg_box")[0].title = "Registrieren";
-			//var captcha = get_captcha();
-			$("div#reg_box")[0].innerHTML = '<iframe src="register.php?a=w" style="border:0px; width:425px; height:350px" />';
-			//$("#birthday_c").datepicker({showOtherMonths: true,selectOtherMonths: true,dateFormat: 'dd.mm.yy'});
+			$("div#reg_box")[0].innerHTML = '<form class="reg_form" action="register.php" methode="Post"><table class="reg_tbl">'+
+			'<tr><td>Loginname:</td><td><input type="text" name="username" id="user_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'+
+			'<tr><td>Name:</td><td><input type="text" name="display_name" id="display_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'+
+			'<tr><td>Passwort:</td><td><input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
+			'<tr><td>Passwort bestätigen:</td><td><input type="password" name="password_b" id="password_b" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
+			'<tr><td>E-Mail:</td><td><input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
+			'<tr><td>Geburtsdatum:</td><td><input type="text" name="date" id="birthday_c" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
+			'<tr><td>Profilbild:</td><td><input type="text" name="pic_url" id="pic_url" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'+
+			'<tr><td><input type="submit" value="Registrieren"/></td><td><input type="reset" value="Abbrechen"/></td></tr>'+
+			'</table></form><div class="login_loading" />';
+			$("#birthday_c").datepicker({showOtherMonths: true,selectOtherMonths: true,dateFormat: 'dd.mm.yy'});
 			$("div#reg_box").dialog(
 			{
 				resizable: false,
-				width: 425,
-				height: 378,
+				width: 285,
+				height: 250,
 				closeOnEscape: true,
 				modal: true,
 			});
-			/*
 			$("form.reg_form #user_name").blur(function(){
 				if(this.value != '')
 				{
@@ -117,7 +134,6 @@ $(document).ready(
 							}
 						}
 					});
-					//alert("alert, alert!");
 				}
 			});
 			$("form.reg_form #password").blur(function(){
@@ -178,25 +194,7 @@ $(document).ready(
 					return false;
 				}
 			);
-			*/
 			return false;
 		});
 	}
 );
-function get_captcha()
-{
-	/*var html='';
-	$.ajax({
-		type: 'GET',
-		url: "register.php",
-		data: "a=g&w=captcha",
-		cache: false,
-		success: function(code)
-		{
-			html = code;
-		}
-	});
-	*/
-	
-	//return html;
-}

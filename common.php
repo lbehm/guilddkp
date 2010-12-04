@@ -16,6 +16,7 @@
 		require_once('tpl/Smarty.class.php');
 
 	$config = new config_handler($root_dir."/includes/config.php");
+	$sys_cache = new cache_handler($root_dir."/includes/cache/default.php");
 	// IDS
 	if($config->get('ids_enabled'))
 	{
@@ -68,12 +69,14 @@
 		$tpl->debugging = ($config->get('template_debug'))?true:false;
 		$tpl->assign('base_page', $config->get('main_page'));
 		$tpl->assign('domain', $config->get('domain'));
+		$tpl->assign('FB', ($config->get('facebook'))?true:false);
 	}
 
 	$SID = '';
 	$user = new User;
 	$user->start();
 	$user->setup();
+	$cache = new cache_handler($root_dir."/includes/cache/user_".$user->data['user_id'].".php");
 	if(!defined('api'))
 		$tpl->assign('SID', ($SID!='?s=')?$SID:'');
 
