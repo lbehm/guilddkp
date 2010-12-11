@@ -16,7 +16,7 @@
 		require_once('tpl/Smarty.class.php');
 
 	$config = new config_handler($root_dir."/includes/config.php");
-	$sys_cache = new cache_handler($root_dir."/includes/cache/default.php");
+	$cache = new cache_handler($root_dir."/includes/cache/");
 	// IDS
 	if($config->get('ids_enabled'))
 	{
@@ -76,9 +76,21 @@
 	$user = new User;
 	$user->start();
 	$user->setup();
-	$cache = new cache_handler($root_dir."/includes/cache/user_".$user->data['user_id'].".php");
+	//$cache = new cache_handler($root_dir."/includes/cache/user_".$user->data['user_id'].".php");
 	if(!defined('api'))
+	{
 		$tpl->assign('SID', ($SID!='?s=')?$SID:'');
+		$tpl->assign('user_icon', ($user->data['user_icon'] != '')? $user->data['user_icon']:"https://secure.gravatar.com/avatar/".md5($user->data['user_email'])."?s=120&d=".$config->get("domain")."/images/default_profile.png");
+		
+		$active_user = array();
+		$query = $db->query("SELECT u.user_displayname as name, u.user_icon as icon, MD5(u.user_email) as hash FROM ".T_SESSIONS." s, ".T_USER." u WHERE session_user_id > 0 AND s.session_user_id = u.user_id;");
+		while($k = $db->fetch_record($query))
+			$active_user[] = $k;
+		$currentUser="";
+		foreach($active_user as $k=>$v)
+			$currentUser.='<img alt="'.$v['name'].'" title="'.$v['name'].'" src="'.(($v['icon']!='')?$v['icon']:"https://secure.gravatar.com/avatar/".$v['hash']."?s=25&d=".$config->get("domain")."/images/default_profile.png").'" />';
+		$tpl->assign('ACTIVE_USER', $currentUser);
+	}
 
 	//include sessions
 	//include login

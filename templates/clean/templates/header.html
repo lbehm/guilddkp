@@ -8,6 +8,7 @@
 		<link type="text/css" href="templates/clean/script/ui/themes/smoothness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
 		<script type="text/javascript" src="templates/clean/script/js/jquery-1.4.2.min.js"></script>
 		<script type="text/javascript" src="templates/clean/script/js/jquery-ui-1.8.5.custom.min.js"></script>
+		{if $LOGIN}<script type="text/javascript" src="templates/clean/script/shoutbox.js"></script>{/if}
 		<script type="text/javascript" src="templates/clean/script/header.js"></script>
 		<script src="http://connect.facebook.net/de_DE/all.js#xfbml=1"></script>
 	</head>
@@ -28,15 +29,31 @@
 				</td>
 			</tr>
 			<tr class="headline">
-				<td class="main-title">{$headline}</td>
-				<td width="100%">
+				<td class="activeUser">{$ACTIVE_USER}</td>
+				<td class="scrollNews">
 					{$headspace}
 				</td>
 				<td></td>
 			</tr>
 			<tr width="100%" height="100%">
-				<td>
-					<div name="calendar" id="calendar" />
+				<td id="sideFrame">
+					{if $LOGIN}<h1><a href="#">Shoutbox</a></h1>
+					<div class="shoutbox">
+						<form action="#" method="post" id="comment_form" class="comment_box comment">
+							<img src="{$user_icon}" alt="Sie!" />
+							<div>
+								<input type="text" class="sBText" />
+								<input type="submit" class="submit_comment" value="Beitrag senden!" />
+							</div>
+						</form>
+						<ul class="shoutbox">
+						</ul>
+					</div>
+					{/if}<h1><a href="#">Raid-Planer</a></h1>
+					<div class="calendar"><div name="calendar" id="calendar"></div></div>
+					<h1><a href="#">Forum</a></h1>
+					<div class="forum"></div>
+					<h1><a href="#">Suche</a></h1>
+					<div class="search"></div>
 				</td>
 				<td width="950px">
-					

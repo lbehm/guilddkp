@@ -54,42 +54,69 @@
 	class cache_handler
 	{
 		var $_cache = array();
-		var $_filename = '';
+		var $_cache_dir = '';
 		
 		// constructor
-		function cache_handler($filename=false)
+		function cache_handler($dir=false)
 		{
-			$this->_filename = ($filename) ? $filename : $this->_filename;
-			if($this->_filename=='')
+			$this->_cache_dir = ($dir) ? $dir : $this->_cache_dir;
+			if($this->_cache_dir=='')
 				return false;
-			if(!file_exists($this->_filename))
-				write_php_ini($this->_cache, $this->_filename);
-			$time = time();
-			$changed = false;
-			$tmp = parse_ini_file($this->_filename, true);
-			foreach($tmp as $k=>$v)
-				if(((int)$v['time']+(int)$v['ttl']) > $time)
-					$this->_cache[$k]=$v;
+			if(!file_exists($this->_cache_dir.'index.html'))
+				return false;
 			return true;
 		}
-		function get($k=false)
+		function get($sec=false, $k=false)
 		{
-			return(($k)?( array_key_exists($k, $this->_cache)?(unserialize($this->_cache[$k]['val'])):false):false);
+			if(array_key_exists($sec,$this->_cache))
+			{
+				if(array_key_exists($k,$this->_cache[$sec]))
+				{
+					return unserialize($this->_cache[$sec][$k]['val']);
+				}
+			}
+			else
+			{
+				if(file_exists($this->_cache_dir.$sec.'.cache.php'))
+				{
+					$time = time();
+					$tmp = parse_ini_file($this->_cache_dir.$sec.'.cache.php', true);
+					foreach($tmp as $k=>$v)
+						if(((int)$v['time']+(int)$v['ttl']) > $time)
+							$this->_cache[$sec][$k]=$v;
+					return(array_key_exists($k,$this->_cache[$sec])?(unserialize($this->_cache[$sec][$k]['val'])):false);
+				}
+			}
+			return false;
 		}
-		function set($k, $val, $ttl=3600, $buffer=false)
+		function _loadCache($sec=false)
+		{
+			if(file_exists($this->_cache_dir.$sec.'.cache.php'))
+			{
+				$time = time();
+				$tmp = parse_ini_file($this->_cache_dir.$sec.'.cache.php', true);
+				foreach($tmp as $k=>$v)
+					if(((int)$v['time']+(int)$v['ttl']) > $time)
+						$this->_cache[$sec][$k]=$v;
+				return $this->_cache[$sec];
+			}
+			return false;
+		}
+		function set($sec, $k, $val, $ttl=3600, $buffer=false)
 		{
 			if($k==''||$val==''||$k==false||$val==false||$ttl==0)
 				return false;
-			$this->_cache[$k]['time']=time();
-			$this->_cache[$k]['ttl']=$ttl;
-			$this->_cache[$k]['val']=serialize($val);
+			$this->_loadCache($sec);
+			$this->_cache[$sec][$k]['time']=time();
+			$this->_cache[$sec][$k]['ttl']=$ttl;
+			$this->_cache[$sec][$k]['val']=serialize($val);
 			if(!$buffer)
-				return(write_php_ini($this->_cache, $this->_filename));
+				return(write_php_ini($this->_cache[$sec], $this->_cache_dir.$sec.'.cache.php'));
 			return true;
 		}
 		function write_buffer()
 		{
-			return(write_php_ini($this->_cache, $this->_filename));
+			return(write_php_ini($this->_cache[$sec], $this->_cache_dir.$sec.'.cache.php'));
 		}
 	}
 
