@@ -72,20 +72,13 @@
 			{
 				if(array_key_exists($k,$this->_cache[$sec]))
 				{
-					return unserialize($this->_cache[$sec][$k]['val']);
+					return unserialize(stripslashes($this->_cache[$sec][$k]['val']));
 				}
 			}
-			else
+			if(file_exists($this->_cache_dir.$sec.'.cache.php'))
 			{
-				if(file_exists($this->_cache_dir.$sec.'.cache.php'))
-				{
-					$time = time();
-					$tmp = parse_ini_file($this->_cache_dir.$sec.'.cache.php', true);
-					foreach($tmp as $k=>$v)
-						if(((int)$v['time']+(int)$v['ttl']) > $time)
-							$this->_cache[$sec][$k]=$v;
-					return(array_key_exists($k,$this->_cache[$sec])?(unserialize($this->_cache[$sec][$k]['val'])):false);
-				}
+				$this->_loadCache($sec);
+				return(array_key_exists($sec,$this->_cache) && array_key_exists($k,$this->_cache[$sec])?(unserialize(stripslashes($this->_cache[$sec][$k]['val']))):false);
 			}
 			return false;
 		}
@@ -97,7 +90,11 @@
 				$tmp = parse_ini_file($this->_cache_dir.$sec.'.cache.php', true);
 				foreach($tmp as $k=>$v)
 					if(((int)$v['time']+(int)$v['ttl']) > $time)
-						$this->_cache[$sec][$k]=$v;
+						$this->_cache[$sec][$k]=array(
+							'time'=>(int)$v['time'],
+							'ttl'=>(int)$v['ttl'],
+							'val'=>addslashes($v['val'])
+						);
 				return $this->_cache[$sec];
 			}
 			return false;
@@ -109,7 +106,7 @@
 			$this->_loadCache($sec);
 			$this->_cache[$sec][$k]['time']=time();
 			$this->_cache[$sec][$k]['ttl']=$ttl;
-			$this->_cache[$sec][$k]['val']=serialize($val);
+			$this->_cache[$sec][$k]['val']=addslashes(serialize($val));
 			if(!$buffer)
 				return(write_php_ini($this->_cache[$sec], $this->_cache_dir.$sec.'.cache.php'));
 			return true;

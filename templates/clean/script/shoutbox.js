@@ -44,19 +44,22 @@ $(function() {
 	sB_refresh();
 	setInterval(function(){sB_refresh();}, 5000);
 	$("form#comment_form").submit(function(){
-		var comment = $(".shoutbox .comment_box input.sBText").val();
-		var dataString = 'p=shoutBox&s=pc&a=0&m=' + comment;
-		$.ajax({
-			type: "POST",
-			url: "comments.php",
-			data: dataString,
-			cache: false,
-			success: function(html){
-				sB_refresh();
-				$(".shoutbox .comment_box input.sBText")[0].value = '';
-				$(".shoutbox .comment_box input.sBText")[0].focus();
-			}
-		});
+		var comment = escape($(".shoutbox .comment_box input.sBText").val());
+		if(comment!='')
+		{
+			var dataString = 'p=shoutBox&s=pc&a=0&m=' + comment;
+			$.ajax({
+				type: "POST",
+				url: "comments.php",
+				data: dataString,
+				cache: false,
+				success: function(html){
+					sB_refresh();
+					$(".shoutbox .comment_box input.sBText")[0].value = '';
+					$(".shoutbox .comment_box input.sBText")[0].focus();
+				}
+			});
+		}
 		return false;
 	});
 });

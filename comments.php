@@ -9,12 +9,12 @@
 		{
 			if($_POST['s']=='pc')
 			{
-				$comment_text=$db->sql_escape($in->get('m', ''));
+				$comment_text=$db->sql_escape(htmlentities($in->get('m', '')));
 				$comment_page=$db->sql_escape($in->get('p', ''));
 				$comment_original_page=$db->sql_escape($in->get('op', ''));
 				$comment_attach=$db->sql_escape($in->get('a', ''));
 				$comment_respond=$db->sql_escape($in->get('r', 0));
-				if($comment_text && $comment_text != '')
+				if($comment_text && $comment_text != '' && str_replace(" ", "", $comment_text) != '')
 				{
 					$sql = "INSERT INTO `".T_COMMENTS."` (user_id, user_name, comment_date, comment_text, comment_ranking, comment_page, comment_attach_id".(($comment_respond)?", comment_respond_to_id":"").") VALUES ('".$user->data['user_id']."', '".(($user->data['user_displayname']!='')?$user->data['user_displayname'] : $user->data['user_name'])."', '".time()."', '".$comment_text."', 0, '".$comment_page."', '".$comment_attach."'".(($comment_respond)?", '".$comment_respond."'":"").")";
 					echo (($db->query($sql))? "Success":"Error");
@@ -66,8 +66,8 @@
 				$tmp_comment = array(
 					'id' => $comments['comment_id'],
 					'u' => ($comments['user_displayname']!='')?$comments['user_displayname']:(($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
-					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"https://secure.gravatar.com/avatar/".$comments['emailHash']."?s=25&d=".$config->get("domain")."/images/default_profile.png",
-					'm' => $comments['comment_text'],
+					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"https://secure.gravatar.com/avatar/".$comments['emailHash']."?d=".$config->get("domain")."/images/default_profile.png",
+					'm' => html_entity_decode($comments['comment_text'], ENT_COMPAT, "UTF-8"),
 					'r' => $comments['comment_ranking'],
 					'd' => date('G:i - d.m.', $comments['comment_date'])
 				);
