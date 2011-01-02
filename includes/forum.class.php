@@ -5,12 +5,17 @@
 		exit;
 	}
 
-	$usernames = array();
-	$sql = "SELECT user_id, username FROM eqdkp_users";
-	$usernamesquery = $db->query($sql);
-	while($record = $db->fetch_record($usernamesquery))
-		$usernames[$record['user_id']] = $record['username'];
-
+	$usernames = $cache->get('forum', 'usernames');
+	if(!$usernames)
+	{
+		$usernames = array();
+		$sql = "SELECT user_id, user_displayname FROM ".T_USER;
+		$usernamesquery = $db->query($sql);
+		while($record = $db->fetch_record($usernamesquery))
+			$usernames[$record['user_id']] = $record['user_displayname'];
+		$cache->set('forum', 'usernames', $usernames);
+	}
+	
 	class forum
 	{
 		private $cache = array(
@@ -23,13 +28,19 @@
 		
 		function __construct()
 		{
-			$this->build_cache();
+			//$this->build_cache();
 		}
 //CONSTRUCT-CACHE
 		function build_cache()
 		{
 		// NEW FEATURE 10/04/19
-			global $db, $usernames, $user;
+			global $db, $usernames, $user, $cache;
+			/*
+			$this->cache = $cache->get('forum', 'cache');
+			//var_dump($this->cache);
+			if($this->cache)
+				return true;
+			*/
 			$this->cache = array(
 				'config'	=> array(),
 				'forums'	=> array(),
@@ -42,7 +53,7 @@
 		// Foren-cache füllen
 		// -------------------------------------------------------------------------------------
 		// SQL-Query
-			$sql = "SELECT `f`.* FROM `eqdkp_fmod_forums` `f`";
+			$sql = "SELECT `f`.* FROM `".T_FORUM."` `f`";
 			unset($sql_where);
 			$sql_where = "";
 			if (! $user->check_auth('a_forum_show_hidden_forum') )
@@ -63,7 +74,7 @@
 		// Themen-cache
 		// -------------------------------------------------------------------------------------
 		// SQL-Query
-			$sql = "SELECT `t`.* FROM `eqdkp_fmod_topics` `t` join `eqdkp_fmod_forums` `f` WHERE `f`.`forum_id` = `t`.`forum_id`";
+			$sql = "SELECT `t`.* FROM `".T_TOPIC."` `t` join `".T_FORUM."` `f` WHERE `f`.`forum_id` = `t`.`forum_id`";
 			unset($sql_where);
 			$sql_where = "";
 			if (! $user->check_auth('a_forum_show_hidden_forum') )
@@ -89,7 +100,7 @@
 		// Post-cache
 		// -------------------------------------------------------------------------------------
 		// SQL-Query
-			$sql = "SELECT `p`.* FROM ( `eqdkp_fmod_posts` `p` join `eqdkp_fmod_topics` `t` join `eqdkp_fmod_forums` `f` ) WHERE `f`.`forum_id` = `t`.`forum_id` AND `t`.`topic_id` = `p`.`topic_id`";
+			$sql = "SELECT `p`.* FROM ( `".T_POST."` `p` join `".T_TOPIC."` `t` join `".T_FORUM."` `f` ) WHERE `f`.`forum_id` = `t`.`forum_id` AND `t`.`topic_id` = `p`.`topic_id`";
 			unset($sql_where);
 			$sql_where = "";
 			if (! $user->check_auth('a_forum_show_hidden_forum') )
@@ -153,9 +164,10 @@
 					}
 				}
 			}
+			//$cache->set('forum', 'cache', $this->cache);
 		}
 //GET-CACHE-functions
-		function get_forums($hidden, $closed, $sticky, $delete)
+		function get_forums($read, $delete=false)
 		{
 			/*
 			Array
@@ -171,32 +183,28 @@
 				[config] => Array
 				(
 					[count] => 6
-					[post_count] => 0
 				)
 			)
 			*/
 			$output = array();
 			$count = 0;
-			$all_posts_count = 0;
 			foreach($this->cache['struct'] as $forum_id=>$topic_id)
 			{
 				if(
-					(($this->cache['forums'][$forum_id]['forum_hidden'] == $hidden) || $hidden == '') &&
-					(($this->cache['forums'][$forum_id]['forum_closed'] == $closed) || $closed == '') &&
-					(($this->cache['forums'][$forum_id]['forum_sticky'] == $sticky) || $sticky == '') &&
-					(($this->cache['forums'][$forum_id]['forum_delete'] == $delete) || ($delete == '' && $this->cache['forums'][$forum_id]['forum_delete'] == 'N'))
+					($this->cache['forums'][$forum_id]['forum_hidden'] <= $read) &&
+					($this->cache['forums'][$forum_id]['forum_delete'] == $delete || $this->cache['forums'][$forum_id]['forum_delete'] == false)
 				)
 				{
 					$output[$forum_id] = $this->cache['forums'][$forum_id];
 					$count ++;
 				}
 			}
+			print_r($this->cache['struct']);
 			$output['config']['count'] = $count;
-			$output['config']['post_count'] = $all_posts_count;
 			return $output;
 		}
 		
-		function get_topics($forum_id, $hidden, $closed, $sticky, $delete)
+		function get_topics($forum_id, $read, $delete=false)
 		{
 			/* RETURN:
 			Array
@@ -256,10 +264,8 @@
 			foreach($this->cache['struct'][$forum_id] as $topic_id=>$post)
 			{
 				if(
-					(($this->cache['topics'][$topic_id]['topic_hidden'] == $hidden) || $hidden == '') &&
-					(($this->cache['topics'][$topic_id]['topic_closed'] == $closed) || $closed == '') &&
-					(($this->cache['topics'][$topic_id]['topic_sticky'] == $sticky) || $sticky == '') &&
-					(($this->cache['topics'][$topic_id]['topic_delete'] == $delete) || ($delete == '' && $this->cache['topics'][$topic_id]['topic_delete'] == 'N'))
+					($this->cache['topics'][$topic_id]['topic_hidden'] <= $read) &&
+					($this->cache['topics'][$topic_id]['topic_delete'] == $delete || $this->cache['topics'][$topic_id]['topic_delete'] == false)
 				)
 				{
 					$output[$topic_id] = $this->cache['topics'][$topic_id];
@@ -273,7 +279,6 @@
 			}
 			$output['config']['count'] = $count;
 			$output['config']['post_count'] = $forum_posts_count;
-			$output['config']['forum'] = $this->cache['forums'][$forum_id];
 			return $output;
 		}
 		
@@ -913,44 +918,43 @@
 			}
 		}
 //Themenspalte Links
-		function show_forum_side_menu($forum_id = '', $topic_id = '')
+		function generate_menu()
 		{
-			if((is_numeric($forum_id) || $forum_id == '' ) && (is_numeric($topic_id) || ($topic_id == '')))
+			global $user, $tpl, $db;
+			$rank_read_forum=$user->get_auth('rank_read_forum');
+			if($rank_read_forum===false)
+				return('401');
+			$rank_read_topic=$user->get_auth('rank_read_topic');
+			if($rank_read_topic===false)
+				return('401');
+			
+			//$forum_request = $this->get_forums($rank_read_forum);
+			$fsql="SELECT forum_id as id, forum_name as title, forum_desc as `desc`, forum_closed as closed FROM ".T_FORUM." WHERE forum_hidden <= '".$rank_read_forum."' ORDER BY forum_sort ASC";
+			$fquery=$db->query($fsql);
+			while($forum = $db->fetch_record($fquery))
 			{
-				global $user, $tpl;
-				if ( $user->check_auth('a_forum_show_hidden_topic') )
-					$show_hidden_topic = true;
-				if ( $user->check_auth('a_forum_show_hidden_forum') )
-					$a_forum_show_hidden_forum = true;
-				$hidden = ($show_hidden_topic) ? '' : 'N';
-				$forums_request = $this->get_forums($hidden, '', '', 'N');
-				foreach($forums_request as $forum)
+				$topics_arr=array();
+				$topic_counter = 0;
+				//$topic_request = $this->get_topics($forum['forum_id'], $rank_read_topic);
+				$tsql="SELECT topic_id as id, topic_title as title, forum_id as forum, topic_sticky as sticky, topic_closed as closed FROM ".T_TOPIC." WHERE forum_id = '".$forum['id']."' AND topic_hidden <= '".$rank_read_forum."' ORDER BY topic_edit_timestamp ASC";
+				$tquery=$db->query($tsql);
+				while($topic = $db->fetch_record($tquery))
 				{
-					if($forum != $forums_request['config'])
-					{
-						$foren_list .= '<tr><th align="center" class="smalltitle"><a href="index.php?forum='. $forum['forum_id'] .'&cmd=view_forum">'. $forum['forum_name'] .'</a></th></tr>'; //Ausgabe Foren
-						$tpl->assign_block_vars('side_forum_row', array(
-							'LINK_FORUM_ID' => $forum['forum_id'],
-							'LINK_FORUM_TITLE' => $forum['forum_name']
-						));
-						$topic_counter = 0;
-						$hidden = ($show_hidden_topic) ? '' : 'N';
-						$topic_request = $this->get_topics($forum['forum_id'], $hidden, '', '', 'N');
-						foreach($topic_request as $topic)
-						{
-							if($topic != $topic_request['config'] && $topic_counter < 3)
-							{
-								$tpl->assign_block_vars('side_forum_row.topic_row', array(
-									'ROWCLASS' => $row,
-									'TOPIC_ID' => $topic['topic_id'],
-									'TOPIC_TITLE' => short_str($topic[topic_title], 25)
-								));
-							}
-							if(($forum['forum_id'] != $forum_id) || ($forum_id == ''))
-								$topic_counter ++;
-						}
-					}
+					$topics_arr[0]= array(
+						'id'=>$topic['id'],
+						'title'=>$topic['title'],
+						'forum'=>$topic['forum'],
+						'sticky'=>$topic['sticky'],
+						'closed'=>$topic['closed']
+					);
 				}
+				$tpl->append('FORUM_SEC', array(
+					'id'=>$forum['id'],
+					'title'=>$forum['title'],
+					'desc'=>$forum['desc'],
+					'closed'=>$forum['closed'],
+					'topics'=>$topics_arr
+				));
 			}
 		}
 //Löschen (nur mit "delete" tagn)

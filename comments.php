@@ -47,6 +47,7 @@
 			$last_id = $in->get('li', 0);
 			$comment_page=$db->sql_escape($in->get('p', ''));
 			$comment_attach=$db->sql_escape($in->get('a', ''));
+			$limit=$config->get($comment_page.'_limit');
 			if(((($cache->get('comment', 'last_id_'.$comment_page.'_'.$comment_attach)) == $last_id) || (($cache->get('comment', 'last_id_comment_'.$comment_attach)) == $last_id)) && ($last_id != false))
 			{
 				$json = array('e'=>1);
@@ -55,7 +56,7 @@
 				die();
 			}
 			$q_last_id = ($last_id) ? " AND c.comment_id > ".$last_id : "";
-			$sql="SELECT c.*, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$in->get('p')."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$in->get('a', 0)."'".$q_last_id." ORDER BY c.comment_date ASC;";
+			$sql="SELECT c.*, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$comment_page."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$comment_attach."'".$q_last_id." ORDER BY c.comment_date ASC LIMIT ".(($limit)?$limit:25).";";
 			$comment_result = $db->query($sql);
 			$comments_counter = 0;
 			$comm=array();
@@ -66,7 +67,7 @@
 				$tmp_comment = array(
 					'id' => $comments['comment_id'],
 					'u' => ($comments['user_displayname']!='')?$comments['user_displayname']:(($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
-					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"https://secure.gravatar.com/avatar/".$comments['emailHash']."?d=".$config->get("domain")."/images/default_profile.png",
+					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"http://www.gravatar.com/avatar/".$comments['emailHash']."?d=identicon",
 					'm' => html_entity_decode($comments['comment_text'], ENT_COMPAT, "UTF-8"),
 					'r' => $comments['comment_ranking'],
 					'd' => date('G:i - d.m.', $comments['comment_date'])

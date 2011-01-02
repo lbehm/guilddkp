@@ -18,13 +18,11 @@
 	else
 		$tpl->assign('access',true);
 
-	include_once('forum.class.php');
+	require_once('forum.class.php');
 	$forum = new forum();
 	//Variablen auslesen
-	$request_forum_id	= $in->get('forum','');
-	$request_topic_id	= $in->get('topic','');
-	$request_post_id	= $in->get('post','');
-	$request_cmd		= $in->get('cmd','');
+	$request_id	= $in->get('id',0);
+	$request_cmd		= $in->get('c','');
 
 
 	if(!$request_cmd || ($request_cmd == 'view_all') || ($request_cmd == 'view_forum') || ($request_cmd == 'view_topic'))

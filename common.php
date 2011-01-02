@@ -80,7 +80,7 @@
 	if(!defined('api'))
 	{
 		$tpl->assign('SID', ($SID!='?s=')?$SID:'');
-		$tpl->assign('user_icon', ($user->data['user_icon'] != '')? $user->data['user_icon']:"https://secure.gravatar.com/avatar/".md5($user->data['user_email'])."?d=".$config->get("domain")."/images/default_profile.png");
+		$tpl->assign('user_icon', ($user->data['user_icon'] != '')? $user->data['user_icon']:"http://www.gravatar.com/avatar/".md5($user->data['user_email'])."?d=identicon");
 		
 		$active_user = array();
 		$query = $db->query("SELECT u.user_displayname as name, u.user_icon as icon, MD5(u.user_email) as hash FROM ".T_SESSIONS." s, ".T_USER." u WHERE session_user_id > 0 AND s.session_user_id = u.user_id;");
@@ -88,9 +88,11 @@
 			$active_user[] = $k;
 		$currentUser="";
 		foreach($active_user as $k=>$v)
-			$currentUser.='<img alt="'.$v['name'].'" title="'.$v['name'].'" src="'.(($v['icon']!='')?$v['icon']:"https://secure.gravatar.com/avatar/".$v['hash']."?d=".$config->get("domain")."/images/default_profile.png").'" />';
+			$currentUser.='<img alt="'.$v['name'].'" title="'.$v['name'].'" src="'.(($v['icon']!='')?$v['icon']:"http://www.gravatar.com/avatar/".$v['hash']."?d=identicon").'" />';
 		$tpl->assign('ACTIVE_USER', $currentUser);
 		require_once('forum.class.php');
+		$forum=new forum;
+		$forum->generate_menu();
 	}
 	
 

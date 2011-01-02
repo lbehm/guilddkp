@@ -40,7 +40,7 @@
 					{if $LOGIN}<h1><a href="#">Shoutbox</a></h1>
 					<div class="shoutbox">
 						<form action="#" method="post" id="comment_form" class="comment_box comment">
-							<img src="{$user_icon}" alt="Sie!" />
+							<img src="{$user_icon}" title="Sie!" alt="Sie!" />
 							<div>
 								<input type="text" class="sBText" />
 								<input type="submit" class="submit_comment" value="Beitrag senden!" />
@@ -51,8 +51,18 @@
 					</div>
 					{/if}<h1><a href="#">Raid-Planer</a></h1>
 					<div class="calendar"><div name="calendar" id="calendar"></div></div>
-					<h1><a href="#">Forum</a></h1>
-					<div class="forum"></div>
+					{if $FORUM_SEC}
+					{section name=forum_list loop=$FORUM_SEC}
+						<h1><a href="#">{$FORUM_SEC[forum_list].title}</a></h1>
+						<div class="forum">
+							<ul>
+								{section name=topic_list loop=$FORUM_SEC[forum_list].topics}
+								<li id="topic_{$FORUM_SEC[forum_list].topics[topic_list].id}">{$FORUM_SEC[forum_list].topics[topic_list].title}</li>
+								{/section}
+							</ul>
+						</div>	
+					{/section}
+					{/if}
 					<h1><a href="#">Suche</a></h1>
 					<div class="search"></div>
 				</td>
