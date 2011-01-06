@@ -862,65 +862,53 @@
 			}
 		}
 //ANSICHT Thema
-		function show_topic_main($forum_id, $topic_id)
+		function show_topic_main($topic_id)
 		{
-			if($this->check_topic_id($forum_id, $topic_id))
+			global $db, $user, $tpl, $usernames, $config;
+			$tsql="SELECT * FROM ".T_TOPIC." t WHERE t.topic_id = '".$topic_id."' AND t.topic_delete = '0'";
+			$tquery=$db->query($tsql);
+			$topic=$db->fetch_record($tquery);
+			if($topic['topic_id']!=$topic_id)
+				die();
+				//ToDo: Fehlermeldung: Dieses Thema existiert nicht!
+			$fsql="SELECT * FROM ".T_FORUM." f WHERE f.forum_id = '".$topic['forum_id']."' AND f.forum_delete = '0'";
+			$fquery=$db->query($fsql);
+			$forum=$db->fetch_record($fquery);
+			
+			$tpl->assign('forum_info', array(
+				'forum_id' => $forum['forum_id'],
+				'forum_name' => $forum['forum_name'],
+				'forum_desc' => $forum['forum_desc'],
+				'topic_title' => $topic['topic_title'],
+				'TABLE_FOOTER_STATUS' => 'Es wurden '.$topic['post_count'].' Beiträge gefunden.'
+			));
+
+			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' ORDER BY p.post_timestamp";
+			$pquery=$db->query($psql);
+			while($post=$db->fetch_record($pquery))
 			{
-				global $user, $tpl;
-				$post_request = $this->get_posts($topic_id, 'N');
-				$tpl->assign_vars(array(
-					'TABLE_COLSPAN' => '2',
-
-					'LINK_FORUM_MAIN' => './index.php',
-					'LANG_FORUM' => 'Forum',
-					'LINK_FORUM_ID' => $forum_id,
-					'LINK_FORUM_TITLE' => $post_request['config']['forum']['forum_name'],
-					'LINK_TOPIC_ID' => $topic_id,
-					'LINK_TOPIC_TITLE' => $post_request['config']['topic']['topic_title'],
-
-					'LANG_EDIT' => '[Bearbeiten]',
-					'LANG_UPDATE' => 'Aktualisieren',
-
-					'SCRIPT_WYSIWYG' => $jqueryp->wysiwyg('bbcode'),
-
-					'LANG_TOPIC_CLOSED' => 'Das Thema wurde geschlossen oder Sie haben keine Berechtigungen einen Beitrag zu verfassen.',
-					'LANG_POST_REPLY' => 'Auf Thema Antworten',
-					'LANG_SUBMIT' => '&gt; Antworten &gt;',
-
-					'TABLE_FOOTER_STATUS' => 'Es wurden '.$post_request['config']['count'].' Beiträge gefunden.'
-				));
-
-				foreach($post_request as $post)
-				{
-					if($post != $post_request['config'])
-					{
-						//if($post['post_edit_count'] > 0)
-						$tpl->assign_block_vars('post_row', array(
-							'POST_ID' => $post['post_id'],
-							'POST_AUTOR' => $post['post_username'],
-							'LINK_POST' => './index.php?forum='.$forum_id.'&topic='.$topic_id.'#'.$post['post_id'],
-							'POST_DATE' => ' am '.date("d.m.y", $post['post_timestamp']).' um '.date("H:i", $post['post_timestamp']),
-							'POST_EDIT_STATUS' => ($post['post_edit_count'] > 0) ? ' - Bearbeitet von '.$post['post_edit_username'] : '',
-							'POST_TEXT' => $bbcode->toHTML(stripslashes($post['post_text'])),
-							'DELETE_POST' => $user->check_auth('a_forum_delete_post'),
-							'EDIT_POST' => ( ($user->check_auth('a_forum_edit_post')) || ( ($user->check_auth('u_forum_edit_own_post')) && ($post['post_user_id'] == $user->data['user_id'] ) && ($post_request['config']['forum']['forum_closed'] == 'N') && ($post_request['config']['topic']['topic_closed'] == 'N') ) ),
-							'SCRIPT_JQUERY_EDIT_POST' => $jqueryp->wysiwyg('bbcode_'.$post['post_id']),
-							'POST_EDIT_TEXT' => stripslashes($post['post_text']),
-							
-						));
-					}
-				}
-				if($post_request['config']['forum']['forum_closed'] == 'N' && $post_request['config']['topic']['topic_closed'] == 'N' && $user->check_auth('u_forum_create_post'))
-					$tpl->assign_vars(array('CAN_CREATE_POST' => true));
-				else
-					$tpl->assign_vars(array('CANT_CREATE_POST' => true));
-				$tpl->assign('title', $config->get('title').' - Forum - '.$post_request['config']['forum']['forum_name'].' - '.$post_request['config']['topic']['topic_title']);
+					$tpl->append('forum_posts', array(
+						'POST_ID' => $post['post_id'],
+						'POST_AUTOR' => $post['post_user_name'],
+						'POST_ICON' => ($post['user_icon'])?$post['user_icon']:"http://www.gravatar.com/avatar/".$post['hash']."?d=identicon",
+						'POST_DATE' => ' am '.date("d.m.y", $post['post_timestamp']).' um '.date("H:i", $post['post_timestamp']),
+						'POST_EDIT_STATUS' => ($post['post_edit_count'] > 0) ? ' - Bearbeitet von '.$post['post_edit_user_name'] : '',
+						'POST_TEXT' => nl2br(stripslashes($post['post_text'])),
+						'DELETE_POST' => ($user->check_auth('rank_rm_post'))?true:false,
+						'EDIT_POST' => ( ($user->get_auth('rank_edit_post') >= $user->get_auth('rank_edit_post',$post['post_user_id'])) && ($forum['forum_closed'] == '0') && ($topic['topic_closed'] == '0') )?true:false
+					));
 			}
+			if($post_request['config']['forum']['forum_closed'] == 'N' && $post_request['config']['topic']['topic_closed'] == 'N' && $user->check_auth('u_forum_create_post'))
+				$tpl->assign(array('CAN_CREATE_POST' => true));
+			else
+				$tpl->assign(array('CANT_CREATE_POST' => true));
+			$tpl->assign('title', $config->get('title').' - Forum - '.$topic['topic_title']);
+		
 		}
 //Themenspalte Links
 		function generate_menu()
 		{
-			global $user, $tpl, $db;
+			global $user, $tpl, $db, $usernames;
 			$rank_read_forum=$user->get_auth('rank_read_forum');
 			if($rank_read_forum===false)
 				return('401');
@@ -936,16 +924,19 @@
 				$topics_arr=array();
 				$topic_counter = 0;
 				//$topic_request = $this->get_topics($forum['forum_id'], $rank_read_topic);
-				$tsql="SELECT topic_id as id, topic_title as title, forum_id as forum, topic_sticky as sticky, topic_closed as closed FROM ".T_TOPIC." WHERE forum_id = '".$forum['id']."' AND topic_hidden <= '".$rank_read_forum."' ORDER BY topic_edit_timestamp ASC";
+				$tsql="SELECT topic_id as id, topic_title as title, forum_id as forum, topic_sticky as sticky, topic_closed as closed, topic_last_poster as last_poster, topic_edit_timestamp as timestamp FROM ".T_TOPIC." WHERE forum_id = '".$forum['id']."' AND topic_hidden <= '".$rank_read_forum."' ORDER BY topic_edit_timestamp ASC";
 				$tquery=$db->query($tsql);
 				while($topic = $db->fetch_record($tquery))
 				{
-					$topics_arr[0]= array(
+					$topics_arr[]= array(
 						'id'=>$topic['id'],
 						'title'=>$topic['title'],
+						'cleantitle'=>str_replace(array('|',' ','-'),array('','_','_'),$topic['title']),
 						'forum'=>$topic['forum'],
 						'sticky'=>$topic['sticky'],
-						'closed'=>$topic['closed']
+						'closed'=>$topic['closed'],
+						'last_poster'=>$usernames[$topic['last_poster']],
+						'time'=>date("H:i j.n.",$topic['timestamp'])
 					);
 				}
 				$tpl->append('FORUM_SEC', array(

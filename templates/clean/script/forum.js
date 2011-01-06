@@ -1,0 +1,6 @@
+/*
+	JS: Forum-API
+*/
+$(function() {
+	
+});

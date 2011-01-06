@@ -1,0 +1,122 @@
+#sideFrame > .forum {
+	
+}
+
+#sideFrame .forum  ul{
+	padding-left: 5px;
+	padding-right:3px;
+}
+
+#sideFrame .forum  li{
+	border: 1px solid #CCCCCC;
+	border-radius: 0px 3px 3px 0px;
+	box-shadow: 1px 1px 3px #888;
+	padding: 3px 5px 3px 2px;
+	height: 30px;
+	display:block;
+	vertical-align:middle;
+	margin:4px 3px 0px 0px;
+}
+#sideFrame .forum  li > a{
+	display:block;
+	padding:0px;
+	margin:0px;
+	text-decoration:none;
+}
+#sideFrame .forum  li span.title{
+	display: block;
+	border-bottom: 1px dotted #B2C1C9;
+}
+#sideFrame .forum  li span.poster{
+	font-size:9px;
+	margin-left:3px;
+}
+#sideFrame .forum  li span.time{
+	font-size:9px;
+	margin-right:3px;
+	float:right;
+}
+
+#topic_page .access_denied{
+	background: #FFFFFF;
+	padding: 5px 3px 3px 4px;
+	margin: 5px 2px 1px 2px;
+	border: 1px solid #AAAAAA;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 5px 5px 10px #888;
+	font-size:15px;
+}
+#topic_page .access_denied span{
+	
+}
+
+#topic_page > ul > li {
+	background: #FFFFFF;
+	padding: 5px 3px 3px 7px;
+	margin: 5px 2px 1px 2px;
+	border: 1px solid #AAAAAA;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 5px 5px 10px #888;
+	display: block;
+	font-size:14px;
+}
+#topic_page > ul > li.headline {
+	font-size:16px;
+}
+
+#topic_page > ul > li > img {
+	display: block;
+	height: 25px;
+	width: 25px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+	margin: 0px 5px 0px 0px;
+	padding: 2px;
+	box-shadow: 1px 2px 4px #888;
+	float: left;
+}
+#topic_page > ul > li > span.title {
+	display:block;
+	border-bottom: 1px dotted #B2C1C9;
+}
+#topic_page > ul > li > span.time {
+	font-size:12px;
+}
+#topic_page > ul {
+	padding:0px;
+	margin:0px;
+}
+.new_post form {
+	margin: 5px 2px 1px 2px;
+	padding: 5px 3px 3px 7px;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 5px 5px 10px #888;
+}
+.new_post > form > img {
+	display: block;
+	height: 25px;
+	width: 25px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+	margin: 4px 0px 0px 0px;
+	padding: 2px;
+	position: absolute;
+	box-shadow: 1px 2px 4px #888;
+}
+.new_post > form > div {
+	margin-left: 35px;
+}
+.new_post > form > div > span {
+	font-size:14px;
+}
+.new_post > form > div > textarea {
+	border: 1px solid #C0C0C0;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 1px 1px 1px 1px #888888 inset;
+	width: 98%;
+	padding: 5px;
+	margin-top: 5px;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+}

@@ -7,7 +7,7 @@
 	 * **********
 	 */
 
-	if (!$user->get_auth('rank_read_forum'))
+	if (!$user->check_auth('rank_read_forum'))
 	{
 		$tpl->assign('title', $config->get('title').' - Forum - Access denied');
 		$tpl->assign('access',false);
@@ -18,25 +18,17 @@
 	else
 		$tpl->assign('access',true);
 
-	require_once('forum.class.php');
-	$forum = new forum();
 	//Variablen auslesen
 	$request_id	= $in->get('id',0);
 	$request_cmd		= $in->get('c','');
 
 
-	if(!$request_cmd || ($request_cmd == 'view_all') || ($request_cmd == 'view_forum') || ($request_cmd == 'view_topic'))
+	if(!$request_cmd)
 	{
-		$request_cmd = 'view_all';
-		if($request_forum_id)
+		if($request_id)
 		{
-			$request_cmd = 'view_forum';
-			$forum_id = $request_forum_id;
-			if($request_topic_id)
-			{
-				$request_cmd = 'view_topic';
-				$topic_id = $request_topic_id;
-			}
+			$request_cmd = 'view_topic';
+			$topic_id = $request_id;
 		}
 	}
 	elseif($request_cmd == 'execute')
@@ -77,28 +69,16 @@
 		elseif(($post_set == 'move_topic') && ($post_topic) && ($post_forum))
 			die($user->check_auth('a_forum_move_topic')?(($forum->move_topic($post_topic, $post_forum))?'1':'0'):'403');
 	}
+	else
+	{
+		header("Location: news");
+		exit();
+	}
 
 	// display
-	if($request_cmd == 'view_all')
+	if($request_cmd == 'view_topic')
 	{
-		$forum->show_all_main();
-		$tpl->assign('title', $config->get('title').' - Forum');
-		$tpl->display('forum_show_all.html');
-	}
-	elseif($request_cmd == 'view_forum')
-	{
-		if(!$forum->check_forum_id($forum_id))
-			$forum->error(404);
-		$forum->show_forum_side_menu($forum_id);
-		$forum->show_forum_main($forum_id);
-		$tpl->display('forum_show_all.html');
-	}
-	elseif($request_cmd == 'view_topic')
-	{
-		if(!$forum->check_topic_id($forum_id, $topic_id))
-			$forum->error(404);
-		$forum->show_forum_side_menu($forum_id);
-		$forum->show_topic_main($forum_id, $topic_id);
-		$tpl->display('forum_show_all.html');
+		$forum->show_topic_main($topic_id);
+		$tpl->display('forum.tpl');
 	}
 ?>
