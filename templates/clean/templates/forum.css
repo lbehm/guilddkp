@@ -70,7 +70,6 @@
 	width: 25px;
 	border: 1px solid #CCCCCC;
 	border-radius: 3px 3px 3px 3px;
-	margin: 0px 5px 0px 0px;
 	padding: 2px;
 	box-shadow: 1px 2px 4px #888;
 	float: left;
@@ -78,9 +77,15 @@
 #topic_page > ul > li > span.title {
 	display:block;
 	border-bottom: 1px dotted #B2C1C9;
+	margin-left:37px;
 }
 #topic_page > ul > li > span.time {
 	font-size:12px;
+	margin-left: 10px;
+}
+#topic_page > ul > li > div.text {
+	font-size:15px;
+	padding:2px 5px 5px 10px;
 }
 #topic_page > ul {
 	padding:0px;

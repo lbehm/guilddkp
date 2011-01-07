@@ -5,5 +5,6 @@ RewriteRule ^([^/]*)index.php $1news
 RewriteRule ^([^/]*)news-([^-]*)-([^-]*)$ $1viewnews.php?id=$2&n=$3 [L]
 RewriteRule ^([^/]*)news$ $1viewnews.php [L]
 
-RewriteRule ^([^/]*)forum-([^-]*)-([^-]*)$ $1forum.php?id=$2 [L]
+RewriteRule ^([^/]*)forum-([^-]*)-([^-]*)$ $1forum.php?id=$2&c=forum [L]
+RewriteRule ^([^/]*)topic-([^-]*)-([^-]*)$ $1forum.php?id=$2&c=topic [L]
 RewriteRule ^([^/]*)forum$ $1news.php [L]

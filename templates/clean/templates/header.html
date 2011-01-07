@@ -61,7 +61,7 @@
 							<ul>
 								{section name=topic_list loop=$FORUM_SEC[forum_list].topics}
 								<li id="topic_{$FORUM_SEC[forum_list].topics[topic_list].id}">
-									<a href="{$domain}/forum-{$FORUM_SEC[forum_list].topics[topic_list].id}-{$FORUM_SEC[forum_list].topics[topic_list].cleantitle}">
+									<a href="{$domain}/topic-{$FORUM_SEC[forum_list].topics[topic_list].id}-{$FORUM_SEC[forum_list].topics[topic_list].cleantitle}">
 										<span class="title">{$FORUM_SEC[forum_list].topics[topic_list].title}</span>
 									</a>
 									<!-- ToDo:User-Image -->

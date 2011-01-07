@@ -875,16 +875,9 @@
 			$fquery=$db->query($fsql);
 			$forum=$db->fetch_record($fquery);
 			
-			$tpl->assign('forum_info', array(
-				'forum_id' => $forum['forum_id'],
-				'forum_name' => $forum['forum_name'],
-				'forum_desc' => $forum['forum_desc'],
-				'topic_title' => $topic['topic_title'],
-				'TABLE_FOOTER_STATUS' => 'Es wurden '.$topic['post_count'].' Beiträge gefunden.'
-			));
-
 			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' ORDER BY p.post_timestamp";
 			$pquery=$db->query($psql);
+			$last_post_id = 0;
 			while($post=$db->fetch_record($pquery))
 			{
 					$tpl->append('forum_posts', array(
@@ -897,13 +890,49 @@
 						'DELETE_POST' => ($user->check_auth('rank_rm_post'))?true:false,
 						'EDIT_POST' => ( ($user->get_auth('rank_edit_post') >= $user->get_auth('rank_edit_post',$post['post_user_id'])) && ($forum['forum_closed'] == '0') && ($topic['topic_closed'] == '0') )?true:false
 					));
+					$last_post_id = $post['post_id'];
 			}
-			if($post_request['config']['forum']['forum_closed'] == 'N' && $post_request['config']['topic']['topic_closed'] == 'N' && $user->check_auth('u_forum_create_post'))
-				$tpl->assign(array('CAN_CREATE_POST' => true));
-			else
-				$tpl->assign(array('CANT_CREATE_POST' => true));
+
+			$tpl->assign('forum_info', array(
+				'topic_id' => $topic_id,
+				'forum_id' => $forum['forum_id'],
+				'forum_name' => $forum['forum_name'],
+				'forum_desc' => $forum['forum_desc'],
+				'topic_title' => $topic['topic_title'],
+				'last_post_id' => $last_post_id,
+				'TABLE_FOOTER_STATUS' => 'Es wurden '.$topic['post_count'].' Beiträge gefunden.'
+			));
+
 			$tpl->assign('title', $config->get('title').' - Forum - '.$topic['topic_title']);
 		
+		}
+		
+		function show_topic_api($topic_id)
+		{
+			global $db, $user, $usernames, $config;
+			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' ORDER BY p.post_timestamp";
+			$pquery=$db->query($psql);
+			$last_post_id = 0;
+			while($post=$db->fetch_record($pquery))
+			{
+				$posts[$post['post_id']] = array(
+					'ID' => $post['post_id'],
+					'AUTOR' => $post['post_user_name'],
+					'ICON' => ($post['user_icon'])?$post['user_icon']:"http://www.gravatar.com/avatar/".$post['hash']."?d=identicon",
+					'DATE' => ' am '.date("d.m.y", $post['post_timestamp']).' um '.date("H:i", $post['post_timestamp']),
+					'EDITS' => ($post['post_edit_count'] > 0) ? ' - Bearbeitet von '.$post['post_edit_user_name'] : '',
+					'TEXT' => nl2br(stripslashes($post['post_text'])),
+					'RM' => ($user->check_auth('rank_rm_post'))?true:false,
+					'EDIT' => ( ($user->get_auth('rank_edit_post') >= $user->get_auth('rank_edit_post',$post['post_user_id'])) && ($forum['forum_closed'] == '0') && ($topic['topic_closed'] == '0') )?true:false
+				);
+				$last_post_id = $post['post_id'];
+			}
+			header('Content-Type: application/json; charset=utf8');
+			print(json_encode(array(
+				'e'=>0,
+				'd'=>$posts,
+				'li'=>$last_post_id
+			)));
 		}
 //Themenspalte Links
 		function generate_menu()
