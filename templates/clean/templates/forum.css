@@ -36,6 +36,16 @@
 	margin-right:3px;
 	float:right;
 }
+#sideFrame .forum  span.new_topic, #sideFrame .forum  span.view_forum{
+	border: 1px solid #CCCCCC;
+	border-radius: 0px 3px 3px 0px;
+	box-shadow: 1px 1px 3px #888;
+	padding: 3px 5px 3px 2px;
+	height: 15px;
+	display:block;
+	vertical-align:middle;
+	margin:4px 3px 0px 5px;
+}
 
 #topic_page .access_denied{
 	background: #FFFFFF;

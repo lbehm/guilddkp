@@ -3,8 +3,13 @@
 */
 $(function() {
 	var topic_page = 1;
+	var last_page = 1;
+	var f_ud_idle = false;
 	function topic_refresh()
 	{
+		if((topic_page != last_page) || (!f_ud_idle))
+			return false;
+		f_ud_idle = false;
 		$.getJSON('forum.php', 'c=api_topic&p='+topic_page+'&id='+topic_id+'&p_id='+forum_last_post_id,
 			function(j)
 			{
@@ -12,29 +17,17 @@ $(function() {
 				{
 					$.each(j.d,function(i, c)
 					{
-						var new_post = '';
-						if(!c.re)
+						var new_post = '<li><img src="'+c.ICON+'" alt="'+c.AUTOR+'" title="'+c.AUTOR+'" /><span class="title">'+c.AUTOR+'</span><span class="time">'+c.DATE+'</span><div class="text">'+c.TEXT+'</div></li>';
+						$("div#topic_page ul").append(new_post);
+						if(forum_last_post_id < parseInt(c.ID))
 						{
-							$("div#topic_page ul").append(new_post);
-							if(sB_last_id < parseInt(c.id))
-							{
-								sB_last_id = parseInt(c.id);
-							}
+							forum_last_post_id = parseInt(c.ID);
 						}
-						else
-						{
-							$("ul.shoutbox li#"+c.re+" > ul").append(new_post);
-						}
-						if(sB_last_id < c.id)
-						{
-							sB_last_id = parseInt(c.id);
-						}
-						$("ul.shoutbox").show();
-						$("ul.shoutbox li#"+c.id).show('slide', {direction: 'up'}, 500, function(){});
 					});
 				}
 			}
 		);
+		f_ud_idle = true;
 	}
 	$("div#topic_page .new_post > form").submit(function(){
 		var p_text = escape($("div#topic_page .new_post > form > div > textarea#post_text").val());
@@ -52,4 +45,6 @@ $(function() {
 		
 		return false;
 	});
+	setInterval(function(){topic_refresh();}, 60000);
+	f_ud_idle = true;
 });

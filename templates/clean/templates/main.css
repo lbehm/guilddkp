@@ -38,13 +38,14 @@ img.logo {
 	opacity:0.5;
 	float:left;
 	border:0px;
+	height:40px;
 }
 img.logo:hover {
-	opacity:0.8;
+	opacity:1;
 }
 .user_menu{
 	float:right;
-	padding-top:10px;
+	margin-top:13px;
 }
 .user_menu a {
 	opacity:0.3;

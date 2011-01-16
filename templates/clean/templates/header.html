@@ -69,8 +69,9 @@
 									<span class="time">@ {$FORUM_SEC[forum_list].topics[topic_list].time}</span>
 								</li>
 								{/section}
-								<li id="new_topic_{$FORUM_SEC[forum_list].id}" class="new_topic">Neuen Beitrag &gt;</li>
 							</ul>
+							<span id="new_topic_{$FORUM_SEC[forum_list].id}" class="new_topic">Neuen Beitrag</span>
+							<span id="view_forum_{$FORUM_SEC[forum_list].id}" class="view_forum"><a href="{$domain}/forum-{$FORUM_SEC[forum_list].id}-{$FORUM_SEC[forum_list].title}">Alle Themen sehen</a></span>
 						</div>	
 					{/section}
 					{/if}
