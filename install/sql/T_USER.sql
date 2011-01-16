@@ -24,7 +24,7 @@ CREATE TABLE `dkp_user` (
 `country`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' ,
 `town`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' ,
 `state`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' ,
-`ZIP_code`  int(11) UNSIGNED NOT NULL DEFAULT '' ,
+`ZIP_code`  int(11) UNSIGNED NOT NULL DEFAULT 0 ,
 `phone`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' ,
 `cellphone`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' ,
 `address`  text CHARACTER SET utf8 COLLATE utf8_bin NULL ,
