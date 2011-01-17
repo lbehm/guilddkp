@@ -70,6 +70,7 @@
 #topic_page > ul > li.headline, #topic_page > ul > li.headline a {
 	font-size:16px;
 	color:black;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,Sans-Serif;
 }
 #topic_page > ul > li > img {
 	display: block;
@@ -89,6 +90,17 @@
 #topic_page > ul > li > span.time {
 	font-size:12px;
 	margin-left: 10px;
+}
+#topic_page > ul > li .controls {
+	float:right;
+}
+#topic_page > ul > li .fixlink {
+	color:#C0C0C0;
+	opacity:0.5;
+	text-decoration:none;
+}
+#topic_page > ul > li .fixlink:hover {
+	opacity:1;
 }
 #topic_page > ul > li > div.text {
 	font-size:15px;
@@ -145,6 +157,7 @@
 }
 #forum_page > ul > li.headline {
 	font-size:16px;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,Sans-Serif;
 }
 #forum_page > ul > li > img {
 	display: block;

@@ -77,7 +77,7 @@ while( $news = $db->fetch_record($result) )
 			'AUTHOR' => $news['user_name'],
 			'TIME' => $t,
 			'ID' => $news['news_id'],
-			'MESSAGE' => nl2br($news['news_message'])
+			'MESSAGE' => bbDeCode(nl2br($news['news_message']))
 		)
 	);
 }

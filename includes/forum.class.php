@@ -51,11 +51,10 @@
 				die();
 				// Ende der Fahnenstange
 			}
-			$tsql="SELECT t.*, u.user_displayname, MD5(u.user_email) as hash, u.user_icon FROM ".T_TOPIC." t, ".T_USER." u WHERE t.forum_id = '".$db->sql_escape($forum_id)."' AND t.topic_hidden <= '".$user->get_auth('rank_read_topic')."' AND t.topic_delete = '0' AND u.user_id = t.topic_last_poster ORDER BY t.topic_edit_timestamp";
+			$tsql="SELECT t.*, u.user_displayname, MD5(u.user_email) as hash, u.user_icon FROM ".T_TOPIC." t, ".T_USER." u WHERE t.forum_id = '".$db->sql_escape($forum_id)."' AND t.topic_hidden <= '".$user->get_auth('rank_read_topic')."' AND t.topic_delete = '0' AND u.user_id = t.topic_last_poster ORDER BY t.topic_edit_timestamp DESC";
 			$tquery=$db->query($tsql);
 			while($topic=$db->fetch_record($tquery))
 			{
-				//print_r($topic);
 				$tpl->append('forum_topics', array(
 					'id'=>$topic['topic_id'],
 					'title'=>$topic['topic_title'],
@@ -97,7 +96,7 @@
 				die();
 				// Ende der Fahnenstange
 			}
-			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' ORDER BY p.post_timestamp";
+			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' ORDER BY p.post_timestamp ASC";
 			$pquery=$db->query($psql);
 			$last_post_id = 0;
 			while($post=$db->fetch_record($pquery))
@@ -108,7 +107,7 @@
 						'POST_ICON' => ($post['user_icon'])?$post['user_icon']:"http://www.gravatar.com/avatar/".$post['hash']."?d=identicon",
 						'POST_DATE' => ' am '.date("d.m.y", $post['post_timestamp']).' um '.date("H:i", $post['post_timestamp']),
 						'POST_EDIT_STATUS' => ($post['post_edit_count'] > 0) ? ' - Bearbeitet von '.$post['post_edit_user_name'] : '',
-						'POST_TEXT' => nl2br(stripslashes($post['post_text'])),
+						'POST_TEXT' => bbDeCode(nl2br(stripslashes($post['post_text']))),
 						'DELETE_POST' => ($user->check_auth('rank_rm_post'))?true:false,
 						'EDIT_POST' => ( ($user->get_auth('rank_edit_post') >= $user->get_auth('rank_edit_post',$post['post_user_id'])) && ($forum['forum_closed'] == '0') && ($topic['topic_closed'] == '0') )?true:false
 					));
@@ -118,10 +117,11 @@
 			$tpl->assign('forum_info', array(
 				'topic_id' => $topic_id,
 				'forum_id' => $forum['forum_id'],
-				'cleantitle' => str_replace(array('|',' ','-'),array('','_','_'),$forum['forum_name']),
+				'forum_cleantitle' => str_replace(array('|',' ','-'),array('','_','_'),$forum['forum_name']),
 				'forum_name' => $forum['forum_name'],
 				'forum_desc' => $forum['forum_desc'],
 				'topic_title' => $topic['topic_title'],
+				'topic_cleantitle' => str_replace(array('|',' ','-'),array('','_','_'),$topic['topic_title']),
 				'last_post_id' => $last_post_id,
 				'TABLE_FOOTER_STATUS' => 'Es wurden '.$topic['post_count'].' Beiträge gefunden.'
 			));
@@ -133,7 +133,7 @@
 		function show_topic_api($topic_id, $last_id)
 		{
 			global $db, $user, $usernames, $config;
-			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' AND p.post_timestamp > (SELECT post_timestamp FROM ".T_POST." WHERE post_id = '".$last_id."') ORDER BY p.post_timestamp";
+			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' AND p.post_timestamp > (SELECT post_timestamp FROM ".T_POST." WHERE post_id = '".$last_id."') ORDER BY p.post_timestamp ASC";
 			$pquery=$db->query($psql);
 			$last_post_id = 0;
 			while($post=$db->fetch_record($pquery))
@@ -144,7 +144,7 @@
 					'ICON' => ($post['user_icon'])?$post['user_icon']:"http://www.gravatar.com/avatar/".$post['hash']."?d=identicon",
 					'DATE' => ' am '.date("d.m.y", $post['post_timestamp']).' um '.date("H:i", $post['post_timestamp']),
 					'EDITS' => ($post['post_edit_count'] > 0) ? ' - Bearbeitet von '.$post['post_edit_user_name'] : '',
-					'TEXT' => nl2br(stripslashes($post['post_text'])),
+					'TEXT' => bbDeCode(nl2br(stripslashes($post['post_text']))),
 					'RM' => ($user->check_auth('rank_rm_post'))?true:false,
 					'EDIT' => ( ($user->get_auth('rank_edit_post') >= $user->get_auth('rank_edit_post',$post['post_user_id'])) && ($forum['forum_closed'] == '0') && ($topic['topic_closed'] == '0') )?true:false
 				);
@@ -176,7 +176,7 @@
 				$topics_arr=array();
 				$topic_counter = 0;
 				//$topic_request = $this->get_topics($forum['forum_id'], $rank_read_topic);
-				$tsql="SELECT topic_id as id, topic_title as title, forum_id as forum, topic_sticky as sticky, topic_closed as closed, topic_last_poster as last_poster, topic_edit_timestamp as timestamp FROM ".T_TOPIC." WHERE forum_id = '".$forum['id']."' AND topic_hidden <= '".$rank_read_forum."' ORDER BY topic_edit_timestamp ASC";
+				$tsql="SELECT topic_id as id, topic_title as title, forum_id as forum, topic_sticky as sticky, topic_closed as closed, topic_last_poster as last_poster, topic_edit_timestamp as timestamp FROM ".T_TOPIC." WHERE forum_id = '".$forum['id']."' AND topic_hidden <= '".$rank_read_forum."' ORDER BY topic_edit_timestamp DESC";
 				$tquery=$db->query($tsql);
 				while($topic = $db->fetch_record($tquery))
 				{
@@ -194,6 +194,7 @@
 				$tpl->append('FORUM_SEC', array(
 					'id'=>$forum['id'],
 					'title'=>$forum['title'],
+					'forum_cleantitle' => str_replace(array('|',' ','-'),array('','_','_'),$forum['title']),
 					'desc'=>$forum['desc'],
 					'closed'=>$forum['closed'],
 					'topics'=>$topics_arr

@@ -12,6 +12,7 @@
 	require_once('input.php');
 	require_once('mysql.php');
 	require_once('session.php');
+	require_once('bbcode.php');
 	if(!defined('api'))
 		require_once('tpl/Smarty.class.php');
 

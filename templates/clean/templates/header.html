@@ -13,7 +13,7 @@
 		<script type="text/javascript" src="templates/clean/script/js/jquery-ui-1.8.5.custom.min.js"></script>
 		{if $LOGIN}<script type="text/javascript" src="templates/clean/script/shoutbox.js"></script>{/if}
 		<script type="text/javascript" src="templates/clean/script/header.js"></script>
-		<script src="http://connect.facebook.net/de_DE/all.js#xfbml=1"></script>
+		{if $FB}<script src="http://connect.facebook.net/de_DE/all.js#xfbml=1"></script>{/if}
 	</head>
 	<body>
 		<div id="box"></div>
@@ -71,7 +71,7 @@
 								{/section}
 							</ul>
 							<span id="new_topic_{$FORUM_SEC[forum_list].id}" class="new_topic">Neuen Beitrag</span>
-							<span id="view_forum_{$FORUM_SEC[forum_list].id}" class="view_forum"><a href="{$domain}/forum-{$FORUM_SEC[forum_list].id}-{$FORUM_SEC[forum_list].title}">Alle Themen sehen</a></span>
+							<span id="view_forum_{$FORUM_SEC[forum_list].id}" class="view_forum"><a href="{$domain}/forum-{$FORUM_SEC[forum_list].id}-{$FORUM_SEC[forum_list].forum_cleantitle}">Alle Themen sehen</a></span>
 						</div>	
 					{/section}
 					{/if}
