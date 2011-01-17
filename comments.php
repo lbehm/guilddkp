@@ -68,7 +68,7 @@
 					'id' => $comments['comment_id'],
 					'u' => ($comments['user_displayname']!='')?$comments['user_displayname']:(($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
 					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"http://www.gravatar.com/avatar/".$comments['emailHash']."?d=identicon",
-					'm' => html_entity_decode($comments['comment_text'], ENT_COMPAT, "UTF-8"),
+					'm' => $comments['comment_text'],
 					'r' => $comments['comment_ranking'],
 					'd' => date('G:i - d.m.', $comments['comment_date'])
 				);
