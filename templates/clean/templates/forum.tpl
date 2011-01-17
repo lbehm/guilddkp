@@ -1,11 +1,8 @@
 ﻿{include file="header.html"}
-	<div id="topic_page">
+	<div id="forum_page">
 		{if $access}
-			<script type="text/javascript" src="templates/clean/script/forum.js"></script>
 			<script type="text/javascript">
-				var topic_id = {$forum_info.topic_id};
 				var forum_id = {$forum_info.forum_id};
-				var forum_last_post_id = {$forum_info.last_post_id};
 				{literal}$(function(){{/literal}
 					$("#sideFrame").accordion( "activate" , forum_id+1);
 				{literal}});{/literal}

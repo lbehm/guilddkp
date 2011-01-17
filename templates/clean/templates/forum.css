@@ -47,7 +47,7 @@
 	margin:4px 3px 0px 5px;
 }
 
-#topic_page .access_denied{
+.access_denied{
 	background: #FFFFFF;
 	padding: 5px 3px 3px 4px;
 	margin: 5px 2px 1px 2px;
@@ -55,9 +55,6 @@
 	border-radius: 5px 5px 5px 5px;
 	box-shadow: 5px 5px 10px #888;
 	font-size:15px;
-}
-#topic_page .access_denied span{
-	
 }
 
 #topic_page > ul > li {
@@ -70,10 +67,10 @@
 	display: block;
 	font-size:14px;
 }
-#topic_page > ul > li.headline {
+#topic_page > ul > li.headline, #topic_page > ul > li.headline a {
 	font-size:16px;
+	color:black;
 }
-
 #topic_page > ul > li > img {
 	display: block;
 	height: 25px;
@@ -134,4 +131,43 @@
 	padding: 5px;
 	margin-top: 5px;
 	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+}
+
+#forum_page > ul > li {
+	background: #FFFFFF;
+	padding: 5px 3px 3px 7px;
+	margin: 5px 2px 1px 2px;
+	border: 1px solid #AAAAAA;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 5px 5px 10px #888;
+	display: block;
+	font-size:14px;
+}
+#forum_page > ul > li.headline {
+	font-size:16px;
+}
+#forum_page > ul > li > img {
+	display: block;
+	height: 25px;
+	width: 25px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+	padding: 2px;
+	box-shadow: 1px 2px 4px #888;
+	float: left;
+}
+#forum_page > ul > li > span.title > a {
+	display:block;
+	border-bottom: 1px dotted #B2C1C9;
+	margin-left:37px;
+	color:black;
+	text-decoration:none;
+}
+#forum_page > ul > li > span.time {
+	font-size:12px;
+	margin-left: 10px;
+}
+#forum_page > ul {
+	padding:0px;
+	margin:0px;
 }
