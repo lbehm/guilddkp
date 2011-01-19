@@ -48,72 +48,147 @@
 
 	/*
 	 * Interface to Cache-Files
-	 * @var _cache array
-	 * @access private
+	 *
 	 */
 	class cache_handler
 	{
+		/**
+		 * Die geladenen Cache-Bereiche und -Werte
+		 * $_cache[Bereich/section/file][Schluessel/key] = (string)Wert/value
+		 *
+		 * @var array
+		 */
 		var $_cache = array();
+		
+		/**
+		 * Das Cache-Verzeichnis
+		 *
+		 * @var string
+		 */
 		var $_cache_dir = '';
 		
-		// constructor
-		function cache_handler($dir=false)
+		/**
+		 * Konstruktor
+		 * Ueberprueft und setzt Verzeichnisnamen
+		 *
+		 * @access public
+		 * @param string $dir	directoryname
+		 * @return bool
+		 */
+		public function __construct($dir=false)
 		{
-			$this->_cache_dir = ($dir) ? $dir : $this->_cache_dir;
-			if($this->_cache_dir=='')
-				return false;
-			if(!file_exists($this->_cache_dir.'index.html'))
-				return false;
-			return true;
+			$this->_cache_dir = (isset($dir)) ? $dir : $this->_cache_dir;
+			return (!empty($this->_cache_dir));
 		}
-		function get($sec=false, $k=false)
+		/**
+		 * Dekonstruktor
+		 * Schreibt die geladenen Cache-Bereiche in die Dateien
+		 *
+		 * @access public
+		 * @param void
+		 * @return void
+		 */
+		public function __destruct()
 		{
+			foreach($this->_cache as $sec => $key)
+				$this->write_buffer($sec);
+		}
+
+		/**
+		 * get
+		 * fordert Cache-Eintraege an
+		 *
+		 * @access public
+		 * @param string $sec	Cache-Bereich(section)
+		 * @param string $key	Cache-Schluessel
+		 * @return mixed 		Cache-Wert(value)
+		 */
+		public function get($sec=false, $k=false)
+		{
+			// existiert bereits ein gueltiger wert im geladenen Cache
 			if(array_key_exists($sec,$this->_cache))
-			{
 				if(array_key_exists($k,$this->_cache[$sec]))
-				{
-					return unserialize(stripslashes($this->_cache[$sec][$k]['val']));
-				}
-			}
-			if(file_exists($this->_cache_dir.$sec.'.cache.php'))
-			{
-				$this->_loadCache($sec);
-				return(array_key_exists($sec,$this->_cache) && array_key_exists($k,$this->_cache[$sec])?(unserialize(stripslashes($this->_cache[$sec][$k]['val']))):false);
-			}
+					return unserialize($this->_cache[$sec][$k]['val']);
+			// aus datei nachladen, wenn der wert noch nicht aus dem cache geladen wurde
+			if($this->loadCache($sec))
+				if(array_key_exists($sec,$this->_cache))
+					if(array_key_exists($k,$this->_cache[$sec]))
+						return unserialize($this->_cache[$sec][$k]['val']);
 			return false;
 		}
-		function _loadCache($sec=false)
+		/**
+		 * loadCache
+		 * nachladen von Cache-Bereichen aus Cache-Dateien
+		 * gibt bei Fehlern (bool)false zurueck
+		 *
+		 * @access private
+		 * @param string $sec	Cache-Bereich(section)
+		 * @return mixed 		(array)aktualisierter Cache-Bereich
+		 */
+		private function loadCache($sec=false)
 		{
-			if(file_exists($this->_cache_dir.$sec.'.cache.php'))
-			{
-				$time = time();
-				$tmp = parse_ini_file($this->_cache_dir.$sec.'.cache.php', true);
-				foreach($tmp as $k=>$v)
-					if(((int)$v['time']+(int)$v['ttl']) > $time)
-						$this->_cache[$sec][$k]=array(
-							'time'=>(int)$v['time'],
-							'ttl'=>(int)$v['ttl'],
-							'val'=>addslashes($v['val'])
-						);
-				return $this->_cache[$sec];
-			}
-			return false;
-		}
-		function set($sec, $k, $val, $ttl=3600, $buffer=false)
-		{
-			if($k==''||$val==''||$k==false||$val==false||$ttl==0)
+			if(empty($sec))
 				return false;
-			$this->_loadCache($sec);
-			$this->_cache[$sec][$k]['time']=time();
-			$this->_cache[$sec][$k]['ttl']=$ttl;
-			$this->_cache[$sec][$k]['val']=addslashes(serialize($val));
+			// existiert die cache-section-datei
+			$file = @file_get_contents($this->_cache_dir.$sec.'.cache');
+			if(!$file)
+				return false;
+			// inhalt entpacken
+			$data = unserialize($file);
+			if(!is_array($data))
+				return false;
+			unset($file);
+			$time = time();
+			// gueltige schluessel uebernehmen
+			foreach($data as $k => $v)
+				if($v['time'] >= $time)
+					$this->_cache[$sec][$k]=array(
+						'time'=>(int)$v['time'],
+						'val'=>$v['val']
+					);
+			// return updated section
+			return $this->_cache[$sec];
+		}
+		/**
+		 * set
+		 * erstellen von Cache-Eintraegen
+		 * gibt bei Fehlern (bool)false zurueck
+		 * ist $buffer==false wird die Cache-Datei sofort geschrieben
+		 *
+		 * @access public
+		 * @param string $sec	Cache-Bereich(section)
+		 * @param string $k		Cache-Schluessel(key)
+		 * @param mixed $val	Cache-Wert(value)
+		 * @param int $ttl		Gueltigkeitsdauer
+		 * @param bool $buffer	Buffer verwenden
+		 * @return bool
+		 */
+		public function set($sec, $k, $val, $ttl=3600, $buffer=true)
+		{
+			// werte checken
+			if(empty($sec) || $k==''||$val==''||$k==false||$val==false||$ttl==0)
+				return false;
+			// cache-section updaten
+			$this->loadCache($sec);
+			// set values
+			$this->_cache[$sec][$k]['time']=time() + $ttl;
+			$this->_cache[$sec][$k]['val']=(string)serialize($val);
+			// cache-file schreiben
 			if(!$buffer)
-				return(write_php_ini($this->_cache[$sec], $this->_cache_dir.$sec.'.cache.php'));
+				return(safefilerewrite($this->_cache_dir.$sec.'.cache', serialize($this->_cache[$sec])));
 			return true;
 		}
-		function write_buffer()
+		/**
+		 * write_buffer
+		 * erstellt die Cache-Datei des Cache-Bereichs $sec
+		 *
+		 * @access public
+		 * @param string $sec	Cache-Bereich(section)
+		 * @return bool
+		 */
+		public function write_buffer($sec)
 		{
-			return(write_php_ini($this->_cache[$sec], $this->_cache_dir.$sec.'.cache.php'));
+			return(safefilerewrite($this->_cache_dir.$sec.'.cache', serialize($this->_cache[$sec])));
 		}
 	}
 
@@ -127,12 +202,13 @@
 				$res[] = "\r\n[$key]";
 				foreach($val as $skey => $sval) $res[] = "$skey = ".(is_numeric($sval) ? $sval : '"'.$sval.'"');
 			}
-			else $res[] = "$key = ".(is_numeric($val) ? $val : '"'.$val.'"');
+			else
+				$res[] = "$key = ".(is_numeric($val) ? $val : '"'.$val.'"');
 		}
 		safefilerewrite($file, "; <?php die(); ?>\r\n".implode("\r\n", $res)."\r\n");
 	}
 	function safefilerewrite($filename, $dataToSave)
-	{    
+	{
 		if ($fp = fopen($filename, 'w'))
 		{
 			$startTime = microtime();
