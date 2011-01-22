@@ -12,6 +12,7 @@
 	require_once('input.php');
 	require_once('mysql.php');
 	require_once('session.php');
+	require_once('bbcode.php');
 	if(!defined('api'))
 		require_once('tpl/Smarty.class.php');
 
@@ -90,9 +91,12 @@
 		foreach($active_user as $k=>$v)
 			$currentUser.='<img alt="'.$v['name'].'" title="'.$v['name'].'" src="'.(($v['icon']!='')?$v['icon']:"http://www.gravatar.com/avatar/".$v['hash']."?d=identicon").'" />';
 		$tpl->assign('ACTIVE_USER', $currentUser);
-		require_once('forum.class.php');
-		$forum=new forum;
-		$forum->generate_menu();
+		if($user->check_auth('rank_read_forum'))
+		{
+			require_once('forum.class.php');
+			$forum=new forum;
+			$forum->generate_menu();
+		}
 	}
 	
 

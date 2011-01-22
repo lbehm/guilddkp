@@ -4,6 +4,9 @@
 		<title>{$title}</title>
 		<link type="text/css" rel="stylesheet" href="templates/clean/templates/main.css">
 		<link type="text/css" rel="stylesheet" href="templates/clean/templates/user.css">
+		<link type="text/css" rel="stylesheet" href="templates/clean/templates/shoutbox.css">
+		<link type="text/css" rel="stylesheet" href="templates/clean/templates/news.css">
+		<link type="text/css" rel="stylesheet" href="templates/clean/templates/forum.css">
 		<meta content="text/html" http-equiv="content-type">
 		<meta charset="utf-8">
 		<link type="text/css" href="templates/clean/script/ui/themes/smoothness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
@@ -11,7 +14,7 @@
 		<script type="text/javascript" src="templates/clean/script/js/jquery-ui-1.8.5.custom.min.js"></script>
 		{if $LOGIN}<script type="text/javascript" src="templates/clean/script/shoutbox.js"></script>{/if}
 		<script type="text/javascript" src="templates/clean/script/header.js"></script>
-		<script src="http://connect.facebook.net/de_DE/all.js#xfbml=1"></script>
+		{if $FB}<script src="http://connect.facebook.net/de_DE/all.js#xfbml=1"></script>{/if}
 	</head>
 	<body>
 		<div id="box"></div>
@@ -58,13 +61,22 @@
 						<div class="forum">
 							<ul>
 								{section name=topic_list loop=$FORUM_SEC[forum_list].topics}
-								<li id="topic_{$FORUM_SEC[forum_list].topics[topic_list].id}">{$FORUM_SEC[forum_list].topics[topic_list].title}</li>
+								<li id="topic_{$FORUM_SEC[forum_list].topics[topic_list].id}">
+									<a href="{$domain}/topic-{$FORUM_SEC[forum_list].topics[topic_list].id}-{$FORUM_SEC[forum_list].topics[topic_list].cleantitle}">
+										<span class="title">{$FORUM_SEC[forum_list].topics[topic_list].title}</span>
+									</a>
+									<!-- ToDo:User-Image -->
+									<span class="poster">{$FORUM_SEC[forum_list].topics[topic_list].last_poster}</span>
+									<span class="time">@ {$FORUM_SEC[forum_list].topics[topic_list].time}</span>
+								</li>
 								{/section}
 							</ul>
+							<span id="new_topic_{$FORUM_SEC[forum_list].id}" class="new_topic">Neuen Beitrag</span>
+							<span id="view_forum_{$FORUM_SEC[forum_list].id}" class="view_forum"><a href="{$domain}/forum-{$FORUM_SEC[forum_list].id}-{$FORUM_SEC[forum_list].forum_cleantitle}">Alle Themen sehen</a></span>
 						</div>	
 					{/section}
 					{/if}
-					<h1><a href="#">Suche</a></h1>
+					<h1 class="search"><a href="#">Suche</a></h1>
 					<div class="search"></div>
 				</td>
-				<td width="950px">
+				<td id="main_box" width="950px">

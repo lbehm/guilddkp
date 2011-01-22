@@ -1,0 +1,57 @@
+.shoutbox {
+	margin:0px;
+	padding-left:2px;
+	height:400px;
+	overflow:hidden;
+}
+.shoutbox span {
+	text-decoration:underline;
+}
+.shoutbox .comment {
+	display: block;
+	float: clear;
+	margin: 5px 5px 0px 0px;
+	padding-bottom: 5px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 2px 2px 5px #888;
+}
+.shoutbox .comment img {
+	display: block;
+	height: 22px;
+	width: 22px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+	margin: 3px 0px 0px 3px;
+	padding: 2px;
+	position: relative;
+	float:left;
+	box-shadow: 1px 2px 4px #888;
+}
+.shoutbox .comment_msg {
+	margin: 2px 0px 0px 36px;
+	font-size: 1em;
+}
+.shoutbox .comment_msg a {
+	color: black;
+}
+.shoutbox .comment_box {
+	margin: 3px 4px 0px 2px;
+	padding: 0px;
+}
+.shoutbox .comment_box div {
+	margin: 2px 0px 1px 35px;
+	padding-bottom:5px;
+}
+.shoutbox input.sBText {
+	border: 1px solid #C0C0C0;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 1px 1px 1px 1px #888888 inset;
+	width: 137px;
+	padding: 5px;
+	margin-top: 5px;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+}
+.shoutbox .submit_comment {
+	display:none;
+}
