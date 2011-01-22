@@ -3,6 +3,7 @@
 	<head>
 		<title>{$title}</title>
 		<link type="text/css" rel="stylesheet" href="templates/clean/templates/main.css">
+		<link type="text/css" rel="stylesheet" href="templates/clean/templates/user.css">
 		<meta content="text/html" http-equiv="content-type">
 		<meta charset="utf-8">
 		<link type="text/css" href="templates/clean/script/ui/themes/smoothness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
@@ -19,7 +20,7 @@
 				<td colspan="2" style="width:950px; text-align:right;">
 					<a href="{$base_page}"><img src="templates/clean/images/logo.png" class="logo" alt="Logo"></a>
 					<!--Menü oben-->
-					<span class="user_menu">{if $LOGIN}<a id="logout_btn" href="login.php?logout=t">Logout</a> | <a id="usercp_btn" href="">Einstellungen</a>{else}<a id="login_btn" href="">Login</a> | <a id="reg_btn" href="">Registrieren</a>{/if} | <a href="">Nachrichten</a></span>
+					<span class="user_menu">{if $LOGIN}<a id="logout_btn" href="login.php?logout=t">Logout</a> | <a id="usercp_btn" href="user.php">Mein Profil</a>{else}<a id="login_btn" href="">Login</a> | <a id="reg_btn" href="">Registrieren</a>{/if} | <a href="">Nachrichten</a></span>
 				</td>
 				<td class="topsearch">
 					<form method="get" id="top_search_form" action="search.php">
