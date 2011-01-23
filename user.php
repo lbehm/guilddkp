@@ -2,12 +2,14 @@
 	define('loadet', true);
 	require_once(dirname(__FILE__).'/common.php');
 	$userid = mysql_real_escape_string($in->get("id", ''));
+	if ($userid == "") $userid = $user->data['user_id'];
 	$sql = 'SELECT * FROM '.T_USER." WHERE user_id = '".$userid."'";
 	$result_user = mysql_query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
 	$result_user = mysql_fetch_array($result_user);
 	
 	if ($result_user) {
 		$tpl->assign('username', $result_user["user_displayname"]);
+		$tpl->assign('title', 'GuildDKP - '.$result_user["user_displayname"]);
 		$tpl->assign('user_icon', $result_user["user_icon"]);
 		$sql = 'SELECT * FROM '.T_CHAR." WHERE user_id = '".$userid."' LIMIT 1";
 		$result_char = mysql_query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
