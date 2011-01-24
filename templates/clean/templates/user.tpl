@@ -41,7 +41,7 @@ User nicht gefunden
 				<div class="user_charinfo_profession_image">
 					<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof1_image}.jpg" width="24" height="24" />
 				</div>
-				<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof1_name}</span>
+				<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof1_lang}</span>
 			</div>
 			
 			</td>
@@ -77,7 +77,7 @@ User nicht gefunden
 				<div class="user_charinfo_profession_image">
 					<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof2_image}.jpg" width="24" height="24" />
 				</div>
-				<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof2_name}</span>
+				<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof2_lang}</span>
 			</div>
 			</td>
 			<td width="10%">

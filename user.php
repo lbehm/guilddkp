@@ -19,24 +19,6 @@
 		$query_char = $db->query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
 		$result_char = $db->fetch_record($result_char);
 		if ($result_char) {
-			$tpl->append('userPage',array(
-				'char_detail'=>array(
-					'char_name'=>$result_char["char_name"],
-					'char_race'=>$result_char["char_race_id"],
-					'char_gender'=>$result_char["char_gender"],
-					'char_guild'=>$result_char["char_guild"],
-					'char_hp'=>$result_char["char_health"],
-					'char_bar_k'=>$result_char["char_bar_k"],
-					'char_bar_v'=>$result_char["char_bar_v"],
-					'char_prof1_value'=>$result_char["char_prof_1_v"],
-					'char_prof1_percent'=>(int)($result_char["char_prof_1_v"] /450 *100),
-					'char_prof2_value'=>$result_char["char_prof_2_v"],
-					'char_prof2_percent'=>(int)($result_char["char_prof_2_v"] /450 *100),
-					'char_prof1_image'=>$result_char["char_prof_1_k"],
-					'char_prof2_image'=>$result_char["char_prof_2_k"]
-				)
-			),true);
-			
 			switch($result_char["char_prof_1_k"])
 			{
 				case "alchemy":
@@ -110,335 +92,339 @@
 					$profLang2 = "Schneiderei";
 					break;
 			}
+			switch($result_char["char_class_id"])
+			{
+				case 1:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Waffen";
+					$talents_1_image = "warrior_arms";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Furor";
+					$talents_1_image = "warrior_fury";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Schutz";
+					$talents_1_image = "warrior_protection";
+				}
+				break;
+				
+				case 2:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Heilig";
+					$talents_1_image = "paladin_holy";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Schutz";
+					$talents_1_image = "paladin_protection";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Vergelter";
+					$talents_1_image = "paladin_retribution";
+				}
+				break;
+				
+				case 3:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Tierherrschaft";
+					$talents_1_image = "hunter_beast";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Treffsicherheit";
+					$talents_1_image = "hunter_marksmanship";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Überleben";
+					$talents_1_image = "hunter_survival";
+				}
+				break;
+				
+				case 4:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Meucheln";
+					$talents_1_image = "rogue_assassination";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Kampf";
+					$talents_1_image = "rogue_combat";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Täuschung";
+					$talents_1_image = "rogue_subtlety";
+				}
+				break;
+				
+				case 5:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Disziplin";
+					$talents_1_image = "priest_discipline";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Heilig";
+					$talents_1_image = "priest_holy";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Schatten";
+					$talents_1_image = "priest_shadow";
+				}
+				break;
+				
+				case 6:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Blut";
+					$talents_1_image = "dk_blood";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Frost";
+					$talents_1_image = "dk_frost";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Unheilig";
+					$talents_1_image = "dk_unholy";
+				}
+				break;
+				
+				case 7:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Elementar";
+					$talents_1_image = "shaman_elemental";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Verstärker";
+					$talents_1_image = "shaman_enhancement";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Wiederherstellung";
+					$talents_1_image = "shaman_restoration";
+				}
+				break;
+				
+				case 8:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Arkan";
+					$talents_1_image = "mage_arcane";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Feuer";
+					$talents_1_image = "mage_fire";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Frost";
+					$talents_1_image = "mage_frost";
+				}
+				break;
+				
+				case 9:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Gebrechen";
+					$talents_1_image = "warlock_affliction";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Dämonologie";
+					$talents_1_image = "warlock_demonology";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Zerstörung";
+					$talents_1_image = "warlock_destruction";
+				}
+				break;
+				
+				case 11:
+				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
+					$talents_1_name = "Gleichgewicht";
+					$talents_1_image = "druid_balance";
+				}
+				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
+					$talents_1_name = "Wilder Kampf";
+					$talents_1_image = "druid_feral";
+				}
+				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
+					$talents_1_name = "Wiederherstellung";
+					$talents_1_image = "druid_restoration";
+				}
+				break;
+			}
+			switch($result_char["char_class_id"])
+			{
+				case 1:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Waffen";
+					$talents_2_image = "warrior_arms";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Furor";
+					$talents_2_image = "warrior_fury";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Schutz";
+					$talents_2_image = "warrior_protection";
+				}
+				break;
+				
+				case 2:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Heilig";
+					$talents_2_image = "paladin_holy";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Schutz";
+					$talents_2_image = "paladin_protection";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Vergelter";
+					$talents_2_image = "paladin_retribution";
+				}
+				break;
+				
+				case 3:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Tierherrschaft";
+					$talents_2_image = "hunter_beast";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Treffsicherheit";
+					$talents_2_image = "hunter_marksmanship";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Überleben";
+					$talents_2_image = "hunter_survival";
+				}
+				break;
+				
+				case 4:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Meucheln";
+					$talents_2_image = "rogue_assassination";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Kampf";
+					$talents_2_image = "rogue_combat";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Täuschung";
+					$talents_2_image = "rogue_subtlety";
+				}
+				break;
+				
+				case 5:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Disziplin";
+					$talents_2_image = "priest_discipline";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Heilig";
+					$talents_2_image = "priest_holy";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Schatten";
+					$talents_2_image = "priest_shadow";
+				}
+				break;
+				
+				case 6:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Blut";
+					$talents_2_image = "dk_blood";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Frost";
+					$talents_2_image = "dk_frost";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Unheilig";
+					$talents_2_image = "dk_unholy";
+				}
+				break;
+				
+				case 7:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Elementar";
+					$talents_2_image = "shaman_elemental";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Verstärker";
+					$talents_2_image = "shaman_enhancement";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Wiederherstellung";
+					$talents_2_image = "shaman_restoration";
+				}
+				break;
+				
+				case 8:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Arkan";
+					$talents_2_image = "mage_arcane";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Feuer";
+					$talents_2_image = "mage_fire";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Frost";
+					$talents_2_image = "mage_frost";
+				}
+				break;
+				
+				case 9:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Gebrechen";
+					$talents_2_image = "warlock_affliction";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Dämonologie";
+					$talents_2_image = "warlock_demonology";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Zerstörung";
+					$talents_2_image = "warlock_destruction";
+				}
+				break;
+				
+				case 11:
+				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
+					$talents_2_name = "Gleichgewicht";
+					$talents_2_image = "druid_balance";
+				}
+				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
+					$talents_2_name = "Wilder Kampf";
+					$talents_2_image = "druid_feral";
+				}
+				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
+					$talents_2_name = "Wiederherstellung";
+					$talents_2_image = "druid_restoration";
+				}
+				break;
+			}
 			$tpl->append('userPage',array(
 				'char_detail'=>array(
-					'char_prof_1_lang'=>$profLang1,
-					'char_prof_2_lang'=>$profLang2,
+					'char_name'=>$result_char["char_name"],
+					'char_race'=>$result_char["char_race_id"],
+					'char_gender'=>$result_char["char_gender"],
+					'char_guild'=>$result_char["char_guild"],
+					'char_hp'=>$result_char["char_health"],
+					'char_bar_k'=>$result_char["char_bar_k"],
+					'char_bar_v'=>$result_char["char_bar_v"],
+					'char_prof1_value'=>$result_char["char_prof_1_v"],
+					'char_prof1_percent'=>(int)($result_char["char_prof_1_v"] /450 *100),
+					'char_prof2_value'=>$result_char["char_prof_2_v"],
+					'char_prof2_percent'=>(int)($result_char["char_prof_2_v"] /450 *100),
+					'char_prof1_image'=>$result_char["char_prof_1_k"],
+					'char_prof2_image'=>$result_char["char_prof_2_k"],
+					'char_talents1_name'=>$talents_1_name,
+					'char_talents1_image'=>$talents_1_image,
+					'char_talents2_name'=>$talents_2_name,
+					'char_talents2_image'=>$talents_2_image,
+					'char_2vs2'=>$result_char["char_2vs2_v"],
+					'char_3vs3'=>$result_char["char_3vs3_v"],
+					'char_5vs5'=>$result_char["char_5vs5_v"],
+					'char_prof1_lang'=>$profLang1,
+					'char_prof2_lang'=>$profLang2,
 					'char_talents1_talents'=>$result_char["char_skill_1_1"]." / ".$result_char["char_skill_1_2"]." / ".$result_char["char_skill_1_3"],
 					'char_talents2_talents'=>$result_char["char_skill_2_1"]." / ".$result_char["char_skill_2_2"]." / ".$result_char["char_skill_2_3"]
 				)
 			),true);
-
-			switch($result_char["char_class_id"])
-			{
-				case 1:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Waffen";
-					$talents_image = "warrior_arms";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Furor";
-					$talents_image = "warrior_fury";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Schutz";
-					$talents_image = "warrior_protection";
-				}
-				break;
-				
-				case 2:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Heilig";
-					$talents_image = "paladin_holy";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Schutz";
-					$talents_image = "paladin_protection";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Vergelter";
-					$talents_image = "paladin_retribution";
-				}
-				break;
-				
-				case 3:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Tierherrschaft";
-					$talents_image = "hunter_beast";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Treffsicherheit";
-					$talents_image = "hunter_marksmanship";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Überleben";
-					$talents_image = "hunter_survival";
-				}
-				break;
-				
-				case 4:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Meucheln";
-					$talents_image = "rogue_assassination";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Kampf";
-					$talents_image = "rogue_combat";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Täuschung";
-					$talents_image = "rogue_subtlety";
-				}
-				break;
-				
-				case 5:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Disziplin";
-					$talents_image = "priest_discipline";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Heilig";
-					$talents_image = "priest_holy";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Schatten";
-					$talents_image = "priest_shadow";
-				}
-				break;
-				
-				case 6:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Blut";
-					$talents_image = "dk_blood";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Frost";
-					$talents_image = "dk_frost";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Unheilig";
-					$talents_image = "dk_unholy";
-				}
-				break;
-				
-				case 7:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Elementar";
-					$talents_image = "shaman_elemental";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Verstärker";
-					$talents_image = "shaman_enhancement";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Wiederherstellung";
-					$talents_image = "shaman_restoration";
-				}
-				break;
-				
-				case 8:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Arkan";
-					$talents_image = "mage_arcane";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Feuer";
-					$talents_image = "mage_fire";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Frost";
-					$talents_image = "mage_frost";
-				}
-				break;
-				
-				case 9:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Gebrechen";
-					$talents_image = "warlock_affliction";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Dämonologie";
-					$talents_image = "warlock_demonology";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Zerstörung";
-					$talents_image = "warlock_destruction";
-				}
-				break;
-				
-				case 11:
-				if (($result_char["char_skill_1_1"] > $result_char["char_skill_1_2"]) && ($result_char["char_skill_1_1"] > $result_char["char_skill_1_3"])) {
-					$talents_name = "Gleichgewicht";
-					$talents_image = "druid_balance";
-				}
-				if (($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_2"] > $result_char["char_skill_1_1"])) {
-					$talents_name = "Wilder Kampf";
-					$talents_image = "druid_feral";
-				}
-				if (($result_char["char_skill_1_3"] > $result_char["char_skill_1_1"]) && ($result_char["char_skill_1_3"] > $result_char["char_skill_1_2"])) {
-					$talents_name = "Wiederherstellung";
-					$talents_image = "druid_restoration";
-				}
-				break;
-			}
-			$tpl->append('userPage',array(
-				'char_detail'=>array(
-					'char_talents1_name'=>$talents_name,
-					'char_talents1_image'=>$talents_image
-				)
-			),true);
 			
-			switch($result_char["char_class_id"])
-			{
-				case 1:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Waffen";
-					$talents_image = "warrior_arms";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Furor";
-					$talents_image = "warrior_fury";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Schutz";
-					$talents_image = "warrior_protection";
-				}
-				break;
-				
-				case 2:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Heilig";
-					$talents_image = "paladin_holy";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Schutz";
-					$talents_image = "paladin_protection";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Vergelter";
-					$talents_image = "paladin_retribution";
-				}
-				break;
-				
-				case 3:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Tierherrschaft";
-					$talents_image = "hunter_beast";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Treffsicherheit";
-					$talents_image = "hunter_marksmanship";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Überleben";
-					$talents_image = "hunter_survival";
-				}
-				break;
-				
-				case 4:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Meucheln";
-					$talents_image = "rogue_assassination";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Kampf";
-					$talents_image = "rogue_combat";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Täuschung";
-					$talents_image = "rogue_subtlety";
-				}
-				break;
-				
-				case 5:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Disziplin";
-					$talents_image = "priest_discipline";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Heilig";
-					$talents_image = "priest_holy";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Schatten";
-					$talents_image = "priest_shadow";
-				}
-				break;
-				
-				case 6:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Blut";
-					$talents_image = "dk_blood";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Frost";
-					$talents_image = "dk_frost";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Unheilig";
-					$talents_image = "dk_unholy";
-				}
-				break;
-				
-				case 7:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Elementar";
-					$talents_image = "shaman_elemental";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Verstärker";
-					$talents_image = "shaman_enhancement";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Wiederherstellung";
-					$talents_image = "shaman_restoration";
-				}
-				break;
-				
-				case 8:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Arkan";
-					$talents_image = "mage_arcane";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Feuer";
-					$talents_image = "mage_fire";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Frost";
-					$talents_image = "mage_frost";
-				}
-				break;
-				
-				case 9:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Gebrechen";
-					$talents_image = "warlock_affliction";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Dämonologie";
-					$talents_image = "warlock_demonology";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Zerstörung";
-					$talents_image = "warlock_destruction";
-				}
-				break;
-				
-				case 11:
-				if (($result_char["char_skill_2_1"] > $result_char["char_skill_2_2"]) && ($result_char["char_skill_2_1"] > $result_char["char_skill_2_3"])) {
-					$talents_name = "Gleichgewicht";
-					$talents_image = "druid_balance";
-				}
-				if (($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_2"] > $result_char["char_skill_2_1"])) {
-					$talents_name = "Wilder Kampf";
-					$talents_image = "druid_feral";
-				}
-				if (($result_char["char_skill_2_3"] > $result_char["char_skill_2_1"]) && ($result_char["char_skill_2_3"] > $result_char["char_skill_2_2"])) {
-					$talents_name = "Wiederherstellung";
-					$talents_image = "druid_restoration";
-				}
-				break;
-			}
-			$tpl->append('userPage',array(
-				'char_detail'=>array(
-					'char_talents2_name'=>$talents_name,
-					'char_talents2_image'=>$talents_image,
-					'char_2vs2'=>$result_char["char_2vs2_v"],
-					'char_3vs3'=>$result_char["char_3vs3_v"],
-					'char_5vs5'=>$result_char["char_5vs5_v"]
-				)
-			),true);
 			
 		}
 		else
