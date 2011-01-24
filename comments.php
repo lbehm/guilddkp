@@ -9,12 +9,12 @@
 		{
 			if($_POST['s']=='pc')
 			{
-				$comment_text=$db->sql_escape(htmlentities($in->get('m', '')));
+				$comment_text=$db->sql_escape(htmlentities($in->get('m', ''),ENT_QUOTES,'UTF-8'));
 				$comment_page=$db->sql_escape($in->get('p', ''));
 				$comment_original_page=$db->sql_escape($in->get('op', ''));
 				$comment_attach=$db->sql_escape($in->get('a', ''));
 				$comment_respond=$db->sql_escape($in->get('r', 0));
-				if($comment_text && $comment_text != '' && str_replace(" ", "", $comment_text) != '')
+				if($comment_text && $comment_text != '' && (str_replace(" ", "", $comment_text) != ''))
 				{
 					$sql = "INSERT INTO `".T_COMMENTS."` (user_id, user_name, comment_date, comment_text, comment_ranking, comment_page, comment_attach_id".(($comment_respond)?", comment_respond_to_id":"").") VALUES ('".$user->data['user_id']."', '".(($user->data['user_displayname']!='')?$user->data['user_displayname'] : $user->data['user_name'])."', '".time()."', '".$comment_text."', 0, '".$comment_page."', '".$comment_attach."'".(($comment_respond)?", '".$comment_respond."'":"").")";
 					echo (($db->query($sql))? "Success":"Error");
@@ -47,6 +47,8 @@
 			$last_id = $in->get('li', 0);
 			$comment_page=$db->sql_escape($in->get('p', ''));
 			$comment_attach=$db->sql_escape($in->get('a', ''));
+			$comment_sort=$db->sql_escape($in->get('s', ''));
+			$comment_sort=($comment_sort=='d')?'DESC':'ASC';
 			$limit=$config->get($comment_page.'_limit');
 			if(((($cache->get('comment', 'last_id_'.$comment_page.'_'.$comment_attach)) == $last_id) || (($cache->get('comment', 'last_id_comment_'.$comment_attach)) == $last_id)) && ($last_id != false))
 			{
@@ -56,7 +58,7 @@
 				die();
 			}
 			$q_last_id = ($last_id) ? " AND c.comment_id > ".$last_id : "";
-			$sql="SELECT c.*, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$comment_page."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$comment_attach."'".$q_last_id." ORDER BY c.comment_date ASC LIMIT ".(($limit)?$limit:25).";";
+			$sql="SELECT c.*, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$comment_page."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$comment_attach."'".$q_last_id." ORDER BY c.comment_date ".$comment_sort." LIMIT ".(($limit)?$limit:25).";";
 			$comment_result = $db->query($sql);
 			$comments_counter = 0;
 			$comm=array();
@@ -68,7 +70,7 @@
 					'id' => $comments['comment_id'],
 					'u' => ($comments['user_displayname']!='')?$comments['user_displayname']:(($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
 					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"http://www.gravatar.com/avatar/".$comments['emailHash']."?d=identicon",
-					'm' => $comments['comment_text'],
+					'm' => nl2br($comments['comment_text']),
 					'r' => $comments['comment_ranking'],
 					'd' => date('G:i - d.m.', $comments['comment_date'])
 				);

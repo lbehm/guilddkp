@@ -85,7 +85,8 @@
 			{
 				$(".submit_comment_news").click(function()
 				{
-					var comment = $("#news_comment_text").val();{/literal}
+					//var comment = $("#news_comment_text").val();{/literal}
+					var comment = $("#news_comment_text")[0].value;
 					$("#news_comment_text")[0].value = '';
 					var dataString = 'p=news&s=pc&a={$news_obj[news_list].ID}&m=' + comment;{literal}
 					$.ajax({
