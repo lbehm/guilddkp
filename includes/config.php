@@ -16,7 +16,7 @@ ids_enabled = 0
 facebook = 0
 session_cleanup = 60
 session_length = 1200
-session_last_cleanup = 1295722694
+session_last_cleanup = 0
 
 [IDS]
 Database = 0

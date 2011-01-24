@@ -1,119 +1,124 @@
 <?php
+	/**
+	 * user.php
+	 * by shiro
+	 * edited by devimplode
+	 */
 	define('loadet', true);
 	require_once(dirname(__FILE__).'/common.php');
-	$userid = mysql_real_escape_string($in->get("id", ''));
-	if ($userid == "") $userid = $user->data['user_id'];
+	$userid = $in->get("id", 0);
+	if (!$userid)
+		$userid = $user->data['user_id'];
 	$sql = 'SELECT * FROM '.T_USER." WHERE user_id = '".$userid."'";
-	$result_user = mysql_query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
-	$result_user = mysql_fetch_array($result_user);
+	$query_user = $db->query($sql);
+	$result_user = $db->fetch_record($query_user);
 	
 	if ($result_user) {
-		$tpl->assign('username', $result_user["user_displayname"]);
-		$tpl->assign('title', 'GuildDKP - '.$result_user["user_displayname"]);
-		$tpl->assign('user_icon', $result_user["user_icon"]);
+		$tpl->assign('title', 'GuildDKP - '.htmlentities($result_user["user_displayname"],ENT_QUOTES,'UTF-8'));
 		$sql = 'SELECT * FROM '.T_CHAR." WHERE user_id = '".$userid."' LIMIT 1";
-		$result_char = mysql_query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
-		$result_char = mysql_fetch_array($result_char);
-		
+		$query_char = $db->query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
+		$result_char = $db->fetch_record($result_char);
 		if ($result_char) {
-			
-			
-			$tpl->assign('char_race', $result_char["char_race_id"]);
-			$tpl->assign('char_gender',$result_char["char_gender"]);
-			
-			$tpl->assign('char_name', $result_char["char_name"]);
-			$tpl->assign('char_guild', $result_char["char_guild"]);
-		
-			$tpl->assign('char_hp', $result_char["char_health"]);
-			$tpl->assign('char_bar_k',$result_char["char_bar_k"]);
-			$tpl->assign('char_bar_v',$result_char["char_bar_v"]);
-			
-			$tpl->assign('char_prof1_value', $result_char["char_prof_1_v"]);
-			$tpl->assign('char_prof1_percent',(number_format($result_char["char_prof_1_v"] / 450, 2)) *100);
-			
-			$tpl->assign('char_prof2_value', $result_char["char_prof_2_v"]);
-			$tpl->assign('char_prof2_percent',(number_format($result_char["char_prof_2_v"] / 450, 2)) *100);
-			
-			$tpl->assign('char_prof1_image', $result_char["char_prof_1_k"]);
-			$tpl->assign('char_prof2_image', $result_char["char_prof_2_k"]);
+			$tpl->append('userPage',array(
+				'char_detail'=>array(
+					'char_name'=>$result_char["char_name"],
+					'char_race'=>$result_char["char_race_id"],
+					'char_gender'=>$result_char["char_gender"],
+					'char_guild'=>$result_char["char_guild"],
+					'char_hp'=>$result_char["char_health"],
+					'char_bar_k'=>$result_char["char_bar_k"],
+					'char_bar_v'=>$result_char["char_bar_v"],
+					'char_prof1_value'=>$result_char["char_prof_1_v"],
+					'char_prof1_percent'=>(int)($result_char["char_prof_1_v"] /450 *100),
+					'char_prof2_value'=>$result_char["char_prof_2_v"],
+					'char_prof2_percent'=>(int)($result_char["char_prof_2_v"] /450 *100),
+					'char_prof1_image'=>$result_char["char_prof_1_k"],
+					'char_prof2_image'=>$result_char["char_prof_2_k"]
+				)
+			),true);
 			
 			switch($result_char["char_prof_1_k"])
 			{
 				case "alchemy":
-				$tpl->assign('char_prof1_name', "Alchemie");
-				break;
+					$profLang1 = "Alchemie";
+					break;
 				case "blacksmithing":
-				$tpl->assign('char_prof1_name', "Schmiedekunst");
-				break;
+					$profLang1 = "Schmiedekunst";
+					break;
 				case "enchanting":
-				$tpl->assign('char_prof1_name', "Verzauberkunst");
-				break;
+					$profLang1 = "Verzauberkunst";
+					break;
 				case "engineering":
-				$tpl->assign('char_prof1_name', "Ingenieurskunst");
-				break;
+					$profLang1 = "Ingenieurskunst";
+					break;
 				case "herbalism":
-				$tpl->assign('char_prof1_name', "Kräuterkunde");
-				break;
+					$profLang1 = "Kräuterkunde";
+					break;
 				case "inscription":
-				$tpl->assign('char_prof1_name', "Inschriftenkunde");
-				break;
+					$profLang1 = "Inschriftenkunde";
+					break;
 				case "jewelcrafting":
-				$tpl->assign('char_prof1_name', "Juwelenschleifen");
-				break;
+					$profLang1 = "Juwelenschleifen";
+					break;
 				case "leatherworking":
-				$tpl->assign('char_prof1_name', "Lederverarbeitung");
-				break;
+					$profLang1 = "Lederverarbeitung";
+					break;
 				case "mining":
-				$tpl->assign('char_prof1_name', "Bergbau");
-				break;
+					$profLang1 = "Bergbau";
+					break;
 				case "skinning":
-				$tpl->assign('char_prof1_name', "Kürschnerei");
-				break;
+					$profLang1 = "Kürschnerei";
+					break;
 				case "tailoring":
-				$tpl->assign('char_prof1_name', "Schneiderei");
-				break;
+					$profLang1 = "Schneiderei";
+					break;
 			}
 			
 			switch($result_char["char_prof_2_k"])
 			{
 				case "alchemy":
-				$tpl->assign('char_prof2_name', "Alchemie");
-				break;
+					$profLang2 = "Alchemie";
+					break;
 				case "blacksmithing":
-				$tpl->assign('char_prof2_name', "Schmiedekunst");
-				break;
+					$profLang2 = "Schmiedekunst";
+					break;
 				case "enchanting":
-				$tpl->assign('char_prof2_name', "Verzauberkunst");
-				break;
+					$profLang2 = "Verzauberkunst";
+					break;
 				case "engineering":
-				$tpl->assign('char_prof2_name', "Ingenieurskunst");
-				break;
+					$profLang2 = "Ingenieurskunst";
+					break;
 				case "herbalism":
-				$tpl->assign('char_prof2_name', "Kräuterkunde");
-				break;
+					$profLang2 = "Kräuterkunde";
+					break;
 				case "inscription":
-				$tpl->assign('char_prof2_name', "Inschriftenkunde");
-				break;
+					$profLang2 = "Inschriftenkunde";
+					break;
 				case "jewelcrafting":
-				$tpl->assign('char_prof2_name', "Juwelenschleifen");
-				break;
+					$profLang2 = "Juwelenschleifen";
+					break;
 				case "leatherworking":
-				$tpl->assign('char_prof2_name', "Lederverarbeitung");
-				break;
+					$profLang2 = "Lederverarbeitung";
+					break;
 				case "mining":
-				$tpl->assign('char_prof2_name', "Bergbau");
-				break;
+					$profLang2 = "Bergbau";
+					break;
 				case "skinning":
-				$tpl->assign('char_prof2_name', "Kürschnerei");
-				break;
+					$profLang2 = "Kürschnerei";
+					break;
 				case "tailoring":
-				$tpl->assign('char_prof2_name', "Schneiderei");
-				break;
+					$profLang2 = "Schneiderei";
+					break;
 			}
-			
-			$tpl->assign('char_talents1_talents', $result_char["char_skill_1_1"]." / ".$result_char["char_skill_1_2"]." / ".$result_char["char_skill_1_3"]);
-			$tpl->assign('char_talents2_talents', $result_char["char_skill_2_1"]." / ".$result_char["char_skill_2_2"]." / ".$result_char["char_skill_2_3"]);
-			
+			$tpl->append('userPage',array(
+				'char_detail'=>array(
+					'char_prof_1_lang'=>$profLang1,
+					'char_prof_2_lang'=>$profLang2,
+					'char_talents1_talents'=>$result_char["char_skill_1_1"]." / ".$result_char["char_skill_1_2"]." / ".$result_char["char_skill_1_3"],
+					'char_talents2_talents'=>$result_char["char_skill_2_1"]." / ".$result_char["char_skill_2_2"]." / ".$result_char["char_skill_2_3"]
+				)
+			),true);
+
 			switch($result_char["char_class_id"])
 			{
 				case 1:
@@ -266,8 +271,12 @@
 				}
 				break;
 			}
-			$tpl->assign('char_talents1_name', $talents_name);
-			$tpl->assign('char_talents1_image', $talents_image);
+			$tpl->append('userPage',array(
+				'char_detail'=>array(
+					'char_talents1_name'=>$talents_name,
+					'char_talents1_image'=>$talents_image
+				)
+			),true);
 			
 			switch($result_char["char_class_id"])
 			{
@@ -421,34 +430,48 @@
 				}
 				break;
 			}
-			$tpl->assign('char_talents2_name', $talents_name);
-			$tpl->assign('char_talents2_image', $talents_image);
+			$tpl->append('userPage',array(
+				'char_detail'=>array(
+					'char_talents2_name'=>$talents_name,
+					'char_talents2_image'=>$talents_image,
+					'char_2vs2'=>$result_char["char_2vs2_v"],
+					'char_3vs3'=>$result_char["char_3vs3_v"],
+					'char_5vs5'=>$result_char["char_5vs5_v"]
+				)
+			),true);
 			
-			$tpl->assign('char_2vs2', $result_char["char_2vs2_v"]);
-			$tpl->assign('char_3vs3', $result_char["char_3vs3_v"]);
-			$tpl->assign('char_5vs5', $result_char["char_5vs5_v"]);
-		}else{
-			$tpl->assign('error', "char");
 		}
+		else
+			$tpl->append('userPage',array(
+				'error'=>"char"
+			),true);
+		
 		//User-Daten
-		$tpl->assign('user_email', $result_user["user_email"]);
-		$tpl->assign('user_gender', $result_user["gender"]);
-		$tpl->assign('user_bday', $result_user["birthday"]);
-		$tpl->assign('user_firstname', $result_user["first_name"]);
-		$tpl->assign('user_lastname', $result_user["last_name"]);
-		$tpl->assign('user_town', $result_user["town"]);
-		$tpl->assign('user_country', $result_user["country"]);
-		$tpl->assign('user_state', $result_user["state"]);
-		$tpl->assign('user_facebook', $result_user["facebook_name"]);
-		$tpl->assign('user_icq', $result_user["icq"]);
-		$tpl->assign('user_skype', $result_user["skype"]);
-		$tpl->assign('user_msn', $result_user["msn"]);
-											  
+		$tpl->append('userPage',array(
+			'info'=>array(
+				'username'=>htmlentities($result_user["user_displayname"],ENT_QUOTES,'UTF-8'),
+				'user_icon'=>($result_user['user_icon'] != '')?$result_user['user_icon']:"http://www.gravatar.com/avatar/".md5($result_user['user_email'])."?d=identicon",
+				'email'=>$result_user["user_email"],
+				'gender'=>$result_user["gender"],
+				'bday'=>$result_user["birthday"],
+				'firstname'=>$result_user["first_name"],
+				'lastname'=>$result_user["last_name"],
+				'town'=>$result_user["town"],
+				'country'=>$result_user["country"],
+				'state'=>$result_user["state"],
+				'facebook'=>$result_user["facebook_name"],
+				'icq'=>$result_user["icq"],
+				'skype'=>$result_user["skype"],
+				'msn'=>$result_user["msn"]
+			)
+		),true);
 		
-	}else{
-		$tpl->assign('error', "user");
 	}
-		
-		
+	else
+		$tpl->append('userPage',array(
+				'error'=>"user"
+			),true);
+
+
 	$tpl->display('user.tpl');
 ?>

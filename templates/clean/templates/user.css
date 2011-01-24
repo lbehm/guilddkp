@@ -1,40 +1,61 @@
-.user {
-	background: #FFFFFF;
-	padding: 5px 3px 3px 4px;
-	margin: 5px 2px 1px 2px;
+.userPage {
+	background: none repeat scroll 0 0 #FFFFFF;
 	border: 1px solid #AAAAAA;
 	border-radius: 5px 5px 5px 5px;
-	box-shadow: 5px 5px 10px #888;
+	box-shadow: 5px 5px 10px #888888;
+	margin: 5px 2px 1px;
+	padding: 5px 3px 3px 4px;
+	height:100%;
 }
-.user_headline {
-	font-size: 2em;
+.userPage .user_headline {
+	font-size: 2.5em;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	text-decoration: none;
+	border-bottom: 1px dotted #B2C1C9;
 }
-.user_image {
+.userPage .user_image {
 	width:160px;
 	height:160px;
-	margin-right:auto;
 	margin-left:5px;
 	border: 1px solid black;
 	float:left;
 }
-.user_charinfo {
+.userPage img.user_image{
+	display: block;
+	height: 160px;
+	width: 160px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+	margin: 4px 0 0 4px;
+	padding: 2px;
+	box-shadow: 1px 2px 4px #888;
+	float: left;
+}
+.userPage .user_contact {
+	margin-left:5px;
+	margin-right:5px;
+	font-size:1.4em;
+	float:left;
+}
+.userPage .user_charinfo {
 	border: 1px solid black;
 	margin-left:auto;
 	margin-right:5px;
-	width:370px;
+	width:auto;
+	min-width:300px;
 	background:#d3d3d3;
 	border-radius: 5px;
-	float:right;
+	float:left;
 }
-.user_charinfo_image {
+.userPage .user_charinfo_image {
 	
 }
-.user_charinfo_name {
+.userPage .user_charinfo_name {
 	text-align:center;
 	font-size:1.8em;
 	margin-bottom:5px;
 }
-.user_charinfo_hp {
+.userPage .user_charinfo_hp {
 	width:49%;
 	height:24px;
 	line-height:24px;
@@ -47,7 +68,7 @@
 	float:left;
 	font-weight:bold;
 }
-.user_charinfo_mana {
+.userPage .user_charinfo_mana {
 	margin-top: 2px;
 	width:49%;
 	height:24px;
@@ -61,7 +82,7 @@
 	float:left;
 	font-weight:bold;
 }
-.user_charinfo_energy {
+.userPage .user_charinfo_energy {
 	margin-top: 2px;
 	width:49%;
 	height:24px;
@@ -75,7 +96,7 @@
 	float:left;
 	font-weight:bold;
 }	
-.user_charinfo_rage {
+.userPage .user_charinfo_rage {
 	margin-top: 2px;
 	width:49%;
 	height:24px;
@@ -89,7 +110,7 @@
 	float:left;
 	font-weight:bold;
 }
-.user_charinfo_runepower {
+.userPage .user_charinfo_runepower {
 	margin-top: 2px;
 	width:49%;
 	height:24px;
@@ -103,7 +124,7 @@
 	float:left;
 	font-weight:bold;
 }
-.user_charinfo_focus {
+.userPage .user_charinfo_focus {
 	margin-top: 2px;
 	width:49%;
 	height:24px;
@@ -117,7 +138,7 @@
 	float:left;
 	font-weight:bold;
 }
-.user_charinfo_profession {
+.userPage .user_charinfo_profession {
 	margin-top: 2px;
 	border: 1px solid black;
 	border-radius: 5px;
@@ -126,18 +147,18 @@
 	height:24px;
 	background-image:url(../images/professions_1.png);
 }
-.user_charinfo_profession_image {
+.userPage .user_charinfo_profession_image {
 	float:left;
 	width::24px;
 	height:24px;
 }
-.user_charinfo_profession_name {
+.userPage .user_charinfo_profession_name {
 	color: #FFFFFF;
 	line-height:24px;
 	font-size:1.2em;
 	margin-left: 2px;
 }
-.user_charinfo_profession_skill {
+.userPage .user_charinfo_profession_skill {
 	color: #FFFFFF;
 	text-align:right;
 	line-height:24px;
@@ -148,13 +169,13 @@
 	vertical-align:middle;
 	font-weight:bold;
 }
-.user_charinfo_profession_skill_image {
+.userPage .user_charinfo_profession_skill_image {
 	width:auto;
 	height:inherit;
 	background-image:url(../images/professions_2.png);
 	float:left;
 }
-.user_charinfo_talents1 {
+.userPage .user_charinfo_talents1 {
 	border-radius: 5px;
 	margin-left: 4px;
 	margin-top: 2px;
@@ -164,7 +185,7 @@
 	background-image:url(../images/talents.png);
 	float:left;
 }
-.user_charinfo_talents2 {
+.userPage .user_charinfo_talents2 {
 	border-radius: 5px;
 	margin-left: auto;
 	margin-right:4px;
@@ -174,7 +195,7 @@
 	height: 52px;
 	background-image:url(../images/talents.png);
 }
-.user_charinfo_talents_image {
+.userPage .user_charinfo_talents_image {
 	width:32px;
 	height:32px;
 	padding-top:10px;
@@ -182,20 +203,20 @@
 	margin-right: 10px;
 	float:left;
 }
-.user_charinfo_talents_name {
+.userPage .user_charinfo_talents_name {
 	padding-top: 7px;
 	color:#e6b103;
 	font-size: 1.6em;
 	height:auto;
 }
-.user_charinfo_talents_talents {
+.userPage .user_charinfo_talents_talents {
 	color:#FFFFFF;
 	font-size: 1.5em;
 	margin-left:auto;
 	margin-right: 5px;
 	text-align:center;
 }
-.user_charinfo_arena {
+.userPage .user_charinfo_arena {
 	border-radius: 5px;
 	width: 31%;
 	height: auto;
@@ -206,15 +227,7 @@
 	margin-bottom:2px;
 	font-size:1.4em;
 }
-.user_contact {
-	margin-left:175px;
-	margin-right:385px;
-	font-size:1.4em;
-	padding-left: 5px;
-	padding-bottom: 2px;
-	margin-bottom: 160px;
-}
-.user_loot {
+.userPage .user_loot {
 	font-size:1.5em;
 	width:49%;
 	float:left;
@@ -222,7 +235,7 @@
 	margin-right:auto;
 	vertical-align:middle;
 }
-.user_raids {
+.userPage .user_raids {
 	font-size:1.5em;
 	width:49%;
 	margin-left:auto;
