@@ -7,8 +7,8 @@
 	define('loadet', true);
 	require_once(dirname(__FILE__).'/common.php');
 	$username = mb_strtolower($in->get("n", ''),'UTF-8');
-	if ($username=='')
-		$userid = $user->data['user_name'];
+	if($username=='')
+		$username = $user->data['user_name'];
 	$sql = 'SELECT * FROM '.T_USER." WHERE user_name = '".$username."' OR user_displayname = '".$username."'";
 	$query_user = $db->query($sql);
 	$result_user = $db->fetch_record($query_user);
@@ -16,7 +16,7 @@
 	if ($result_user)
 	{
 		$tpl->assign('title', 'GuildDKP - '.htmlentities($result_user["user_displayname"],ENT_QUOTES,'UTF-8'));
-		$sql = 'SELECT * FROM '.T_CHAR." WHERE user_id = '".$userid."' LIMIT 1";
+		$sql = 'SELECT * FROM '.T_CHAR." WHERE user_id = '".$result_user['user_id']."' LIMIT 1";
 		$query_char = $db->query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
 		$result_char = $db->fetch_record($result_char);
 		if ($result_char) {
