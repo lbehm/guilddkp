@@ -58,7 +58,7 @@
 				die();
 			}
 			$q_last_id = ($last_id) ? " AND c.comment_id > ".$last_id : "";
-			$sql="SELECT c.*, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$comment_page."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$comment_attach."'".$q_last_id." ORDER BY c.comment_date ".$comment_sort." LIMIT ".(($limit)?$limit:25).";";
+			$sql="SELECT c.*, u.user_name, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$comment_page."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$comment_attach."'".$q_last_id." ORDER BY c.comment_date ".$comment_sort." LIMIT ".(($limit)?$limit:25).";";
 			$comment_result = $db->query($sql);
 			$comments_counter = 0;
 			$comm=array();
@@ -69,6 +69,7 @@
 				$tmp_comment = array(
 					'id' => $comments['comment_id'],
 					'u' => ($comments['user_displayname']!='')?$comments['user_displayname']:(($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
+					'n' => ucfirst($comments['user_name']),
 					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"http://www.gravatar.com/avatar/".$comments['emailHash']."?d=identicon",
 					'm' => nl2br($comments['comment_text']),
 					'r' => $comments['comment_ranking'],
