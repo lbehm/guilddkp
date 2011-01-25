@@ -1,0 +1,155 @@
+<?php
+	$classes = array(
+		1 => array(
+			'name'=>'Krieger',
+			1=>array(
+				'name'=>'Waffen',
+				'img'=>'warrior_arms'
+			),
+			2=>array(
+				'name'=>'Furor',
+				'img'=>'warrior_fury'
+			),
+			3=>array(
+				'name'=>'Schutz',
+				'img'=>'warrior_protection'
+			)
+		),
+		2 => array(
+			'name'=>'Paladin',
+			1=>array(
+				'name'=>'Heilig',
+				'img'=>'paladin_holy'
+			),
+			2=>array(
+				'name'=>'Schutz',
+				'img'=>'paladin_protection'
+			),
+			3=>array(
+				'name'=>'Vergelter',
+				'img'=>'paladin_retribution'
+			)
+		),
+		3 => array(
+			'name'=>'Jäger',
+			1=>array(
+				'name'=>'Tierherrschaft',
+				'img'=>'hunter_beast'
+			),
+			2=>array(
+				'name'=>'Treffsicherheit',
+				'img'=>'hunter_marksmanship'
+			),
+			3=>array(
+				'name'=>'Überleben',
+				'img'=>'hunter_survival'
+			)
+		),
+		4 => array(
+			'name'=>'Schurke',
+			1=>array(
+				'name'=>'Meucheln',
+				'img'=>'rogue_assassination'
+			),
+			2=>array(
+				'name'=>'Kampf',
+				'img'=>'rogue_combat'
+			),
+			3=>array(
+				'name'=>'Täuschung',
+				'img'=>'rogue_subtlety'
+			)
+		),
+		5 => array(
+			'name'=>'Priester',
+			1=>array(
+				'name'=>'Disziplin',
+				'img'=>'priest_discipline'
+			),
+			2=>array(
+				'name'=>'Heilig',
+				'img'=>'priest_holy'
+			),
+			3=>array(
+				'name'=>'Schatten',
+				'img'=>'priest_shadow'
+			)
+		),
+		6 => array(
+			'name'=>'Todesritter',
+			1=>array(
+				'name'=>'Blut',
+				'img'=>'dk_blood'
+			),
+			2=>array(
+				'name'=>'Frost',
+				'img'=>'dk_frost'
+			),
+			3=>array(
+				'name'=>'Unheilig',
+				'img'=>'dk_unholy'
+			)
+		),
+		7 => array(
+			'name'=>'Schamane',
+			1=>array(
+				'name'=>'Elementar',
+				'img'=>'shaman_elemental'
+			),
+			2=>array(
+				'name'=>'Verstärker',
+				'img'=>'shaman_enhancement'
+			),
+			3=>array(
+				'name'=>'Wiederherstellung',
+				'img'=>'shaman_restoration'
+			)
+		),
+		8 => array(
+			'name'=>'Imba',
+			1=>array(
+				'name'=>'Arkan',
+				'img'=>'mage_arcane'
+			),
+			2=>array(
+				'name'=>'Feuer',
+				'img'=>'mage_fire'
+			),
+			3=>array(
+				'name'=>'Frost',
+				'img'=>'mage_frost'
+			)
+		),
+		9 => array(
+			'name'=>'Hexenmeister',
+			1=>array(
+				'name'=>'Gebrechen',
+				'img'=>'warlock_affliction'
+			),
+			2=>array(
+				'name'=>'Dämonologie',
+				'img'=>'warlock_demonology'
+			),
+			3=>array(
+				'name'=>'Zerstörung',
+				'img'=>'warlock_destruction'
+			)
+		),
+		11 => array(
+			'name'=>'Druide',
+			1=>array(
+				'name'=>'Gleichgewicht',
+				'img'=>'druid_balance'
+			),
+			2=>array(
+				'name'=>'Wilder Krampf',
+				'img'=>'druid_feral'
+			),
+			3=>array(
+				'name'=>'Wiederherstellung',
+				'img'=>'druid_restoration'
+			)
+		)
+	);
+
+?>

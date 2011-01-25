@@ -29,7 +29,7 @@ User nicht gefunden
 			<img src="templates/clean/images/race/{$userPage.char_detail.char_race}-{$userPage.char_detail.char_gender}.jpg" width="370" height="225" alt="" />
 		</div>
 		<div class="user_charinfo_name">
-			{$userPage.char_detail.char_name}<br /> &lt;{$userPage.char_detail.char_guild}&gt;
+			<span class="charname">{$userPage.char_detail.char_name}</span><br /><span class="charguild">&lt;{$userPage.char_detail.char_guild}&gt;</span>
 		</div>
 		<div class="user_charinfo_hp">
 			{$userPage.char_detail.char_hp}
@@ -72,23 +72,23 @@ User nicht gefunden
 		
 		<div class="user_charinfo_profession">
 			<table border="0" cellspacing="0" cellpadding="0" height="24px">
-			<td width="90%" nowrap="nowrap">
-			<div class="user_charinfo_profession_skill_image" style="width:{$userPage.char_detail.char_prof2_percent}%">
-				<div class="user_charinfo_profession_image">
-					<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof2_image}.jpg" width="24" height="24" />
-				</div>
-				<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof2_lang}</span>
-			</div>
-			</td>
-			<td width="10%">
-			<div class="user_charinfo_profession_skill">
-					{$userPage.char_detail.char_prof2_value}
-			</div>
-			</td>
-		</table>
+				<td width="90%" nowrap="nowrap">
+					<div class="user_charinfo_profession_skill_image" style="width:{$userPage.char_detail.char_prof2_percent}%">
+						<div class="user_charinfo_profession_image">
+							<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof2_image}.jpg" width="24" height="24" />
+						</div>
+						<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof2_lang}</span>
+					</div>
+				</td>
+				<td width="10%">
+					<div class="user_charinfo_profession_skill">
+							{$userPage.char_detail.char_prof2_value}
+					</div>
+				</td>
+			</table>
 		</div>
 		<div class="user_charinfo_talents1">
-			<div class="user_charinfo_talents_image">
+			<div class="user_charinfo_talents_image talent_frame">
 				<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents1_image}.png" width="32" height="32" />
 			</div>
 			<div class="user_charinfo_talents_name">
@@ -99,7 +99,7 @@ User nicht gefunden
 			</div>
 		</div>
 		<div class="user_charinfo_talents2">
-			<div class="user_charinfo_talents_image">
+			<div class="user_charinfo_talents_image talent_frame">
 				<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents2_image}.png" width="32" height="32" />
 			</div>
 			<div class="user_charinfo_talents_name">
@@ -109,15 +109,15 @@ User nicht gefunden
 				{$userPage.char_detail.char_talents2_talents}
 			</div>        
 		</div>
-		<div class="user_charinfo_arena" style="margin-left:4px;float:left;">
+		<div class="user_charinfo_arena two">
 			2vs2 <br /> {$userPage.char_detail.char_2vs2}
 		</div>
-		<div class="user_charinfo_arena" style="margin-right:4px;float:right;">
-			5vs5 <br /> {$userPage.char_detail.char_3vs3}
-		</div> 
-		<div class="user_charinfo_arena">
-			3vs3 <br /> {$userPage.char_detail.char_5vs5}
+		<div class="user_charinfo_arena three">
+			3vs3 <br /> {$userPage.char_detail.char_3vs3}
 		</div>    
+		<div class="user_charinfo_arena five">
+			5vs5 <br /> {$userPage.char_detail.char_5vs5}
+		</div> 
 	{/if}        
 	</div>
 	<!--

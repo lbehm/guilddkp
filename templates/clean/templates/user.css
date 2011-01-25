@@ -177,9 +177,7 @@
 }
 .userPage .user_charinfo_talents1 {
 	border-radius: 5px;
-	margin-left: 4px;
-	margin-top: 2px;
-	margin-bottom:2px;
+	margin: 2px 0px 2px 4px;
 	width: 178px;
 	height: 52px;
 	background-image:url(../images/talents.png);
@@ -195,12 +193,21 @@
 	height: 52px;
 	background-image:url(../images/talents.png);
 }
-.userPage .user_charinfo_talents_image {
+.userPage .user_charinfo_talents_image img {
 	width:32px;
 	height:32px;
-	padding-top:10px;
-	margin-left: 10px;
-	margin-right: 10px;
+	display:block;
+}
+.userPage .talent_frame {
+	background-color: transparent;
+	background-image: url("../images/tree-icon-frame.png");
+	background-position: -4px -64px;
+	background-repeat: no-repeat;
+	background-size: 60px 120px;
+	display: block;
+	height: 50px;
+	padding: 10px 0px 0px 10px;
+	width: 50px;
 	float:left;
 }
 .userPage .user_charinfo_talents_name {
@@ -221,11 +228,21 @@
 	width: 31%;
 	height: auto;
 	border: 1px solid black;
-	margin-left:auto;
-	margin-right:auto;
+	margin-left:3px;
+	margin-right:2px;
 	text-align:center;
 	margin-bottom:2px;
 	font-size:1.4em;
+}
+.userPage .two {
+	clear:left;
+	float:left;
+}
+.userPage .three {
+	float:left;
+}
+.userPage .five {
+	float:left;
 }
 .userPage .user_loot {
 	font-size:1.5em;
