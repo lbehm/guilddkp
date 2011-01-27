@@ -39,164 +39,158 @@
 }
 .userPage .user_charinfo {
 	border: 1px solid black;
-	margin-left:auto;
 	margin-right:5px;
-	width:auto;
 	min-width:300px;
 	background:#d3d3d3;
 	border-radius: 5px;
 	float:right;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+}
+.userPage .user_charinfo > table{
+	width:100%;
 }
 .userPage .user_charinfo_image {
 	
 }
 .userPage .user_charinfo_name {
 	text-align:center;
+	color:#FFFFFF;
 	font-size:1.8em;
 	margin-bottom:5px;
+	position:relative;
+	top:-50px;
+	height:0px;
+}
+.userPage .user_char_class {
+	color:#FFFFFF;
+	font-size:1.2em;
+	font-weight:bold;
+	position:relative;
+	float:left;
+	top:-25px;
+	height:0px;
+	margin-left:5px;
+}
+.userPage .user_achiev_points {
+	color:#FFFFFF;
+	font-size:1.2em;
+	font-weight:bold;
+	position:relative;
+	float:right;
+	top:-25px;
+	margin-bottom:-25px;
+	margin-right:5px;
+	background: url("../images/achievements.gif") no-repeat scroll left top transparent;
+	padding-left: 10px;
 }
 .userPage .user_charinfo_hp {
-	width:49%;
-	height:24px;
-	line-height:24px;
+	height:23px;
+	line-height:23px;
 	background-image:url(../images/bars/health.png);
-	text-align:center;
 	color: #FFFFFF;
 	border: 1px solid black;
 	border-radius: 5px;
 	font-size:1.4em;
-	float:left;
-	font-weight:bold;
+	width:50%;
+	padding:0px 0px 0px 2px;
 }
-.userPage .user_charinfo_mana {
-	margin-top: 2px;
-	width:49%;
-	height:24px;
-	line-height:24px;
+.userPage .user_charinfo_hp:before {
+	content:"Gesundheit: ";
+}
+.userPage .user_charinfo_bar {
+	height:23px;
+	line-height:23px;
+	color: #FFFFFF;
+	border: 1px solid black;
+	border-radius: 5px;
+	font-size:1.4em;
+	width:50%;
+	padding:0px 0px 0px 2px;
+}
+.userPage .user_charinfo_bar.mana {
 	background-image:url(../images/bars/mana.png);
-	text-align:center;
-	color: #FFFFFF;
-	border: 1px solid black;
-	border-radius: 5px;
-	font-size:1.4em;
-	float:left;
-	font-weight:bold;
 }
-.userPage .user_charinfo_energy {
-	margin-top: 2px;
-	width:49%;
-	height:24px;
-	line-height:24px;
+.userPage .user_charinfo_bar.mana:before {
+	content:"Mana: ";
+}
+.userPage .user_charinfo_bar.energy {
 	background-image:url(../images/bars/energy.png);
-	text-align:center;
-	color: #FFFFFF;
-	border: 1px solid black;
-	border-radius: 5px;
-	font-size:1.4em;
-	float:left;
-	font-weight:bold;
 }	
-.userPage .user_charinfo_rage {
-	margin-top: 2px;
-	width:49%;
-	height:24px;
-	line-height:24px;
+.userPage .user_charinfo_bar.energy:before {
+	content:"Energie: ";
+}
+.userPage .user_charinfo_bar.rage {
 	background-image:url(../images/bars/rage.png);
-	text-align:center;
-	color: #FFFFFF;
-	border: 1px solid black;
-	border-radius: 5px;
-	font-size:1.4em;
-	float:left;
-	font-weight:bold;
 }
-.userPage .user_charinfo_runepower {
-	margin-top: 2px;
-	width:49%;
-	height:24px;
-	line-height:24px;
+.userPage .user_charinfo_bar.rage:before {
+	content:"Wut: ";
+}
+.userPage .user_charinfo_bar.runepower {
 	background-image:url(../images/bars/runepower.png);
-	text-align:center;
-	color: #FFFFFF;
+}
+.userPage .user_charinfo_bar.runepower:before {
+	content:"Runenmacht: ";
+}
+.userPage .user_charinfo_bar.focus {
+	background-image:url(../images/bars/focus.png);
+}
+.userPage .user_charinfo_bar.focus:before {
+	content:"Something of 42: ";
+}
+
+.userPage .user_charinfo_profession {
 	border: 1px solid black;
 	border-radius: 5px;
-	font-size:1.4em;
-	float:left;
-	font-weight:bold;
-}
-.userPage .user_charinfo_focus {
-	margin-top: 2px;
-	width:49%;
 	height:24px;
 	line-height:24px;
-	background-image:url(../images/bars/focus.png);
-	text-align:center;
-	color: #FFFFFF;
-	border: 1px solid black;
-	border-radius: 5px;
-	font-size:1.4em;
-	float:left;
-	font-weight:bold;
+	background:url(../images/professions_1.png) repeat;
+	padding:0px;
 }
-.userPage .user_charinfo_profession {
-	margin-top: 2px;
-	border: 1px solid black;
-	border-radius: 5px;
-	margin-left:auto;
-	width:49%;
+.userPage .user_charinfo_profession img{
+	width:24px;
 	height:24px;
-	background-image:url(../images/professions_1.png);
-}
-.userPage .user_charinfo_profession_image {
+	margin:0px 10px 0px 0px;
+	padding:0px;
 	float:left;
-	width::24px;
-	height:24px;
 }
 .userPage .user_charinfo_profession_name {
 	color: #FFFFFF;
 	line-height:24px;
 	font-size:1.2em;
-	margin-left: 2px;
+	margin: 0px;
+	float:left;
+	background:url(../images/professions_2.png) repeat-y;
+	width:100%;
 }
 .userPage .user_charinfo_profession_skill {
-	color: #FFFFFF;
-	text-align:right;
-	line-height:24px;
-	width:auto;
-	height:inherit;
-	margin-left:auto;
-	font-size:1.5em;
+	float:right;
+	font-size:1.2em;
 	vertical-align:middle;
 	font-weight:bold;
+	margin-right:2px;
 }
-.userPage .user_charinfo_profession_skill_image {
-	width:auto;
-	height:inherit;
-	background-image:url(../images/professions_2.png);
-	float:left;
-}
+
 .userPage .user_charinfo_talents1 {
 	border-radius: 5px;
-	margin: 2px 0px 2px 4px;
-	width: 178px;
-	height: 52px;
+	width: 180px;
+	height: 50px;
 	background-image:url(../images/talents.png);
-	float:left;
+	padding:0px;
 }
 .userPage .user_charinfo_talents2 {
 	border-radius: 5px;
-	margin-left: auto;
-	margin-right:4px;
-	margin-top: 2px;
-	margin-bottom:2px;
-	width: 178px;
-	height: 52px;
+	width: 180px;
+	height: 50px;
 	background-image:url(../images/talents.png);
+	padding:0px;
 }
 .userPage .user_charinfo_talents_image img {
-	width:32px;
-	height:32px;
-	display:block;
+	display: block;
+	height: 32px;
+	left: 10px;
+	position: relative;
+	top: 10px;
+	width: 32px;
 }
 .userPage .talent_frame {
 	background-color: transparent;
@@ -205,10 +199,9 @@
 	background-repeat: no-repeat;
 	background-size: 60px 120px;
 	display: block;
+	float: left;
 	height: 50px;
-	padding: 10px 0px 0px 10px;
 	width: 50px;
-	float:left;
 }
 .userPage .user_charinfo_talents_name {
 	padding-top: 7px;
@@ -219,10 +212,9 @@
 .userPage .user_charinfo_talents_talents {
 	color:#FFFFFF;
 	font-size: 1.5em;
-	margin-left:auto;
-	margin-right: 5px;
 	text-align:center;
 }
+
 .userPage .user_charinfo_arena {
 	border-radius: 5px;
 	width: 31%;
@@ -244,6 +236,7 @@
 .userPage .five {
 	float:left;
 }
+
 .userPage .user_loot {
 	font-size:1.5em;
 	width:49%;

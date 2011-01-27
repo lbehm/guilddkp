@@ -57,7 +57,7 @@
 					$profLang1 = "Schneiderei";
 					break;
 				default:
-					$profLang1 = false;
+					$profLang1 = "Kein Beruf";
 					break;
 			}
 			
@@ -97,7 +97,7 @@
 					$profLang2 = "Schneiderei";
 					break;
 				default:
-					$profLang2 = false;
+					$profLang2 = "Kein Beruf";
 					break;
 			}
 			
@@ -164,18 +164,21 @@
 				'char_detail'=>array(
 					'char_name'=>$result_char["char_name"],
 					'char_race'=>$result_char["char_race_id"],
-					'char_class'=>$classes[$result_char["char_class_id"]]['name'],
+					'char_class_name'=>$classes[$result_char["char_class_id"]]['name'],
 					'char_gender'=>$result_char["char_gender"],
 					'char_guild'=>$result_char["char_guild"],
+					'char_achievments'=>$result_char["char_achievments"],
 					'char_hp'=>$result_char["char_health"],
 					'char_bar_k'=>$result_char["char_bar_k"],
 					'char_bar_v'=>$result_char["char_bar_v"],
+					'char_prof1_lang'=>$profLang1,
+					'char_prof1_image'=>$result_char["char_prof_1_k"],
 					'char_prof1_value'=>$result_char["char_prof_1_v"],
 					'char_prof1_percent'=>(int)($result_char["char_prof_1_v"] /450 *100),
+					'char_prof2_lang'=>$profLang2,
+					'char_prof2_image'=>$result_char["char_prof_2_k"],
 					'char_prof2_value'=>$result_char["char_prof_2_v"],
 					'char_prof2_percent'=>(int)($result_char["char_prof_2_v"] /450 *100),
-					'char_prof1_image'=>$result_char["char_prof_1_k"],
-					'char_prof2_image'=>$result_char["char_prof_2_k"],
 					'char_talents1_name'=>$talents_1_name,
 					'char_talents1_image'=>$talents_1_image,
 					'char_talents2_name'=>$talents_2_name,
@@ -183,8 +186,6 @@
 					'char_2vs2'=>$result_char["char_2vs2_v"],
 					'char_3vs3'=>$result_char["char_3vs3_v"],
 					'char_5vs5'=>$result_char["char_5vs5_v"],
-					'char_prof1_lang'=>$profLang1,
-					'char_prof2_lang'=>$profLang2,
 					'char_talents1_talents'=>$result_char["char_skill_1_1"]." / ".$result_char["char_skill_1_2"]." / ".$result_char["char_skill_1_3"],
 					'char_talents2_talents'=>$result_char["char_skill_2_1"]." / ".$result_char["char_skill_2_2"]." / ".$result_char["char_skill_2_3"]
 				)

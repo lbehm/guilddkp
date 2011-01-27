@@ -31,85 +31,53 @@ User nicht gefunden
 		<div class="user_charinfo_name">
 			<span class="charname">{$userPage.char_detail.char_name}</span><br /><span class="charguild">&lt;{$userPage.char_detail.char_guild}&gt;</span>
 		</div>
-		<div class="user_charinfo_hp">
-			{$userPage.char_detail.char_hp}
-		</div>
-		<div class="user_charinfo_profession">
-			<table border="0" cellspacing="0" cellpadding="0" height="24px">
-			<td width="90%" nowrap="nowrap">
-			<div class="user_charinfo_profession_skill_image" style="width:{$userPage.char_detail.char_prof1_percent}%">
-				<div class="user_charinfo_profession_image">
-					<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof1_image}.jpg" width="24" height="24" />
-				</div>
-				<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof1_lang}</span>
-			</div>
-			
-			</td>
-			<td width="10%">
-			<div class="user_charinfo_profession_skill">
-					{$userPage.char_detail.char_prof1_value}
-			</div>
-			</td>
+		<span class="user_achiev_points">{$userPage.char_detail.char_achievments}</span>
+		<span class="user_char_class">{$userPage.char_detail.char_class_name}</span>
+		<table>
+			<tr>
+				<td class="user_charinfo_hp">{$userPage.char_detail.char_hp}</td>
+				<td class="user_charinfo_profession">
+					<div class="user_charinfo_profession_name" style="background-size: {$userPage.char_detail.char_prof1_percent}% 100%;">
+						<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof1_image}.jpg"/>
+						{$userPage.char_detail.char_prof1_lang}{if $userPage.char_detail.char_prof1_value}<span class="user_charinfo_profession_skill">{$userPage.char_detail.char_prof1_value}</span>{/if}
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="user_charinfo_bar {$userPage.char_detail.char_bar_k}">{$userPage.char_detail.char_bar_v}</td>
+				<td class="user_charinfo_profession">
+					<div class="user_charinfo_profession_name" style="background-size: {$userPage.char_detail.char_prof2_percent}% 100%;">
+						<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof2_image}.jpg"/>
+						{$userPage.char_detail.char_prof2_lang}{if $userPage.char_detail.char_prof2_value}<span class="user_charinfo_profession_skill">{$userPage.char_detail.char_prof2_value}</span>{/if}
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="user_charinfo_talents1">
+					<div class="user_charinfo_talents_image talent_frame">
+						<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents1_image}.png" width="32" height="32" />
+					</div>
+					<div class="user_charinfo_talents_name">
+						{$userPage.char_detail.char_talents1_name}
+					</div>
+					<div class="user_charinfo_talents_talents">
+						{$userPage.char_detail.char_talents1_talents}
+					</div>
+				</td>
+				<td class="user_charinfo_talents2">
+					<div class="user_charinfo_talents_image talent_frame">
+						<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents2_image}.png" width="32" height="32" />
+					</div>
+					<div class="user_charinfo_talents_name">
+						{$userPage.char_detail.char_talents2_name}
+					</div>
+					<div class="user_charinfo_talents_talents">
+						{$userPage.char_detail.char_talents2_talents}
+					</div>        
+				</td>
+			</tr>
 		</table>
-		</div>
-		{if $userPage.char_detail.char_bar_k == "mana"} 
-		<div class="user_charinfo_mana">
-		{/if}
-		{if $userPage.char_detail.char_bar_k == "rage"}
-		<div class="user_charinfo_rage">
-		{/if}
-		{if $userPage.char_detail.char_bar_k == "energy"}
-		<div class="user_charinfo_energy">
-		{/if}
-		{if $userPage.char_detail.char_bar_k == "runepower"}
-		<div class="user_charinfo_runepower">
-		{/if}
-		{if $userPage.char_detail.char_bar_k == "focus"}
-		<div class="user_charinfo_focus">
-		{/if}
-			{$userPage.char_detail.char_bar_v}
-		</div>
-		
-		<div class="user_charinfo_profession">
-			<table border="0" cellspacing="0" cellpadding="0" height="24px">
-				<td width="90%" nowrap="nowrap">
-					<div class="user_charinfo_profession_skill_image" style="width:{$userPage.char_detail.char_prof2_percent}%">
-						<div class="user_charinfo_profession_image">
-							<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof2_image}.jpg" width="24" height="24" />
-						</div>
-						<span class="user_charinfo_profession_name">{$userPage.char_detail.char_prof2_lang}</span>
-					</div>
-				</td>
-				<td width="10%">
-					<div class="user_charinfo_profession_skill">
-							{$userPage.char_detail.char_prof2_value}
-					</div>
-				</td>
-			</table>
-		</div>
-		<div class="user_charinfo_talents1">
-			<div class="user_charinfo_talents_image talent_frame">
-				<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents1_image}.png" width="32" height="32" />
-			</div>
-			<div class="user_charinfo_talents_name">
-				{$userPage.char_detail.char_talents1_name}
-			</div>
-			<div class="user_charinfo_talents_talents">
-				{$userPage.char_detail.char_talents1_talents}
-			</div>
-		</div>
-		<div class="user_charinfo_talents2">
-			<div class="user_charinfo_talents_image talent_frame">
-				<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents2_image}.png" width="32" height="32" />
-			</div>
-			<div class="user_charinfo_talents_name">
-				{$userPage.char_detail.char_talents2_name}
-			</div>
-			<div class="user_charinfo_talents_talents">
-				{$userPage.char_detail.char_talents2_talents}
-			</div>        
-		</div>
-		<div class="user_charinfo_arena two">
+	<!--	<div class="user_charinfo_arena two">
 			2vs2 <br /> {$userPage.char_detail.char_2vs2}
 		</div>
 		<div class="user_charinfo_arena three">
@@ -117,7 +85,8 @@ User nicht gefunden
 		</div>    
 		<div class="user_charinfo_arena five">
 			5vs5 <br /> {$userPage.char_detail.char_5vs5}
-		</div> 
+		</div>
+	-->
 	{/if}        
 	</div>
 	<!--
