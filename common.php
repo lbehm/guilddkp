@@ -70,6 +70,11 @@
 		$tpl->debugging = ($config->get('template_debug'))?true:false;
 		$tpl->assign('base_page', $config->get('main_page'));
 		$tpl->assign('domain', $config->get('domain'));
+		$tpl->assign('icon_repo', $config->get('icon_repo'));
+		$tpl->assign('icon_repo_tiny', $config->get('icon_repo_tiny'));
+		$tpl->assign('icon_repo_small', $config->get('icon_repo_small'));
+		$tpl->assign('icon_repo_medium', $config->get('icon_repo_medium'));
+		$tpl->assign('icon_repo_large', $config->get('icon_repo_large'));
 		$tpl->assign('FB', ($config->get('facebook'))?true:false);
 	}
 
