@@ -7,7 +7,7 @@
 			'icon'=>'trade_alchemy',
 			'special'=>array(
 				1=>'Meister der Elixiere',
-				2=>'Meister der Tränke',
+				2=>'Meister der TrÃ¤nke',
 				3=>'Meister der Transmutation'
 			)
 		),
@@ -20,7 +20,7 @@
 		),
 		794=>array(
 			'title'=>'Archaeology',
-			'lang'=>'Archäologie',
+			'lang'=>'ArchÃ¤ologie',
 			'type'=>0,
 			'icon'=>'trade_archaeology'
 		),
@@ -66,13 +66,13 @@
 		),
 		182=>array(
 			'title'=>'Herbalism',
-			'lang'=>'Kräuterkunde',
+			'lang'=>'KrÃ¤uterkunde',
 			'type'=>1,
 			'icon'=>'spell_nature_naturetouchgrow'
 		),
 		393=>array(
 			'title'=>'Skinning',
-			'lang'=>'Kürschnerei',
+			'lang'=>'KÃ¼rschnerei',
 			'type'=>1,
 			'icon'=>'inv_misc_pelt_wolf_01'
 		),
@@ -150,7 +150,7 @@
 			)
 		),
 		3 => array(
-			'name'=>'Jäger',
+			'name'=>'JÃ¤ger',
 			'icon'=>'class_hunter',
 			1=>array(
 				'name'=>'Tierherrschaft',
@@ -161,7 +161,7 @@
 				'icon'=>'ability_marksmanship'
 			),
 			3=>array(
-				'name'=>'Überleben',
+				'name'=>'Ãœberleben',
 				'icon'=>'ability_hunter_swiftstrike'
 			)
 		),
@@ -177,7 +177,7 @@
 				'icon'=>'ability_backstab'
 			),
 			3=>array(
-				'name'=>'Täuschung',
+				'name'=>'TÃ¤uschung',
 				'icon'=>'ability_stealth'
 			)
 		),
@@ -221,7 +221,7 @@
 				'icon'=>'spell_nature_lightning'
 			),
 			2=>array(
-				'name'=>'Verstärker',
+				'name'=>'VerstÃ¤rker',
 				'icon'=>'spell_nature_lightningshield'
 			),
 			3=>array(
@@ -253,11 +253,11 @@
 				'icon'=>'spell_shadow_deathcoil'
 			),
 			2=>array(
-				'name'=>'Dämonologie',
+				'name'=>'DÃ¤monologie',
 				'icon'=>'spell_shadow_metamorphosis'
 			),
 			3=>array(
-				'name'=>'Zerstörung',
+				'name'=>'ZerstÃ¶rung',
 				'icon'=>'spell_shadow_rainoffire'
 			)
 		),
