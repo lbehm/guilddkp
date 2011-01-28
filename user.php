@@ -6,7 +6,7 @@
 	 */
 	define('loadet', true);
 	require_once(dirname(__FILE__).'/common.php');
-	require_once('wow_classes.php');
+	require_once('wow_convert.php');
 	$username = mb_strtolower($in->get("n", ''),'UTF-8');
 	if($username=='')
 		$username = $user->data['user_name'];
@@ -21,113 +21,33 @@
 		$query_char = $db->query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
 		$result_char = $db->fetch_record($result_char);
 		if ($result_char) {
-			switch($result_char["char_prof_1_k"])
-			{
-				case "alchemy":
-					$profLang1 = "Alchemie";
-					break;
-				case "blacksmithing":
-					$profLang1 = "Schmiedekunst";
-					break;
-				case "enchanting":
-					$profLang1 = "Verzauberkunst";
-					break;
-				case "engineering":
-					$profLang1 = "Ingenieurskunst";
-					break;
-				case "herbalism":
-					$profLang1 = "Kräuterkunde";
-					break;
-				case "inscription":
-					$profLang1 = "Inschriftenkunde";
-					break;
-				case "jewelcrafting":
-					$profLang1 = "Juwelenschleifen";
-					break;
-				case "leatherworking":
-					$profLang1 = "Lederverarbeitung";
-					break;
-				case "mining":
-					$profLang1 = "Bergbau";
-					break;
-				case "skinning":
-					$profLang1 = "Kürschnerei";
-					break;
-				case "tailoring":
-					$profLang1 = "Schneiderei";
-					break;
-				default:
-					$profLang1 = "Kein Beruf";
-					break;
-			}
-			
-			switch($result_char["char_prof_2_k"])
-			{
-				case "alchemy":
-					$profLang2 = "Alchemie";
-					break;
-				case "blacksmithing":
-					$profLang2 = "Schmiedekunst";
-					break;
-				case "enchanting":
-					$profLang2 = "Verzauberkunst";
-					break;
-				case "engineering":
-					$profLang2 = "Ingenieurskunst";
-					break;
-				case "herbalism":
-					$profLang2 = "Kräuterkunde";
-					break;
-				case "inscription":
-					$profLang2 = "Inschriftenkunde";
-					break;
-				case "jewelcrafting":
-					$profLang2 = "Juwelenschleifen";
-					break;
-				case "leatherworking":
-					$profLang2 = "Lederverarbeitung";
-					break;
-				case "mining":
-					$profLang2 = "Bergbau";
-					break;
-				case "skinning":
-					$profLang2 = "Kürschnerei";
-					break;
-				case "tailoring":
-					$profLang2 = "Schneiderei";
-					break;
-				default:
-					$profLang2 = "Kein Beruf";
-					break;
-			}
-			
 			$skill_1_1 = intval($result_char["char_skill_1_1"]);
 			$skill_1_2 = intval($result_char["char_skill_1_2"]);
 			$skill_1_3 = intval($result_char["char_skill_1_3"]);
 			if ($skill_1_1 == 0 && $skill_1_2 == 0 && $skill_1_3 == 0)
 			{
 				$talents_1_name = 'Nicht verteilt';// untalentiert
-				$talents_1_image = 'unspecc';
+				$talents_1_image = 'inv_misc_questionmark';
 			}
 			elseif (($skill_1_1 > $skill_1_2) && ($skill_1_1 > $skill_1_3))
 			{
 				$talents_1_name = $classes[$result_char["char_class_id"]][1]['name'];
-				$talents_1_image = $classes[$result_char["char_class_id"]][1]['img'];
+				$talents_1_image = $classes[$result_char["char_class_id"]][1]['icon'];
 			}
 			elseif (($skill_1_2 > $skill_1_1) && ($skill_1_2 > $skill_1_3))
 			{
 				$talents_1_name = $classes[$result_char["char_class_id"]][2]['name'];
-				$talents_1_image = $classes[$result_char["char_class_id"]][2]['img'];
+				$talents_1_image = $classes[$result_char["char_class_id"]][2]['icon'];
 			}
 			elseif (($skill_1_3 > $skill_1_1) && ($skill_1_3 > $skill_1_2))
 			{
 				$talents_1_name = $classes[$result_char["char_class_id"]][3]['name'];
-				$talents_1_image = $classes[$result_char["char_class_id"]][3]['img'];
+				$talents_1_image = $classes[$result_char["char_class_id"]][3]['icon'];
 			}
 			else // hybrid
 			{
 				$talents_1_name = 'Hybrid';
-				$talents_1_image = 'hybrid';
+				$talents_1_image = 'ability_dualwieldspecialization';
 			}
 			
 			$skill_2_1 = intval($result_char["char_skill_2_1"]);
@@ -136,27 +56,27 @@
 			if ($skill_2_1 == 0 && $skill_2_2 == 0 && $skill_2_3 == 0)
 			{
 				$talents_2_name = 'Nicht verteilt';// untalentiert
-				$talents_2_image = 'unspecc';
+				$talents_2_image = 'inv_misc_questionmark';
 			}
 			elseif (($skill_2_1 > $skill_2_2) && ($skill_2_1 > $skill_2_3))
 			{
 				$talents_2_name = $classes[$result_char["char_class_id"]][1]['name'];
-				$talents_2_image = $classes[$result_char["char_class_id"]][1]['img'];
+				$talents_2_image = $classes[$result_char["char_class_id"]][1]['icon'];
 			}
 			elseif (($skill_2_2 > $skill_2_1) && ($skill_2_2 > $skill_2_3))
 			{
 				$talents_2_name = $classes[$result_char["char_class_id"]][2]['name'];
-				$talents_2_image = $classes[$result_char["char_class_id"]][2]['img'];
+				$talents_2_image = $classes[$result_char["char_class_id"]][2]['icon'];
 			}
 			elseif (($skill_2_3 > $skill_2_1) && ($skill_2_3 > $skill_2_2))
 			{
 				$talents_2_name = $classes[$result_char["char_class_id"]][3]['name'];
-				$talents_2_image = $classes[$result_char["char_class_id"]][3]['img'];
+				$talents_2_image = $classes[$result_char["char_class_id"]][3]['icon'];
 			}
 			else // hybrid
 			{
 				$talents_2_name = 'Hybrid';
-				$talents_2_image = 'hybrid';
+				$talents_2_image = 'ability_dualwieldspecialization';
 			}
 			
 
@@ -165,18 +85,19 @@
 					'char_name'=>$result_char["char_name"],
 					'char_race'=>$result_char["char_race_id"],
 					'char_class_name'=>$classes[$result_char["char_class_id"]]['name'],
+					'char_class_icon'=>$classes[$result_char["char_class_id"]]['icon'],
 					'char_gender'=>$result_char["char_gender"],
 					'char_guild'=>$result_char["char_guild"],
 					'char_achievments'=>$result_char["char_achievments"],
 					'char_hp'=>$result_char["char_health"],
 					'char_bar_k'=>$result_char["char_bar_k"],
 					'char_bar_v'=>$result_char["char_bar_v"],
-					'char_prof1_lang'=>$profLang1,
-					'char_prof1_image'=>$result_char["char_prof_1_k"],
+					'char_prof1_lang'=>($skill[$result_char["char_prof_1_k"]])?$skill[$result_char["char_prof_1_k"]]['lang']:"Kein Beruf",
+					'char_prof1_image'=>($skill[$result_char["char_prof_1_k"]])?$skill[$result_char["char_prof_1_k"]]['icon']:"",
 					'char_prof1_value'=>$result_char["char_prof_1_v"],
 					'char_prof1_percent'=>(int)($result_char["char_prof_1_v"] /450 *100),
-					'char_prof2_lang'=>$profLang2,
-					'char_prof2_image'=>$result_char["char_prof_2_k"],
+					'char_prof2_lang'=>($skill[$result_char["char_prof_2_k"]])?$skill[$result_char["char_prof_2_k"]]['lang']:"Kein Beruf",
+					'char_prof2_image'=>($skill[$result_char["char_prof_2_k"]])?$skill[$result_char["char_prof_2_k"]]['icon']:"",
 					'char_prof2_value'=>$result_char["char_prof_2_v"],
 					'char_prof2_percent'=>(int)($result_char["char_prof_2_v"] /450 *100),
 					'char_talents1_name'=>$talents_1_name,

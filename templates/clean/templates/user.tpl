@@ -32,13 +32,13 @@ User nicht gefunden
 			<span class="charname">{$userPage.char_detail.char_name}</span><br /><span class="charguild">&lt;{$userPage.char_detail.char_guild}&gt;</span>
 		</div>
 		<span class="user_achiev_points">{$userPage.char_detail.char_achievments}</span>
-		<span class="user_char_class">{$userPage.char_detail.char_class_name}</span>
+		<span class="user_char_class" style="background-image: url('{$icon_repo_tiny}{$userPage.char_detail.char_class_icon}.gif');">{$userPage.char_detail.char_class_name}</span>
 		<table>
 			<tr>
 				<td class="user_charinfo_hp">{$userPage.char_detail.char_hp}</td>
 				<td class="user_charinfo_profession">
 					<div class="user_charinfo_profession_name" style="background-size: {$userPage.char_detail.char_prof1_percent}% 100%;">
-						<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof1_image}.jpg"/>
+						<img src="{$icon_repo}{$userPage.char_detail.char_prof1_image}.jpg"/>
 						{$userPage.char_detail.char_prof1_lang}{if $userPage.char_detail.char_prof1_value}<span class="user_charinfo_profession_skill">{$userPage.char_detail.char_prof1_value}</span>{/if}
 					</div>
 				</td>
@@ -47,7 +47,7 @@ User nicht gefunden
 				<td class="user_charinfo_bar {$userPage.char_detail.char_bar_k}">{$userPage.char_detail.char_bar_v}</td>
 				<td class="user_charinfo_profession">
 					<div class="user_charinfo_profession_name" style="background-size: {$userPage.char_detail.char_prof2_percent}% 100%;">
-						<img src="templates/clean/images/profession/{$userPage.char_detail.char_prof2_image}.jpg"/>
+						<img src="{$icon_repo}{$userPage.char_detail.char_prof2_image}.jpg"/>
 						{$userPage.char_detail.char_prof2_lang}{if $userPage.char_detail.char_prof2_value}<span class="user_charinfo_profession_skill">{$userPage.char_detail.char_prof2_value}</span>{/if}
 					</div>
 				</td>
@@ -55,7 +55,7 @@ User nicht gefunden
 			<tr>
 				<td class="user_charinfo_talents1">
 					<div class="user_charinfo_talents_image talent_frame">
-						<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents1_image}.png" width="32" height="32" />
+						<img src="{$icon_repo}{$userPage.char_detail.char_talents1_image}.jpg" width="32" height="32" />
 					</div>
 					<div class="user_charinfo_talents_name">
 						{$userPage.char_detail.char_talents1_name}
@@ -66,7 +66,7 @@ User nicht gefunden
 				</td>
 				<td class="user_charinfo_talents2">
 					<div class="user_charinfo_talents_image talent_frame">
-						<img src="templates/clean/images/talents/{$userPage.char_detail.char_talents2_image}.png" width="32" height="32" />
+						<img src="{$icon_repo}{$userPage.char_detail.char_talents2_image}.jpg" width="32" height="32" />
 					</div>
 					<div class="user_charinfo_talents_name">
 						{$userPage.char_detail.char_talents2_name}

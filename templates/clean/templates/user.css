@@ -39,10 +39,12 @@
 }
 .userPage .user_charinfo {
 	border: 1px solid black;
+	margin-top:4px;
 	margin-right:5px;
 	min-width:300px;
 	background:#d3d3d3;
 	border-radius: 5px;
+	box-shadow: 1px 2px 4px #888;
 	float:right;
 	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
 }
@@ -67,9 +69,15 @@
 	font-weight:bold;
 	position:relative;
 	float:left;
-	top:-25px;
-	height:0px;
+	top:-30px;
+	margin-bottom:-30px;
 	margin-left:5px;
+	padding:5px 15px 0px 0px;
+	background-color: transparent;
+	background-origin: padding-box;
+	background-position: right top;
+	background-repeat: no-repeat;
+	background-size: 15px 15px;
 }
 .userPage .user_achiev_points {
 	color:#FFFFFF;

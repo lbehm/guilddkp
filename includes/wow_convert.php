@@ -1,153 +1,280 @@
 <?php
+	$skill = array(
+		171=>array(
+			'title'=>'Alchemy',
+			'lang'=>'Alchemie',
+			'type'=>1,
+			'icon'=>'trade_alchemy',
+			'special'=>array(
+				1=>'Meister der Elixiere',
+				2=>'Meister der Tränke',
+				3=>'Meister der Transmutation'
+			)
+		),
+		356=>array(
+			'title'=>'Fishing',
+			'lang'=>'Angeln',
+			'type'=>0,
+			'icon'=>'trade_fishing',
+			'special'=>0
+		),
+		794=>array(
+			'title'=>'Archaeology',
+			'lang'=>'Archäologie',
+			'type'=>0,
+			'icon'=>'trade_archaeology'
+		),
+		186=>array(
+			'title'=>'Mining',
+			'lang'=>'Bergbau',
+			'type'=>1,
+			'icon'=>'trade_mining'
+		),
+		129=>array(
+			'title'=>'First Aid',
+			'lang'=>'Erste Hilfe',
+			'type'=>0,
+			'icon'=>'spell_holy_sealofsacrifice'
+		),
+		202=>array(
+			'title'=>'Engineering',
+			'lang'=>'Ingenieurskunst',
+			'type'=>1,
+			'icon'=>'trade_engineering',
+			'special'=>array(
+				1=>'Gobliningenieur',
+				2=>'Gnomeningenieur'
+			)
+		),
+		773=>array(
+			'title'=>'Inscription',
+			'lang'=>'Inschriftenkunde',
+			'type'=>1,
+			'icon'=>'inv_inscription_tradeskill01'
+		),
+		755=>array(
+			'title'=>'Jewelcrafting',
+			'lang'=>'Juwelenschleifen',
+			'type'=>1,
+			'icon'=>'inv_misc_gem_01'
+		),
+		185=>array(
+			'title'=>'Cooking',
+			'lang'=>'Kochkunst',
+			'type'=>0,
+			'icon'=>'inv_misc_food_15'
+		),
+		182=>array(
+			'title'=>'Herbalism',
+			'lang'=>'Kräuterkunde',
+			'type'=>1,
+			'icon'=>'spell_nature_naturetouchgrow'
+		),
+		393=>array(
+			'title'=>'Skinning',
+			'lang'=>'Kürschnerei',
+			'type'=>1,
+			'icon'=>'inv_misc_pelt_wolf_01'
+		),
+		165=>array(
+			'title'=>'Leatherworking',
+			'lang'=>'Lederverarbeitung',
+			'type'=>1,
+			'icon'=>'inv_misc_armorkit_17',
+			'special'=>array(
+				1=>'Drachenlederverarbeitung',
+				2=>'Elementarlederverarbeitung',
+				3=>'Stammeslederverarbeitung'
+			)
+		),
+		164=>array(
+			'title'=>'Blacksmithing',
+			'lang'=>'Schmiedekunst',
+			'type'=>1,
+			'icon'=>'trade_blacksmithing',
+			'special'=>array(
+				1=>'Hammerschmiedemeister',
+				2=>'Axtschmiedemeister',
+				3=>'Schwertschmiedemeister'
+			)
+		),
+		197=>array(
+			'title'=>'Tailoring',
+			'lang'=>'Schneiderei',
+			'type'=>1,
+			'icon'=>'trade_tailoring',
+			'special'=>array(
+				1=>'Mondstoffschneiderei',
+				2=>'Zauberfeuerschneiderei',
+				3=>'Schattenzwirnschneiderei'
+			)
+		),
+		333=>array(
+			'title'=>'Enchanting',
+			'lang'=>'Verzauberkunst',
+			'type'=>1,
+			'icon'=>'trade_engraving'
+		)
+	);
 	$classes = array(
 		1 => array(
 			'name'=>'Krieger',
+			'icon'=>'class_warrior',
 			1=>array(
 				'name'=>'Waffen',
-				'img'=>'warrior_arms'
+				'icon'=>'ability_rogue_eviscerate'
 			),
 			2=>array(
 				'name'=>'Furor',
-				'img'=>'warrior_fury'
+				'icon'=>'ability_warrior_innerrage'
 			),
 			3=>array(
 				'name'=>'Schutz',
-				'img'=>'warrior_protection'
+				'icon'=>'inv_shield_06'
 			)
 		),
 		2 => array(
 			'name'=>'Paladin',
+			'icon'=>'class_paladin',
 			1=>array(
 				'name'=>'Heilig',
-				'img'=>'paladin_holy'
+				'icon'=>'spell_holy_holybolt'
 			),
 			2=>array(
 				'name'=>'Schutz',
-				'img'=>'paladin_protection'
+				'icon'=>'spell_holy_devotionaura'
 			),
 			3=>array(
 				'name'=>'Vergelter',
-				'img'=>'paladin_retribution'
+				'icon'=>'spell_holy_auraoflight'
 			)
 		),
 		3 => array(
 			'name'=>'Jäger',
+			'icon'=>'class_hunter',
 			1=>array(
 				'name'=>'Tierherrschaft',
-				'img'=>'hunter_beast'
+				'icon'=>'ability_hunter_beasttaming'
 			),
 			2=>array(
 				'name'=>'Treffsicherheit',
-				'img'=>'hunter_marksmanship'
+				'icon'=>'ability_marksmanship'
 			),
 			3=>array(
 				'name'=>'Überleben',
-				'img'=>'hunter_survival'
+				'icon'=>'ability_hunter_swiftstrike'
 			)
 		),
 		4 => array(
 			'name'=>'Schurke',
+			'icon'=>'class_rouge',
 			1=>array(
 				'name'=>'Meucheln',
-				'img'=>'rogue_assassination'
+				'icon'=>'ability_rogue_eviscerate'
 			),
 			2=>array(
 				'name'=>'Kampf',
-				'img'=>'rogue_combat'
+				'icon'=>'ability_backstab'
 			),
 			3=>array(
 				'name'=>'Täuschung',
-				'img'=>'rogue_subtlety'
+				'icon'=>'ability_stealth'
 			)
 		),
 		5 => array(
 			'name'=>'Priester',
+			'icon'=>'class_priest',
 			1=>array(
 				'name'=>'Disziplin',
-				'img'=>'priest_discipline'
+				'icon'=>'spell_holy_holybolt'
 			),
 			2=>array(
 				'name'=>'Heilig',
-				'img'=>'priest_holy'
+				'icon'=>'spell_holy_wordfortitude'
 			),
 			3=>array(
 				'name'=>'Schatten',
-				'img'=>'priest_shadow'
+				'icon'=>'spell_shadow_shadowwordpain'
 			)
 		),
 		6 => array(
 			'name'=>'Todesritter',
+			'icon'=>'class_deathknight',
 			1=>array(
 				'name'=>'Blut',
-				'img'=>'dk_blood'
+				'icon'=>'spell_deathknight_bloodpresence'
 			),
 			2=>array(
 				'name'=>'Frost',
-				'img'=>'dk_frost'
+				'icon'=>'spell_deathknight_frostpresence'
 			),
 			3=>array(
 				'name'=>'Unheilig',
-				'img'=>'dk_unholy'
+				'icon'=>'spell_deathknight_unholypresence'
 			)
 		),
 		7 => array(
 			'name'=>'Schamane',
+			'icon'=>'class_shaman',
 			1=>array(
 				'name'=>'Elementar',
-				'img'=>'shaman_elemental'
+				'icon'=>'spell_nature_lightning'
 			),
 			2=>array(
 				'name'=>'Verstärker',
-				'img'=>'shaman_enhancement'
+				'icon'=>'spell_nature_lightningshield'
 			),
 			3=>array(
 				'name'=>'Wiederherstellung',
-				'img'=>'shaman_restoration'
+				'icon'=>'spell_nature_magicimmunity'
 			)
 		),
 		8 => array(
 			'name'=>'Imba',
+			'icon'=>'class_mage',
 			1=>array(
 				'name'=>'Arkan',
-				'img'=>'mage_arcane'
+				'icon'=>'spell_holy_magicalsentry'
 			),
 			2=>array(
 				'name'=>'Feuer',
-				'img'=>'mage_fire'
+				'icon'=>'spell_fire_firebolt02'
 			),
 			3=>array(
 				'name'=>'Frost',
-				'img'=>'mage_frost'
+				'icon'=>'spell_frost_frostbolt02'
 			)
 		),
 		9 => array(
 			'name'=>'Hexenmeister',
+			'icon'=>'class_warlock',
 			1=>array(
 				'name'=>'Gebrechen',
-				'img'=>'warlock_affliction'
+				'icon'=>'spell_shadow_deathcoil'
 			),
 			2=>array(
 				'name'=>'Dämonologie',
-				'img'=>'warlock_demonology'
+				'icon'=>'spell_shadow_metamorphosis'
 			),
 			3=>array(
 				'name'=>'Zerstörung',
-				'img'=>'warlock_destruction'
+				'icon'=>'spell_shadow_rainoffire'
 			)
 		),
 		11 => array(
 			'name'=>'Druide',
+			'icon'=>'class_druid',
 			1=>array(
 				'name'=>'Gleichgewicht',
-				'img'=>'druid_balance'
+				'icon'=>'spell_nature_starfall'
 			),
 			2=>array(
 				'name'=>'Wilder Krampf',
-				'img'=>'druid_feral'
+				'icon'=>'ability_racial_bearform'
 			),
 			3=>array(
 				'name'=>'Wiederherstellung',
-				'img'=>'druid_restoration'
+				'icon'=>'spell_nature_healingtouch'
 			)
 		)
 	);
