@@ -94,4 +94,20 @@
 			die();
 		}
 	}
+	elseif($_GET['a']=='reg')
+	{
+		if($_GET['s']='2')
+		{
+			die('<form class="reg_form" action="register.php" methode="post"><table class="reg_tbl">'.
+				'<tr><td>Loginname:</td><td><input type="text" name="username" id="user_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'.
+				'<tr><td>Name:</td><td><input type="text" name="display_name" id="display_name" class="text ui-widget-content ui-corner-all" value="" /></td></tr>'.
+				'<tr><td>Passwort:</td><td><input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'.
+				'<tr><td>Passwort bestätigen:</td><td><input type="password" name="password_b" id="password_b" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'.
+				'<tr><td>E-Mail:</td><td><input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'.
+				'<tr><td>Geburtsdatum:</td><td><input type="text" name="date" id="birthday_c" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'.
+				'<tr><td>Profilbild:</td><td><input type="text" name="pic_url" id="pic_url" value="" class="text ui-widget-content ui-corner-all" /></td></tr>'.
+				'<tr><td><input type="submit" value="Registrieren"/></td><td><input type="reset" value="Abbrechen"/></td></tr>'.
+				'</table></form><div class="login_loading" />');
+		}
+	}
 ?>

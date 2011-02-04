@@ -168,11 +168,25 @@ tr.headline {
 	margin-top:3px;
 }
 
-form.reg_form {
-	text-align:center;
+div#reg_box > div {
+	width:80%;
+	margin-left:10%;
 }
-form.reg_form td{
-	text-align:left;
+div#reg_box > div > span.title {
+	text-decoration:underline;
+	font-weight:bold;
+	font-size:1.3em;
+}
+div#reg_box > div > div {
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,Sans-Serif;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 20px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+div#reg_box > div > span.btns {
+	float:right;
 }
 
 #sideFrame > .search{
