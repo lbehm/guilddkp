@@ -178,3 +178,16 @@ form.reg_form td{
 #sideFrame > .search{
 	display:none;
 }
+
+/*
+ * BB-Codes
+ */
+.bb_user, .bb_char, .bb_item, .bb_race, .bb_class, .bb_skill {
+	color:#000000;
+	text-decoration:underline;
+	padding-left:18px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-size: 15px 15px;
+	line-height: 15px;
+}

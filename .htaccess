@@ -11,3 +11,13 @@ RewriteRule ^([^/]*)forum$ $1news.php [L]
 
 RewriteRule ^([^/]*)user-([^-]*)$ $1user.php?n=$2 [L]
 RewriteRule ^([^/]*)user$ $1user.php [L]
+
+RewriteRule ^([^/]*)char$ $1char.php [L]
+RewriteRule ^([^/]*)char-([^-]*)$ $1char.php?n=$2 [L]
+RewriteRule ^([^/]*)char=([^-]*)$ $1char.php?id=$2 [L]
+RewriteRule ^([^/]*)race=([^-]*)$ $1char.php?f=race&f_id=$2 [L]
+RewriteRule ^([^/]*)class=([^-]*)$ $1char.php?f=class&f_id=$2 [L]
+
+RewriteRule ^([^/]*)item=([^-]*)$ $1item.php?id=$2 [L]
+RewriteRule ^([^/]*)zone=([^-]*)$ $1zone.php?id=$2 [L]
+RewriteRule ^([^/]*)npc=([^-]*)$ $1npc.php?id=$2 [L]
