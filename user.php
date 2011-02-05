@@ -16,7 +16,7 @@
 	
 	if ($result_user)
 	{
-		$tpl->assign('title', 'GuildDKP - '.htmlentities($result_user["user_displayname"],ENT_QUOTES,'UTF-8'));
+		$tpl->assign('title', $config->get('title').' - '.htmlentities($result_user["user_displayname"],ENT_QUOTES,'UTF-8'));
 		$sql = 'SELECT * FROM '.T_CHAR." WHERE user_id = '".$result_user['user_id']."' LIMIT 1";
 		$query_char = $db->query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
 		$result_char = $db->fetch_record($result_char);
