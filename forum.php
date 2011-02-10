@@ -60,7 +60,7 @@
 			elseif(($post_set == 'move_topic') && ($request_topic_id) && ($request_forum_id))
 				die($user->check_auth('a_forum_move_topic')?(($forum->move_topic($request_topic_id, $request_forum_id))?'1':'0'):'403');
 			elseif(($post_set == 'create_topic') && ($post_title) && ($post_text) && ($post_forum))
-				die($user->check_auth('rank_add_topic')?(($forum->create_topic($post_forum, $post_title, $post_text, 0))?'1':'0'):'403');
+				die($user->check_auth('rank_add_topic')?$forum->create_topic($post_forum, $post_title, $post_text):json_encode(array('e'=>1,'m'=>'403')));
 			elseif(($post_set == 'create_post') && ($post_topic) && ($post_text))
 				die($user->check_auth('rank_add_post')?(($forum->create_post($post_topic, $post_text, 0))?'1':'0'):'403');
 			elseif(($post_set == 'edit_post') && ($post_forum != false) && ($post_topic != false) && ($post_post != false) && ($post_text != false))

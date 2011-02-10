@@ -27,9 +27,12 @@
 	display: block;
 	border-bottom: 1px dotted #B2C1C9;
 }
-#sideFrame .forum  li span.poster{
+#sideFrame .forum  li .poster{
 	font-size:9px;
 	margin-left:3px;
+	text-decoration:none;
+	color:#000000;
+	display:inline;
 }
 #sideFrame .forum  li span.time{
 	font-size:9px;
@@ -46,6 +49,14 @@
 	vertical-align:middle;
 	margin:4px 3px 0px 5px;
 }
+div#new_topic > span, div#new_topic > input, div#new_topic > textarea {
+	display:block;
+	width:100%;
+}
+div#new_topic > div {
+	float:right;
+}
+
 
 .access_denied{
 	background: #FFFFFF;
@@ -93,6 +104,9 @@
 }
 #topic_page > ul > li .controls {
 	float:right;
+}
+#topic_page > ul > li .edit {
+	opacity:0.5;
 }
 #topic_page > ul > li .fixlink {
 	color:#C0C0C0;

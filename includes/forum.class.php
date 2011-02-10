@@ -9,10 +9,13 @@
 	if(!$usernames)
 	{
 		$usernames = array();
-		$sql = "SELECT user_id, user_displayname FROM ".T_USER;
+		$sql = "SELECT user_id, user_name, user_displayname FROM ".T_USER;
 		$usernamesquery = $db->query($sql);
 		while($record = $db->fetch_record($usernamesquery))
-			$usernames[$record['user_id']] = $record['user_displayname'];
+		{
+			$usernames[$record['user_id']]['name'] = $record['user_name'];
+			$usernames[$record['user_id']]['display'] = $record['user_displayname'];
+		}
 		$cache->set('forum', 'usernames', $usernames);
 	}
 	
@@ -38,7 +41,7 @@
 //ANSICHT von einem FORUM
 		function show_forum_main($forum_id)
 		{
-			global $db, $user, $tpl, $usernames, $config;
+			global $db, $user, $tpl, $config;
 			
 			$fsql="SELECT * FROM ".T_FORUM." f WHERE f.forum_id = '".$forum_id."' AND f.forum_hidden <= '".$user->get_auth('rank_read_forum')."' AND f.forum_delete = '0'";
 			$fquery=$db->query($fsql);
@@ -78,7 +81,7 @@
 //ANSICHT Thema
 		function show_topic_main($topic_id)
 		{
-			global $db, $user, $tpl, $usernames, $config;
+			global $db, $user, $tpl, $config;
 			$tsql="SELECT * FROM ".T_TOPIC." t WHERE t.topic_id = '".$topic_id."' AND t.topic_hidden <= '".$user->get_auth('rank_read_topic')."' AND t.topic_delete = '0'";
 			$tquery=$db->query($tsql);
 			$topic=$db->fetch_record($tquery);
@@ -109,7 +112,7 @@
 						'POST_EDIT_STATUS' => ($post['post_edit_count'] > 0) ? ' - Bearbeitet von '.$post['post_edit_user_name'] : '',
 						'POST_TEXT' => bbDeCode(nl2br(stripslashes($post['post_text']))),
 						'DELETE_POST' => ($user->check_auth('rank_rm_post'))?true:false,
-						'EDIT_POST' => ( ($user->get_auth('rank_edit_post') >= $user->get_auth('rank_edit_post',$post['post_user_id'])) && ($forum['forum_closed'] == '0') && ($topic['topic_closed'] == '0') )?true:false
+						'EDIT_POST' => ( ($user->get_auth('rank_edit_post') >= $user->get_auth('rank_edit_post',$post['post_user_id'])) && ($forum['forum_closed'] == '0') && ($topic['topic_closed'] == '0') && ($post['post_timestamp'] > (time()-3600)) )?true:false
 					));
 					$last_post_id = $post['post_id'];
 			}
@@ -132,7 +135,7 @@
 		
 		function show_topic_api($topic_id, $last_id)
 		{
-			global $db, $user, $usernames, $config;
+			global $db, $user, $config;
 			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' AND p.post_timestamp > (SELECT post_timestamp FROM ".T_POST." WHERE post_id = '".$last_id."') ORDER BY p.post_timestamp ASC";
 			$pquery=$db->query($psql);
 			$last_post_id = 0;
@@ -187,7 +190,8 @@
 						'forum'=>$topic['forum'],
 						'sticky'=>$topic['sticky'],
 						'closed'=>$topic['closed'],
-						'last_poster'=>$usernames[$topic['last_poster']],
+						'last_poster'=>$usernames[$topic['last_poster']]['display'],
+						'last_poster_name'=>$usernames[$topic['last_poster']]['name'],
 						'time'=>date("H:i j.n.",$topic['timestamp'])
 					);
 				}
@@ -348,7 +352,7 @@
 				$sql = "SELECT * FROM ".T_TOPIC." WHERE topic_id = '".$db->sql_escape($topic_id)."'";
 				$topic_query = $db->query($sql);
 				$topic = $db->fetch_record($topic_query);
-				if($topic['topic_hidden'] <= $user->get_auth('rank_read_topic'))
+				if(($topic['topic_closed'] == 0) && ($topic['topic_hidden'] <= $user->get_auth('rank_read_topic')))
 				{
 					$timestamp = time();
 					$sql = "INSERT INTO `".T_POST."` (`topic_id`, `post_text`, `post_user_id`, `post_user_name`, `post_sticky`, `post_delete`, `post_timestamp`) VALUES ('".$topic_id."', '".htmlentities($db->sql_escape($text))."', '".$user->data['user_id']."', '".$user->data['user_displayname']."', '".htmlentities($db->sql_escape($sticky))."', 0, '".$timestamp."');";
@@ -362,39 +366,27 @@
 			return false;
 		}
 
-		function create_topic($forum_id, $topic_name, $text, $sticky = 0, $hidden = 'N', $closed = 'N')
+		function create_topic($forum_id, $topic_name, $text)
 		{
 			global $db, $user;
-			if ( $user->check_auth('u_forum_create_topic') )
+			if ( $user->check_auth('rank_add_topic') && is_numeric($forum_id) )
 			{
-				if($this->check_forum_id($forum_id))
-				{
-					$sql 			= "SELECT forum_closed FROM eqdkp_fmod_forums WHERE forum_id = ".$forum_id;
-					$forum_query 	= $db->query($sql);
-					$forum 			= $db->fetch_record($forum_query);
+				$sql 			= "SELECT * FROM ".T_FORUM." WHERE forum_id = ".$forum_id;
+				$forum_query 	= $db->query($sql);
+				$forum 			= $db->fetch_record($forum_query);
 
-					if($forum['forum_closed'] == 'N')
-					{
-						$timestamp = time();
-						$sql = "INSERT INTO `eqdkp_fmod_topics` (`topic_title`, `forum_id`, `topic_edit_timestamp`, `topic_hidden`, `topic_closed`) VALUES('".$db->sql_escape($topic_name)."', '".$db->sql_escape($forum_id)."', '".$db->sql_escape($timestamp)."', '".$db->sql_escape($hidden)."', '".$db->sql_escape($closed)."')";
-						$db->query($sql);
-						
-						$sql = "SELECT `topic_id` FROM `eqdkp_fmod_topics` WHERE `topic_title` = '".$db->sql_escape($topic_name)."' AND `forum_id` = '".$db->sql_escape($forum_id)."' AND `topic_edit_timestamp` = '".$db->sql_escape($timestamp)."' AND `topic_hidden` = '".$db->sql_escape($hidden)."' AND `topic_closed` = '".$db->sql_escape($closed)."'";
-						$topic_id_query = $db->query($sql);
-						$topic_id_fetch = $db->fetch_record($topic_id_query);
-						$this->build_cache();// sonst kickt der check_post von create_post() uns raus
-						$this->create_post($forum_id, $topic_id_fetch['topic_id'], $text, $sticky);
-						$this->log_insert('TOPIC_CREATE', $forum_id, array(
-							'topic_id'		=> $topic_id_fetch['topic_id'],
-							'topic_name'	=> $topic_name,
-							'text'			=> $text,
-							'sticky'		=> $sticky
-						));
-						return true;
-					}
+				if(($forum['forum_closed'] == 0) && ($forum['forum_hidden'] <= $user->get_auth('rank_read_forum')))
+				{
+					$timestamp = time();
+					$db->query("INSERT INTO `".T_TOPIC."` (`topic_title`, `forum_id`, `topic_author`, `topic_last_poster`, `topic_edit_timestamp`, `topic_hidden`, `topic_closed`, `topic_delete`) VALUES('".$db->sql_escape($topic_name)."', '".$db->sql_escape($forum_id)."', '".$user->data['user_id']."', '".$user->data['user_id']."', '".$timestamp."', '0', '0', 0)");
+					$topic_id = $db->insert_id();
+					$db->query("INSERT INTO `".T_POST."` (`topic_id`, `post_text`, `post_user_id`, `post_user_name`, `post_sticky`, `post_delete`, `post_timestamp`) VALUES ('".$topic_id."', '".htmlentities($db->sql_escape($text))."', '".$user->data['user_id']."', '".$user->data['user_displayname']."', '0', 0, '".$timestamp."')");
+					$db->query("UPDATE `".T_TOPIC."` SET `topic_first_post_id`='".$db->insert_id()."', `topic_last_post_id`='".$db->insert_id()."', `topic_last_poster`='".$user->data['user_id']."' WHERE `topic_id`='".$topic_id."'");
+					return json_encode(array('m'=>$topic_id."-".$topic_name));
 				}
+				return json_encode(array('e'=>1,'m'=>'404'));
 			}
-			return false;
+			return json_encode(array('e'=>1,'m'=>'403'));
 		}
 //Bearbeiten
 		function edit_post($forum_id, $topic_id, $post_id, $post_text)
