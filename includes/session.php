@@ -43,17 +43,19 @@ class Session
             $SID = '?' . URI_SESSION . '=' . $this->sid;
         }
 
-        if ( (!empty($this->sid)) || ((isset($_GET[URI_SESSION])) && ($this->sid == $_GET[URI_SESSION])) )
+        if(!empty($this->sid))
         {
-			$sql = 'SELECT u.*, s.*
-                    FROM ' . T_SESSIONS . ' s, ' . T_USER . " u
-                    WHERE s.session_id = '".$db->sql_escape($this->sid)."'
-                    AND u.user_id = s.session_user_id";
+			$sql = "SELECT u.*, s.* FROM " . T_SESSIONS . " s, " . T_USER . " u WHERE s.session_id = '".$db->sql_escape($this->sid)."' AND u.user_id = s.session_user_id";
             $result = $db->query($sql);
 
             $this->data = $db->fetch_record($result);
             $db->free_result($result);
-
+			if(!$this->data)
+			{
+				$this->destroy();
+				header("Location:./news");
+				die();
+			}
             // Did the session exist in the DB?
             if ( isset($this->data['user_id']) )
             {
@@ -72,7 +74,7 @@ class Session
 								WHERE session_id = '" . $this->sid . "'";
                         $db->query($sql);
                     }
-					if(!defined('api'))
+					if(!defined('api') && $this->data['user_id']!=ANONYMOUS)
 						$tpl->assign('LOGIN', true);
                     return true;
                 }
@@ -94,73 +96,66 @@ class Session
 
     function create(&$user_id, &$auto_login, $set_auto_login = false)
     {
-        global $SID, $db, $config;
+		global $SID, $db, $config;
 
-        $session_data = array();
-        $current_time = time();
+		$session_data = array();
+		$current_time = time();
 
-        // Remove old sessions and update user information if necessary.
-        if ( $current_time - $config->get('session_cleanup') > $config->get('session_last_cleanup') )
-        {
+		// Remove old sessions and update user information if necessary.
+		if ( $current_time - $config->get('session_cleanup') > $config->get('session_last_cleanup') )
+		{
 			$this->cleanup($current_time);
-        }
+		}
 
-        // Grab user data
-         $sql = "SELECT u.*, s.session_current
-                FROM (" . T_USER . " u
-                LEFT JOIN " . T_SESSIONS . " s
-                ON s.session_user_id = u.user_id)
-                WHERE u.user_id = '".$db->sql_escape($user_id)."'
-                ORDER BY s.session_current DESC";
+		// Grab user data
+		$sql = "SELECT u.*, s.session_current FROM (" . T_USER . " u LEFT JOIN " . T_SESSIONS . " s ON s.session_user_id = u.user_id) WHERE u.user_id = '".$db->sql_escape($user_id)."' ORDER BY s.session_current DESC";
+		$result = $db->query($sql);
+		$this->data = $db->fetch_record($result);
+		$db->free_result($result);
+		// Check auto login request to see if it's valid
+		if ( empty($this->data) || ($this->data['user_password'] !== $auto_login && !$set_auto_login) || !$this->data['user_active'])
+		{
+			$auto_login = '';
+			$this->data['user_id'] = $user_id = ANONYMOUS;
+		}
 
+		// Grab the last visit if there's an existing session
+		$this->data['session_last_visit'] = ( !empty($this->data['session_current']) ) ? $this->data['session_current'] : (( !empty($this->data['user_lastvisit']) ) ? $this->data['user_lastvisit'] : time());
 
-        $result = $db->query($sql);
-        $this->data = $db->fetch_record($result);
-        $db->free_result($result);
-        // Check auto login request to see if it's valid
-        if ( empty($this->data) || ($this->data['user_password'] !== $auto_login && !$set_auto_login) || !$this->data['user_active'])
-        {
-            $auto_login = '';
-            $this->data['user_id'] = $user_id = ANONYMOUS;
-        }
+		// Create or update the session
+		$query = $db->build_query('UPDATE', array(
+			'session_user_id'    => $user_id,
+			'session_last_visit' => $this->data['session_last_visit'],
+			//'session_start'      => $current_time,
+			'session_current'    => $current_time,
+			'session_page'       => $db->escape($this->current_page))
+		);
+		$sql = 'UPDATE ' . T_SESSIONS . ' SET ' . $query . " WHERE session_id='" . $this->sid . "'";
+		if ( ($this->sid == '') || (!$db->query($sql)) || (!$db->affected_rows()) )
+		{
+			$this->sid = md5(uniqid($this->ip_address));
 
-        // Grab the last visit if there's an existing session
-        $this->data['session_last_visit'] = ( !empty($this->data['session_current']) ) ? $this->data['session_current'] : (( !empty($this->data['user_lastvisit']) ) ? $this->data['user_lastvisit'] : time());
+			$query = $db->build_query('INSERT', array(
+				'session_id'         => $this->sid,
+				'session_user_id'    => $user_id,
+				'session_last_visit' => $this->data['session_last_visit'],
+				'session_start'      => $current_time,
+				'session_current'    => $current_time,
+				'session_ip'         => $this->ip_address,
+				'session_page'       => $db->escape($this->current_page))
+			);
+			$db->query('INSERT INTO ' . T_SESSIONS . $query);
+		}
 
-        // Create or update the session
-        $query = $db->build_query('UPDATE', array(
-            'session_user_id'    => $user_id,
-            'session_last_visit' => $this->data['session_last_visit'],
-            //'session_start'      => $current_time,
-            'session_current'    => $current_time,
-            'session_page'       => $db->escape($this->current_page))
-        );
-        $sql = 'UPDATE ' . T_SESSIONS . ' SET ' . $query . " WHERE session_id='" . $this->sid . "'";
-        if ( ($this->sid == '') || (!$db->query($sql)) || (!$db->affected_rows()) )
-        {
-            $this->sid = md5(uniqid($this->ip_address));
+		$this->data['session_id'] = $this->sid;
 
-            $query = $db->build_query('INSERT', array(
-                'session_id'         => $this->sid,
-                'session_user_id'    => $user_id,
-                'session_last_visit' => $this->data['session_last_visit'],
-                'session_start'      => $current_time,
-                'session_current'    => $current_time,
-                'session_ip'         => $this->ip_address,
-                'session_page'       => $db->escape($this->current_page))
-            );
-            $db->query('INSERT INTO ' . T_SESSIONS . $query);
-        }
+		$session_data['auto_login_id'] = ( ($auto_login) && ($user_id != ANONYMOUS) )? $auto_login : '';
+		$session_data['user_id'] = $user_id;
 
-        $this->data['session_id'] = $this->sid;
-
-        $session_data['auto_login_id'] = ( ($auto_login) && ($user_id != ANONYMOUS) )? $auto_login : '';
-        $session_data['user_id'] = $user_id;
-
-        $this->set_cookie('data', serialize($session_data), $current_time + 31536000);
-        $this->set_cookie('sid', $this->sid, 0);
-        $SID = '?' . URI_SESSION . '=' . (( !isset($_COOKIE['sid']) ) ? $this->sid : '');
-        return true;
+		$this->set_cookie('data', serialize($session_data), $current_time + 31536000);
+		$this->set_cookie('sid', $this->sid, $current_time + 31536000);
+		$SID = '?' . URI_SESSION . '=' . (( !isset($_COOKIE['sid']) ) ? $this->sid : '');
+		return true;
     }
 
     function destroy()
@@ -320,7 +315,7 @@ class User extends Session
         }
         else
         {
-            $sql = "SELECT * FROM " . T_RANKS_RIGHTS . " WHERE rank_id=(SELECT rank_id FROM ".T_USER." WHERE user_id='".$this->data['user_id']."')";
+            $sql = "SELECT * FROM " . T_RANKS_RIGHTS . " WHERE rank_id = (SELECT user_rank FROM ".T_USER." WHERE user_id= ".$this->data['user_id'].")";
         }
         if ( !($result = $db->query($sql)) )
         {
@@ -331,7 +326,7 @@ class User extends Session
             foreach($row as $right=>$value)
 				$this->data['auth'][$right] = $value;
         }
-        $db->free_result($result);
+		$db->free_result($result);
         return;
     }
 
