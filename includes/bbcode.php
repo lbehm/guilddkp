@@ -80,9 +80,9 @@ function bbDeCode($string) {
 		global $db, $config;
 		$id = mb_strtolower($id[1], 'UTF-8');
 		if($id){
-			$query = $db->query("SELECT name, quality FROM ".T_ITEMS." WHERE id = '".$db->sql_escape($id)."';");
+			$query = $db->query("SELECT name, quality, icon FROM ".T_ITEMS." WHERE id = '".$db->sql_escape($id)."';");
 			if($item = $db->fetch_record($query))
-				return '<a href="item='.$id.'" class="bb_item item_quali_'.$item['quality'].'" style="background-image: url(\''.$config->get('icon_repo_tiny').'inv_misc_questionmark.gif\');">'.$item['name'].'</a>';
+				return '<a href="item='.$id.'" class="bb_item item_quali_'.$item['quality'].'" style="background-image: url(\''.$config->get('icon_repo_tiny').$item['icon'].'.gif\');">'.$item['name'].'</a>';
 			else
 				return '<a href="items" class="bb_item item_quali_0" style="background-image: url(\''.$config->get('icon_repo_tiny').'inv_misc_questionmark.gif\');">Unbekannter Gegenstand</a>';
 		}
