@@ -15,7 +15,7 @@ class Session
 
     function start()
     {
-        global $SID, $db, $tpl;
+        global $db, $config, $tpl;
 
         $current_time = time();
 
@@ -27,52 +27,34 @@ class Session
         // Check for cookie'd session data
         $cookie_data         = array();
         $cookie_data['sid']  = $this->get_cookie('sid');
-        $cookie_data['data'] = $this->get_cookie('data');
-        $cookie_data['data'] = ( !empty($cookie_data['data']) ) ? unserialize(stripslashes($cookie_data['data'])) : $cookie_data['data'];
 
-        if ( (isset($cookie_data['sid'])) && (isset($cookie_data['data'])) )
-        {
-            $session_data = ( isset($cookie_data['data']) ) ? $cookie_data['data'] : '';
-            $this->sid    = ( isset($cookie_data['sid']) ) ? $cookie_data['sid'] : '';
-            $SID = '?' . URI_SESSION . '=';
-        }
+		if(isset($cookie_data['sid']))
+            $this->sid = $cookie_data['sid'];
         else
-        {
-            $session_data = array();
-            $this->sid    = ( isset($_GET[URI_SESSION]) ) ? $_GET[URI_SESSION] : '';
-            $SID = '?' . URI_SESSION . '=' . $this->sid;
-        }
+            $this->sid = '';
 
         if(!empty($this->sid))
         {
 			$sql = "SELECT u.*, s.* FROM " . T_SESSIONS . " s, " . T_USER . " u WHERE s.session_id = '".$db->sql_escape($this->sid)."' AND u.user_id = s.session_user_id";
             $result = $db->query($sql);
-
             $this->data = $db->fetch_record($result);
             $db->free_result($result);
-			if(!$this->data)
-			{
-				$this->destroy();
-				header("Location:./news");
-				die();
-			}
-            // Did the session exist in the DB?
+
+			// Did the session exist in the DB?
             if ( isset($this->data['user_id']) )
             {
                 // Validate IP length
                 $s_ip = implode('.', array_slice(explode('.', $this->data['session_ip']), 0, 4));
-                $u_ip = implode('.', array_slice(explode('.', $this->ip_address),         0, 4));
+                $u_ip = implode('.', array_slice(explode('.', $this->ip_address), 0, 4));
 
                 if ( $u_ip == $s_ip )
                 {
                     // Only update session DB a minute or so after last update or if page changes
-                    if ( ($current_time - $this->data['session_current'] > 60) || ($this->data['session_page'] != $this->current_page) )
+                    if ( ($current_time - $this->data['session_current'] > 60) || (($this->data['session_page'] != $this->current_page)&&(!defined('api'))))
                     {
-                        $sql = "UPDATE " . T_SESSIONS . " 
-								SET session_current = '" . $current_time . "', 
-									session_page = '" . $db->escape($this->current_page) . "' 
-								WHERE session_id = '" . $this->sid . "'";
+                        $sql = "UPDATE ".T_SESSIONS." SET session_last_visit = '".$this->data['session_current']."', session_current = '".$current_time."'".((!defined('api'))?", session_page = '".$db->escape($this->current_page)."'":"")." WHERE session_id = '".$this->sid."'";
                         $db->query($sql);
+						$this->set_cookie('sid', $this->sid, $current_time + $config->get('session_length'));
                     }
 					if(!defined('api') && $this->data['user_id']!=ANONYMOUS)
 						$tpl->assign('LOGIN', true);
@@ -83,22 +65,13 @@ class Session
         // If we reach here then no (valid) session exists.  So we'll create a new one,
         // using the cookie user_id if available to pull basic user prefs.
         // Prevent security vulnerability
-        if ( (isset($session_data['auto_login_id'])) && (is_bool($session_data['auto_login_id'])) )
-        {
-           die('Invalid session data.');
-        }
-
-        $auto_login = ( @isset($session_data['auto_login_id']) ) ? $session_data['auto_login_id'] : '';
-        $user_id    = ( @isset($session_data['user_id']) )       ? intval($session_data['user_id']) : ANONYMOUS;
-
-        return $this->create($user_id, $auto_login);
+        return $this->create(ANONYMOUS);
     }
 
-    function create(&$user_id, &$auto_login, $set_auto_login = false)
+    function create($user_id)
     {
-		global $SID, $db, $config;
+		global $db, $config;
 
-		$session_data = array();
 		$current_time = time();
 
 		// Remove old sessions and update user information if necessary.
@@ -106,130 +79,90 @@ class Session
 		{
 			$this->cleanup($current_time);
 		}
+		if(!empty($this->sid))
+        {
+			$this->destroy($this->sid);
+		}
 
+		// Create or update the session
+		$this->sid = md5(uniqid(mt_rand(), true));
+		$query = $db->build_query('INSERT', array(
+			'session_id'         => $this->sid,
+			'session_user_id'    => $user_id,
+			'session_last_visit' => $current_time,
+			'session_start'      => $current_time,
+			'session_current'    => $current_time,
+			'session_page'       => $db->escape($this->current_page),
+			'session_ip'         => $this->ip_address
+		));
+		
 		// Grab user data
-		$sql = "SELECT u.*, s.session_current FROM (" . T_USER . " u LEFT JOIN " . T_SESSIONS . " s ON s.session_user_id = u.user_id) WHERE u.user_id = '".$db->sql_escape($user_id)."' ORDER BY s.session_current DESC";
+		$db->query('INSERT INTO ' . T_SESSIONS . $query);
+		$sql = "SELECT u.*, s.* FROM " . T_SESSIONS . " s, " . T_USER . " u WHERE s.session_id = '".$this->sid."' AND u.user_id = s.session_user_id";
 		$result = $db->query($sql);
 		$this->data = $db->fetch_record($result);
 		$db->free_result($result);
-		// Check auto login request to see if it's valid
-		if ( empty($this->data) || ($this->data['user_password'] !== $auto_login && !$set_auto_login) || !$this->data['user_active'])
-		{
-			$auto_login = '';
-			$this->data['user_id'] = $user_id = ANONYMOUS;
-		}
 
-		// Grab the last visit if there's an existing session
-		$this->data['session_last_visit'] = ( !empty($this->data['session_current']) ) ? $this->data['session_current'] : (( !empty($this->data['user_lastvisit']) ) ? $this->data['user_lastvisit'] : time());
-
-		// Create or update the session
-		$query = $db->build_query('UPDATE', array(
-			'session_user_id'    => $user_id,
-			'session_last_visit' => $this->data['session_last_visit'],
-			//'session_start'      => $current_time,
-			'session_current'    => $current_time,
-			'session_page'       => $db->escape($this->current_page))
-		);
-		$sql = 'UPDATE ' . T_SESSIONS . ' SET ' . $query . " WHERE session_id='" . $this->sid . "'";
-		if ( ($this->sid == '') || (!$db->query($sql)) || (!$db->affected_rows()) )
-		{
-			$this->sid = md5(uniqid($this->ip_address));
-
-			$query = $db->build_query('INSERT', array(
-				'session_id'         => $this->sid,
-				'session_user_id'    => $user_id,
-				'session_last_visit' => $this->data['session_last_visit'],
-				'session_start'      => $current_time,
-				'session_current'    => $current_time,
-				'session_ip'         => $this->ip_address,
-				'session_page'       => $db->escape($this->current_page))
-			);
-			$db->query('INSERT INTO ' . T_SESSIONS . $query);
-		}
-
-		$this->data['session_id'] = $this->sid;
-
-		$session_data['auto_login_id'] = ( ($auto_login) && ($user_id != ANONYMOUS) )? $auto_login : '';
-		$session_data['user_id'] = $user_id;
-
-		$this->set_cookie('data', serialize($session_data), $current_time + 31536000);
-		$this->set_cookie('sid', $this->sid, $current_time + 31536000);
-		$SID = '?' . URI_SESSION . '=' . (( !isset($_COOKIE['sid']) ) ? $this->sid : '');
+		$this->set_cookie('sid', $this->sid, $current_time + $config->get('session_length'));
 		return true;
     }
 
-    function destroy()
+    function destroy($sid = false)
     {
-        global $SID, $db;
-
+        global $db;
         $current_time = time();
+		$sid = ($sid)?$sid:$this->sid;
 
-        $this->set_cookie('data', '0', -1);
-        $this->set_cookie('sid',  '0', -1);
-        $SID = '?' . URI_SESSION . '=';
-
+        // Update User
+		$db->query("UPDATE ".T_USER." SET user_lastvisit='".intval($this->data['session_current'])."' WHERE user_id=(SELECT session_user_id FROM ".T_SESSIONS." WHERE session_id='".$sid."')");
         // Delete existing session
-        $sql = 'UPDATE ' . T_USER . "
-                SET user_lastvisit='" . intval($this->data['session_current']) . "'
-                WHERE user_id='" . $this->data['user_id'] . "'";
-        $db->query($sql);
-
-        $sql = 'DELETE FROM ' . T_SESSIONS . "
-                WHERE session_id='" . $this->sid . "'
-                AND session_user_id='" . $this->data['user_id'] . "'";
-        $db->query($sql);
+        $db->query("DELETE FROM ".T_SESSIONS." WHERE session_id='".$sid."'");
 
         $this->sid = '';
-
         return true;
     }
 
-    function cleanup(&$current_time)
-    {
-        global $db, $config;
+	function cleanup(&$current_time)
+	{
+		global $db, $config;
 
-        // Get expired sessions, only most recent for each user
-        $sql = 'SELECT session_user_id, session_page, MAX(session_current) AS recent_time
-                FROM ' . T_SESSIONS . '
-                WHERE session_current < ' . ($current_time - $config->get('session_length')) . '
-                GROUP BY session_user_id, session_page';
-        $result = $db->query($sql);
+		// Get expired sessions, only most recent for each user
+		$sql = 'SELECT session_user_id, session_page, MAX(session_current) AS recent_time
+				FROM ' . T_SESSIONS . '
+				WHERE session_current < ' . ($current_time - $config->get('session_length')) . '
+				GROUP BY session_user_id, session_page';
+		$result = $db->query($sql);
 
-        $del_user_id  = '';
-        $del_sessions = 0;
-        if ( $row = $db->fetch_record($result) )
-        {
-            do
-            {
-                if ( intval($row['session_user_id']) != ANONYMOUS )
-                {
-                    $sql = 'UPDATE ' . T_USER . "
-                            SET user_lastvisit='" . $row['recent_time'] . "', user_lastpage='" . $db->escape($row['session_page']) . "'
-                            WHERE user_id = '" . $row['session_user_id'] . "'";
-                    $db->query($sql);
-                }
-                $del_user_id .= ( ($del_user_id != '') ? ', ' : '') . " '" . $row['session_user_id'] . "'";
-                $del_sessions++;
-            }
-            while ( $row = $db->fetch_record($result) );
-        }
+		$del_user_id  = '';
+		$del_sessions = 0;
+		if ( $row = $db->fetch_record($result) )
+		{
+			do
+			{
+				$sql = 'UPDATE ' . T_USER . " SET user_lastvisit='" . $row['recent_time'] . "', user_lastpage='" . $db->escape($row['session_page']) . "' WHERE user_id = '" . $row['session_user_id'] . "'";
+				$db->query($sql);
+				$del_user_id .= ( ($del_user_id != '') ? ', ' : '') . " '" . $row['session_user_id'] . "'";
+				$del_sessions++;
+			}
+			while ( $row = $db->fetch_record($result) );
+		}
 
-        if ( $del_user_id != '' )
-        {
-            // Delete expired sessions
-            $sql = 'DELETE FROM ' . T_SESSIONS . "
-                    WHERE session_user_id IN ($del_user_id)
-                    AND session_current < " . ($current_time - $config->get('session_length'));
-            $db->query($sql);
-        }
+		if($del_user_id != '')
+		{
+			// Delete expired sessions
+			$sql = 'DELETE FROM ' . T_SESSIONS . "
+					WHERE session_user_id IN ($del_user_id)
+					AND session_current < " . ($current_time - $config->get('session_length'));
+			$db->query($sql);
+		}
 
-        if ( $del_sessions < 5 )
-        {
-            // Less than 5 sessions, update gc timer
-            // Otherwise we want cleanup called again to delete other sessions
-            $config->put('session_last_cleanup', $current_time);
-        }
-    }
+		if($del_sessions<5)
+		{
+			// Less than 5 sessions, update gc timer
+			// Otherwise we want cleanup called again to delete other sessions
+			$config->put('session_last_cleanup', $current_time);
+		}
+	}
 
     function get_cookie($name)
     {
