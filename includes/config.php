@@ -20,8 +20,11 @@ template_debug = 0
 ids_enabled = 0
 facebook = 0
 session_cleanup = 60
-session_length = 1200
+session_length = 86400
 session_last_cleanup = 0
+cookie_name = "req"
+cookie_path = "/guilddkp"
+cookie_domain = "localhost"
 
 [IDS]
 Database = 0
