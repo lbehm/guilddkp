@@ -1,7 +1,7 @@
 ﻿{include file="header.html"}
 	<div id="topic_page">
 		{if $access}
-			<script type="text/javascript" src="templates/clean/script/forum.js"></script>
+			<script type="text/javascript" src="templates/clean/script/topic.js"></script>
 			<script type="text/javascript">
 				var topic_id = {$forum_info.topic_id};
 				var forum_id = {$forum_info.forum_id};
@@ -17,11 +17,10 @@
 				<li>
 					<img src="{$forum_posts[post_list].POST_ICON}" title="{$forum_posts[post_list].POST_AUTOR}" alt="{$forum_posts[post_list].POST_AUTOR}" />
 					<span class="title">{$forum_posts[post_list].POST_AUTOR}
-					<a class="controls fixlink" name="{$forum_posts[post_list].POST_ID}" href="{$domain}/topic-{$forum_info.topic_id}-{$forum_info.topic_cleantitle}#{$forum_posts[post_list].POST_ID}">¶</a>
-					{if $FB}<span class="controls fb_like"><fb:like href="{$domain}/topic-{$forum_info.topic_id}-{$forum_info.topic_cleantitle}" layout="button_count" font="lucida grande"></fb:like></span>{/if}
+						<a class="controls fixlink" name="{$forum_posts[post_list].POST_ID}" href="{$domain}/topic-{$forum_info.topic_id}-{$forum_info.topic_cleantitle}#{$forum_posts[post_list].POST_ID}">¶</a>
 					</span>
 					<span class="time">{$forum_posts[post_list].POST_DATE}</span>
-					{if $forum_posts[post_list].EDIT_POST}<span class="controls edit">&lt; Bearbeiten &gt;</span>{/if}
+					{if $forum_posts[post_list].EDIT_POST}<span class="controls edit">Bearbeiten</span>{/if}
 					<div class="text">{$forum_posts[post_list].POST_TEXT}</div>
 				</li>
 				{/section}

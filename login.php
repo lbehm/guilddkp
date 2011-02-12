@@ -30,7 +30,7 @@
 	}
 	elseif($logout == true && $user->data['user_id'] != ANONYMOUS)
 	{
-		$user->destroy();
+		$user->destroy($user->sid);
 		die();
 	}
 

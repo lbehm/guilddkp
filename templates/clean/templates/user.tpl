@@ -18,7 +18,7 @@ User nicht gefunden
 			{if $userPage.info.country}<tr><td>Land</td><td>{$userPage.info.country}{if $userPage.info.state} - {$userPage.info.state}{/if}</td></tr>{/if}
 			{if $userPage.info.facebook}<tr><td>Facebook</td><td><a href="http://www.facebook.com/profile.php?id={$userPage.info.facebook}" target="_blank">Zum Profil</a></td></tr>{/if}
 			{if $userPage.info.icq}<tr><td>ICQ</td><td><img src="http://status.icq.com/online.gif?icq={$userPage.info.icq}&img=5">{$userPage.info.icq}</td></tr>{/if}
-			{if $userPage.info.skype}<tr><td>Skype</td><td><img src="http://mystatus.skype.com/smallclassic/{$userPage.info.skype}" style="border: none;" width="114" height="20" alt="Mein Status" />{$userPage.info.skype}</td></tr>{/if}
+			{if $userPage.info.skype}<tr><td>Skype</td><td><a href="skype:{$userPage.info.skype}?call"><img src="http://mystatus.skype.com/smallclassic/{$userPage.info.skype}" style="border: none;" width="114" height="20" alt="{$userPage.info.skype}" /></a></td></tr>{/if}
 			{if $userPage.info.msn}<tr><td>MSN</td><td>{$userPage.info.msn}</td></tr>{/if}
 		</table>
 	</div>

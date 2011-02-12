@@ -71,7 +71,7 @@
 					'u' => ($comments['user_displayname']!='')?$comments['user_displayname']:(($comments['user_name']) ? $comments['user_name'] : "Anonymous"),
 					'n' => ucfirst($comments['user_name']),
 					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"http://www.gravatar.com/avatar/".$comments['emailHash']."?d=identicon",
-					'm' => nl2br($comments['comment_text']),
+					'm' => bbDeCode(nl2br($comments['comment_text'])),
 					'r' => $comments['comment_ranking'],
 					'd' => date('G:i - d.m.', $comments['comment_date'])
 				);

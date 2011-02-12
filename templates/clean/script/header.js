@@ -211,4 +211,11 @@ $(document).ready(function(){
 		
 		return false;
 	});
+
+	$(".bb_item").append('<div class="tooltip"><img src="http://static.wowhead.com/images/wow/icons/large/inv_misc_questionmark.jpg" /><span class="title">Server wird abgefragt...</span></div>');
+	$(".bb_item").hover(function(){
+		$(this).children().css('display', 'block');
+	},function(){
+		$(this).children().css('display', 'none');
+	});
 });

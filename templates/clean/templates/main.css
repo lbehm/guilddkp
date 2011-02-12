@@ -192,3 +192,45 @@ div#reg_box > div > span.btns {
 #sideFrame > .search{
 	display:none;
 }
+
+/*
+ * BB-Codes
+ */
+.bb_user, .bb_char, .bb_item, .bb_race, .bb_class, .bb_skill {
+	color:#000000;
+	text-decoration:underline;
+	padding-left:18px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-size: 15px 15px;
+	line-height: 15px;
+}
+div.tooltip {
+	display: none;
+	min-width: 200px;
+	min-height: 25px;
+	position: absolute;
+	margin-top:-1px;
+	margin-left:15px;
+	padding: 5px;
+	background: rgba(0,0,0,0.9);
+	border-color: #CCCCCC;
+	border-radius: 5px;
+	box-shadow: 1px 2px 4px #888;
+}
+div.tooltip > span.title {
+	display:block;
+	color:#FFD100;
+	font-size:16px;
+}
+div.tooltip > img{
+	width:30px;
+	height:30px;
+	display: block;
+	position:absolute;
+	margin: -5px 0px 0px -42px;
+	padding: 2px;
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
+	background: rgba(0,0,0,0.5);
+}

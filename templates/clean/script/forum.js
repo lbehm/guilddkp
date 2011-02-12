@@ -1,50 +1,37 @@
-/*
-	JS: Forum-API
-*/
 $(function() {
-	var topic_page = 1;
-	var last_page = 1;
-	var f_ud_idle = false;
-	function topic_refresh()
-	{
-		if((topic_page != last_page) || (!f_ud_idle))
-			return false;
-		f_ud_idle = false;
-		$.getJSON('forum.php', 'c=api_topic&p='+topic_page+'&id='+topic_id+'&p_id='+forum_last_post_id,
-			function(j)
-			{
-				if(!j.e)
-				{
-					$.each(j.d,function(i, c)
-					{
-						var new_post = '<li><img src="'+c.ICON+'" alt="'+c.AUTOR+'" title="'+c.AUTOR+'" /><span class="title">'+c.AUTOR+'</span><span class="time">'+c.DATE+'</span><div class="text">'+c.TEXT+'</div></li>';
-						$("div#topic_page ul").append(new_post);
-						if(forum_last_post_id < parseInt(c.ID))
-						{
-							forum_last_post_id = parseInt(c.ID);
-						}
-					});
-				}
-			}
-		);
-		f_ud_idle = true;
-	}
-	$("div#topic_page .new_post > form").submit(function(){
-		var p_text = escape($("div#topic_page .new_post > form > div > textarea#post_text").val());
-		$.ajax({
-			type: "POST",
-			url: "forum.php",
-			data: 'c=execute&set=create_post&topic='+topic_id+'&post_text='+p_text,
-			cache: false,
-			success: function(html){
-				$("div#topic_page .new_post > form > div > textarea#post_text")[0].value = '';
-				$("div#topic_page .new_post > form > div > textarea#post_text")[0].focus();
-				topic_refresh();
-			}
+	$("#sideFrame .forum span.new_topic").click(function(){
+		var forum_id = $(this)[0].id.substr(10);
+		if(!$("div#new_topic")[0])
+			$("body").append('<div id="new_topic"><span>Titel:</span><input type="text"><span>Text:</span><textarea wrap="soft" rows="5"></textarea><div><button class="submit">Topic erstellen</button><button class="close">Abbrechen</button></div></div>');
+		$("div#new_topic")[0].title="Neues Thema";
+		$("div#new_topic > span")[0].innerHTML = "Forum: "+this.parentNode.previousElementSibling.lastChild.innerHTML;
+		$("div#new_topic > div > button.close").click(function(){$("div#new_topic").dialog( "close" );});
+		$("div#new_topic > div > button.submit").unbind('click',false);
+		$("div#new_topic > div > button.submit").click(function(){
+			if($("body div#new_topic > input").val()!='' && $("body div#new_topic > textarea").val()!='')
+				$.ajax({
+					type: "POST",
+					url: "forum.php",
+					data: 'c=execute&set=create_topic&forum='+forum_id+'&title='+escape($("body div#new_topic > input").val())+'&post_text='+escape($("body div#new_topic > textarea").val()),
+					cache: false,
+					success: function(re){
+						var re = jQuery.parseJSON(re);
+						if(re.e==1)
+							alert("Es ist ein unerwarteter Fehler aufgetreten! Fehler-Code: "+re.m);
+						else
+							window.location = "topic-"+re.m;
+					}
+				});
 		});
-		
+		$("div#new_topic > div").buttonset();
+		$("div#new_topic").dialog(
+		{
+			resizable: false,
+			width: 400,
+			height: 235,
+			closeOnEscape: false,
+			modal: false,
+		});
 		return false;
 	});
-	setInterval(function(){topic_refresh();}, 60000);
-	f_ud_idle = true;
 });

@@ -2,6 +2,7 @@
 /*
  *BBCode 2 HTML
  */
+include_once('wow_convert.php');
 function bbDeCode($string) {
 	$preg = array(
 		'/(?<!\\\\)\[color(?::\w+)?=(.*?)\](.*?)\[\/color(?::\w+)?\]/si'   => "<span style=\"color:\\1\">\\2</span>",
@@ -45,6 +46,72 @@ function bbDeCode($string) {
 		'/\\\\(\[\/?\w+(?::\w+)*\])/'                                      => "\\1"
 	);
 	$string = preg_replace(array_keys($preg), array_values($preg), $string);
+
+	// [user]
+	$string = preg_replace_callback('/\[user=(.*?)\]/msi', function($id=false){
+		global $db, $config;
+		$id = mb_strtolower($id[1], 'UTF-8');
+		if($id)
+		{
+			$query = $db->query("SELECT user_displayname, MD5(user_email) as hash, user_icon FROM ".T_USER." WHERE user_name = '".$db->sql_escape($id)."';");
+			if($user = $db->fetch_record($query))
+				return '<a href="user-'.$id.'" class="bb_user" style="background-image: url(\''.(($user['user_icon'] != '')? $user['user_icon']:"http://www.gravatar.com/avatar/".$user['hash']."?d=identicon").'\');">'.$user['user_displayname'].'</a>';
+			else
+				return '<a href="user-Unbekannt" class="bb_user" style="background-image: url(\''.$config->get('icon_repo_tiny').'inv_misc_questionmark.gif\');">Unbekannt</a>';
+		}
+	}, $string);
+	
+	// [char]
+	$string = preg_replace_callback('/\[char=(.*?)\]/msi', function($id=false){
+		global $db, $config, $classes;
+		$id = $id[1];//mb_strtolower($id[1], 'UTF-8');
+		if($id)
+		{
+			$query = $db->query("SELECT char_level, char_race_id, char_class_id FROM ".T_CHAR." WHERE char_name = '".$db->sql_escape($id)."';");
+			if($char = $db->fetch_record($query))
+				return '<a href="char-'.$id.'" class="bb_char" style="background-image: url(\''.$config->get('icon_repo_tiny').$classes[$char['char_class_id']]['icon'].'.gif\');">'.$id.'</a>';
+			else
+				return '<a href="chars" class="bb_char" style="background-image: url(\''.$config->get('icon_repo_tiny').'inv_misc_questionmark.gif\');">Unbekannt</a>';
+		}
+	}, $string);
+	
+	// [item]
+	$string = preg_replace_callback('/(?<!\\\\)\[item=(.*?)\]/msi', function($id=false){
+		global $db, $config;
+		$id = mb_strtolower($id[1], 'UTF-8');
+		if($id){
+			$query = $db->query("SELECT name, quality, icon FROM ".T_ITEMS." WHERE id = '".$db->sql_escape($id)."';");
+			if($item = $db->fetch_record($query))
+				return '<a href="item='.$id.'" class="bb_item item_quali_'.$item['quality'].'" style="background-image: url(\''.$config->get('icon_repo_tiny').$item['icon'].'.gif\');">'.$item['name'].'</a>';
+			else
+				return '<a href="items" class="bb_item item_quali_0" style="background-image: url(\''.$config->get('icon_repo_tiny').'inv_misc_questionmark.gif\');">Unbekannter Gegenstand</a>';
+		}
+	}, $string);
+	
+	// [race]
+	$string = preg_replace_callback('/(?<!\\\\)\[race=(.*?)\]/msi', function($id=false){
+		global $db, $config, $races;
+		$id = mb_strtolower($id[1], 'UTF-8');
+		if($races[$id])
+			return '<a href="race='.$id.'" class="bb_race" style="background-image:url(\''.$config->get('icon_repo_tiny').$races[$id]['icon_m'].'.gif\');">'.$races[$id]['lang'].'</a>';
+	}, $string);
+	
+	// [class]
+	$string = preg_replace_callback('/(?<!\\\\)\[class=(.*?)\]/msi', function($id=false){
+		global $db, $config, $classes;
+		$id = mb_strtolower($id[1], 'UTF-8');
+		if($classes[$id])
+			return '<a href="race='.$id.'" class="bb_class" style="background-image:url(\''.$config->get('icon_repo_tiny').$classes[$id]['icon'].'.gif\');">'.$classes[$id]['name'].'</a>';
+	}, $string);
+	
+	// [skill]
+	$string = preg_replace_callback('/(?<!\\\\)\[skill=(.*?)\]/msi', function($id=false)
+		{
+			global $db, $config, $skill;$id = mb_strtolower($id[1], 'UTF-8');
+			if($skill[$id])
+				return '<a href="http://de.wowhead.com/skill='.$id.'" target="_blank" class="bb_skill" style="background-image:url(\''.$config->get('icon_repo_tiny').$skill[$id]['icon'].'.gif\');">'.$skill[$id]['lang'].'</a>';
+		},$string);
+	
 	return $string;
 }
 ?>

@@ -25,7 +25,7 @@ T_FORUM = "dkp_forum"
 ;T_RAIDS = "dkp_raids"
 ;T_LOGS = "dkp_logs"
 ;T_RAID_ATTENDEES = "dkp_raid_attendees"
-;T_ITEMS = "dkp_items"
+T_ITEMS = "dkp_items"
 T_COMMENTS = "dkp_comments"
 ;T_UPLOADS = "dkp_uploads"
  

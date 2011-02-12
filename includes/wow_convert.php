@@ -278,5 +278,24 @@
 			)
 		)
 	);
+	$races = array(
+		1=>array(
+			'title'=>'Human',
+			'lang'=>'Mensch',
+			'side'=>0,
+			'faction'=>72,
+			'icon_m'=>'race_human_male',
+			'icon_w'=>'race_human_female',
+			'classes'=>array(
+				1=>&$classes[1],
+				2=>&$classes[2],
+				3=>&$classes[3],
+				4=>&$classes[4],
+				5=>&$classes[5],
+				6=>&$classes[6],
+				9=>&$classes[9]
+			)
+		)
+	);
 
 ?>
