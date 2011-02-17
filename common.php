@@ -90,12 +90,12 @@
 		$tpl->assign('user_icon', ($user->data['user_icon'] != '')? $user->data['user_icon']:"http://www.gravatar.com/avatar/".md5($user->data['user_email'])."?d=identicon");
 		
 		$active_user = array();
-		$query = $db->query("SELECT u.user_name as name, u.user_displayname as displayname, u.user_icon as icon, MD5(u.user_email) as hash FROM ".T_SESSIONS." s, ".T_USER." u WHERE session_user_id > 0 AND s.session_user_id = u.user_id;");
+		$query = $db->query("SELECT u.user_name as name, u.user_displayname as displayname, u.user_icon as icon, MD5(u.user_email) as hash FROM (".T_SESSIONS." s JOIN ".T_USER." u ON s.session_user_id = u.user_id) WHERE u.user_rank IN (SELECT rank_id FROM ".T_RANKS." WHERE rank_hide = 0) AND s.session_current > '".(time()-300)."';");
 		while($k = $db->fetch_record($query))
 			$active_user[] = $k;
 		$currentUser="";
 		foreach($active_user as $k=>$v)
-			$currentUser.='<a href="user-'.$v['name'].'"><img alt="'.$v['displayname'].'" title="'.$v['displayname'].'" src="'.(($v['icon']!='')?$v['icon']:"http://www.gravatar.com/avatar/".$v['hash']."?d=identicon").'" /></a>';
+			$currentUser.='<a href="user-'.$v['name'].'"><img class="user" alt="'.$v['displayname'].'" title="'.$v['displayname'].'" src="'.(($v['icon']!='')?$v['icon']:"http://www.gravatar.com/avatar/".$v['hash']."?d=identicon").'" /></a>';
 		$tpl->assign('ACTIVE_USER', $currentUser);
 		if($user->check_auth('rank_read_forum'))
 		{
