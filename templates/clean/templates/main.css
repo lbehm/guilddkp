@@ -168,9 +168,12 @@ tr.headline {
 	margin-top:3px;
 }
 
-div#reg_box > div {
-	width:80%;
-	margin-left:10%;
+div#reg_box {
+	padding:0px;
+}
+div#reg_box > div#reg_step_1 {
+	width:85%;
+	margin-left:5%;
 }
 div#reg_box > div > span.title {
 	text-decoration:underline;

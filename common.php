@@ -76,6 +76,7 @@
 		$tpl->assign('icon_repo_medium', $config->get('icon_repo_medium'));
 		$tpl->assign('icon_repo_large', $config->get('icon_repo_large'));
 		$tpl->assign('FB', ($config->get('facebook'))?true:false);
+		$tpl->assign('FB_APPID', $config->get('facebook_appid'));
 	}
 
 	$SID = '';

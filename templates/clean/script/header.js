@@ -102,113 +102,39 @@ $(document).ready(function(){
 	$("#reg_btn").click(function(){
 		if(!$("div#reg_box")[0])
 			$("body").append('<div id="reg_box" />');
+		FB.init({
+			appId: '',
+			status: true,
+			cookie: true,
+			xfbml: true
+		});
 		$("div#reg_box")[0].title = "Registrieren";
 		$("div#reg_box")[0].innerHTML = '<div id="reg_step_1"><span class="title">Willkommen!</span><div>Requiem bietet Ihnen weitaus mehr, als Sie bisher sehen können!<br />Werden auch Sie ein Mitglied unserer Comunity und und genießen Sie es!<br />In den folgenden Schritten können Sie sich mit unserer Platform im Web verbinden und die Gilde neu erleben!</div><span class="btns"><button class="btn_next">Weiter</button></span></div>';
 		$("div#reg_box btns").buttonset();
 		$("div#reg_box").dialog(
 		{
 			resizable: false,
-			width: 400,
-			height: 250,
+			width: 380,
+			height: 230,
 			closeOnEscape: false,
 			modal: true,
 		});
-		$.ajax({
-			type: "GET",
-			url: "register.php",
-			data: "a=reg&s=2",
-			success: function(t)
+		$("div#reg_box").append('<div id="reg_step_fb" style="display:none;overflow:hidden;height:450px;"><fb:registration fields="[{\'name\':\'name\'},{\'name\':\'first_name\'},{\'name\':\'last_name\'},{\'name\':\'accname\',\'description\':\'Login-Name\',\'type\':\'text\'},{\'name\':\'birthday\'},{\'name\':\'email\'},{\'name\':\'password\'},{\'name\':\'captcha\'}]" redirect-uri="http://requiem-gilde.tk/register.php?a=r&fb=1" width="620px" height="450px" onvalidate="valid_reg"></fb:registration></div>');
+		$("div#reg_box > div#reg_step_fb").append('<script>function valid_reg(f,c){$.getJSON("register.php","a=c&w=un&un="+f.accname,function(re){if(re.r){c({accname:"Dieser Accountname ist bereits vergeben!"});}else{c();}});}</script>');
+		$("div#reg_box .btns .btn_next").click(function(){
+			$("div#reg_box").dialog('close');
+			$("div#reg_box #reg_step_1").hide();
+			$("div#reg_box #reg_step_fb").show();
+			$("div#reg_box").dialog(
 			{
-				if(t!=false)
-				{
-					$("div#reg_box").append('<div id="reg_step_2" style="display:none;">'+t+'</div>');
-					
-					$("form.reg_form #user_name").blur(function(){
-						if(this.value != '')
-						{
-							$.ajax({
-								type: "GET",
-								url: "register.php",
-								data: "a=c&w=un&un="+this.value,
-								cache: false,
-								success: function(html)
-								{
-									if(html==false)
-									{
-											alert("Dieser Benutzername ist leider bereits vergeben!");
-									}
-								}
-							});
-						}
-					});
-					$("form.reg_form #password").blur(function(){
-						if(this.value.length < 5)
-						{
-							alert("Das Passwort, das Sie verwenden wollen ist zu kurtz!");
-						}
-					});
-					$("form.reg_form #password_b").blur(function(){
-						if((this.value != $("form.reg_form #password")[0].value) && $("form.reg_form #password")[0].value != '')
-						{
-							alert("Das wiederholte Passwort ist nicht mit dem ersten identisch!");
-						}
-					});
-					$("form.reg_form").submit(
-						function()
-						{
-							$("table.reg_tbl").hide('slide', {}, 200, function(){
-								$("div.login_loading").html("Loading...");
-								$("div.login_loading").show('slide', {}, 200, function(){
-									$.ajax({
-										type: "GET",
-										url: "register.php",
-										data: "a=r&user_name="+$("form.reg_form #user_name")[0].value+"&display_name="+$("form.reg_form #display_name")[0].value+"&password="+$("form.reg_form #password")[0].value+"&password_b="+$("form.reg_form #password_b")[0].value+"&email="+$("form.reg_form #email")[0].value+"&birthday="+$("form.reg_form #birthday_c")[0].value +"&pic="+$("form.reg_form #pic_url")[0].value,
-										cache: false,
-										success: function(html)
-										{
-											if(html=="OK")
-											{
-												$("div.login_loading").hide('slide', {}, 200, function()
-												{
-													$("div.login_loading").text("Registrierung erfolgreich erstellt!");
-													$("div.login_loading").show('slide', {}, 200, function()
-													{
-														window.location = window.location.href;
-													});
-												});
-											}
-											else
-											{
-												$("div.login_loading").hide('slide', {}, 200, function()
-												{
-													$("div.login_loading").html('Registrierung fehlgeschlagen!<br />Bitte &uuml;berprüfen Sie Ihre Angaben!<br /><div><button id="btn_back">Zurück</button></div>');
-													$("div.login_loading > div button").button();
-													$("div.login_loading > div button#btn_back").click(function(){
-														$("div.login_loading").hide('slide', {}, 200, function()
-														{
-															$("table.reg_tbl").show('slide', {}, 200, function(){});
-														});
-													});
-													$("div.login_loading").show('slide', {}, 200, function(){});
-												});
-											}
-										}
-									});
-								});
-							});
-							return false;
-						}
-					);
-					
-					$("div#reg_box .btns .btn_next").click(function(){
-						$("div#reg_box #reg_step_1").hide();
-						$("div#reg_box #reg_step_2").show();
-						return false;
-					});
-				}
-			}
+				resizable: false,
+				width: 620,
+				height: 480,
+				closeOnEscape: false,
+				modal: true,
+			});
+			return false;
 		});
-		
 		return false;
 	});
 
