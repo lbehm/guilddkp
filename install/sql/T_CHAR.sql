@@ -1,6 +1,6 @@
 CREATE TABLE `dkp_char` (
-`char_id`  smallint(5) NOT NULL AUTO_INCREMENT ,
-`user_id`  smallint(5) UNSIGNED NOT NULL ,
+`char_id`  smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`user_id`  smallint(5) NOT NULL ,
 `char_name`  varchar(12) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL ,
 `char_guild`  varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' ,
 `char_level`  tinyint(2) UNSIGNED NOT NULL DEFAULT 1 ,
@@ -32,13 +32,12 @@ CREATE TABLE `dkp_char` (
 `char_3vs3_v`  smallint(5) UNSIGNED NULL DEFAULT 0 ,
 `char_5vs5_title`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' ,
 `char_5vs5_v`  smallint(5) UNSIGNED NULL DEFAULT 0 ,
-`char_update`  int(11) UNSIGNED NULL DEFAULT 0 ,
-`char_firstraid`  int(11) NULL DEFAULT NULL ,
-`char_lastraid`  int(11) NULL DEFAULT NULL ,
-PRIMARY KEY (`char_id`)
+`char_update`  int(10) UNSIGNED NULL DEFAULT 0 ,
+`char_firstraid`  int(10) UNSIGNED NULL DEFAULT 0 ,
+`char_lastraid`  int(10) UNSIGNED NULL DEFAULT 0 ,
+PRIMARY KEY (`char_id`),
+FOREIGN KEY (`user_id`) REFERENCES `dkp_user` (`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_bin
-AUTO_INCREMENT=1
-ROW_FORMAT=COMPACT
 ;
