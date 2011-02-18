@@ -1,6 +1,6 @@
 ﻿$(function() {
 	$( "#calendar" ).datepicker({showOtherMonths: true,selectOtherMonths: true});
-	$( "#sideFrame" ).accordion({ animated: 'bounceslide' });
+	$( "#sideFrame" ).accordion({ animated: 'bounceslide',autoHeight: false });
 
 });
 

@@ -27,6 +27,7 @@ session_last_cleanup = 0
 cookie_name = "req"
 cookie_path = "/guilddkp"
 cookie_domain = "localhost"
+shoutBox_limit = 7
 
 [IDS]
 Database = 0

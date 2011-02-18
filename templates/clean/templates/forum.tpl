@@ -12,7 +12,7 @@
 				<!-- Buttons für Seite vor/zurück -->
 				{section name=topic_list loop=$forum_topics}
 				<li>
-					<img src="{$forum_topics[topic_list].icon}" title="{$forum_topics[topic_list].last_poster}" alt="" />
+					<img class="user" src="{$forum_topics[topic_list].icon}" title="{$forum_topics[topic_list].last_poster}" alt="" />
 					<span class="title"><a href="{$domain}/topic-{$forum_topics[topic_list].id}-{$forum_topics[topic_list].cleantitle}">{$forum_topics[topic_list].title}</a></span>
 					<span class="time">Letzter Beitrag: {$forum_topics[topic_list].last_poster} - {$forum_topics[topic_list].time}</span>
 				</li>

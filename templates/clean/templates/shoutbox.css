@@ -1,11 +1,6 @@
 .shoutbox {
 	margin:0px;
-	padding-left:2px;
-	height:400px;
-	overflow:hidden;
-}
-.shoutbox span {
-	text-decoration:underline;
+	padding:0px 0px 5px 2px;
 }
 .shoutbox .comment {
 	display: block;
@@ -16,24 +11,24 @@
 	border-radius: 3px 3px 3px 3px;
 	box-shadow: 2px 2px 5px #888;
 }
-.shoutbox .comment img {
-	display: block;
-	height: 22px;
-	width: 22px;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px 3px 3px 3px;
-	margin: 3px 0px 0px 3px;
-	padding: 2px;
-	position: relative;
-	float:left;
-	box-shadow: 1px 2px 4px #888;
-}
 .shoutbox .comment_msg {
 	margin: 2px 0px 0px 36px;
 	font-size: 1em;
 }
 .shoutbox .comment_msg a {
 	color: black;
+}
+.shoutbox .comment_msg > span {
+	visibility: hidden;
+	color: rgba(75,75,75,0.5);
+	position: relative;
+	float: right;
+	right: 0px;
+	top: 0px;
+	margin-right: 2px;
+}
+.shoutbox .comment:hover .comment_msg > span {
+	visibility: visible;
 }
 .shoutbox .comment_box {
 	margin: 3px 4px 0px 2px;

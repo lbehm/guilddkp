@@ -28,7 +28,7 @@ $(function() {
 		{
 			resizable: false,
 			width: 400,
-			height: 235,
+			height: 220,
 			closeOnEscape: false,
 			modal: false,
 		});

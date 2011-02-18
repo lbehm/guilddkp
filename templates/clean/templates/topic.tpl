@@ -15,7 +15,7 @@
 				<!-- Buttons für Seite vor/zurück -->
 				{section name=post_list loop=$forum_posts}
 				<li>
-					<img src="{$forum_posts[post_list].POST_ICON}" title="{$forum_posts[post_list].POST_AUTOR}" alt="{$forum_posts[post_list].POST_AUTOR}" />
+					<img class="user" src="{$forum_posts[post_list].POST_ICON}" title="{$forum_posts[post_list].POST_AUTOR}" alt="" />
 					<span class="title">{$forum_posts[post_list].POST_AUTOR}
 						<a class="controls fixlink" name="{$forum_posts[post_list].POST_ID}" href="{$domain}/topic-{$forum_info.topic_id}-{$forum_info.topic_cleantitle}#{$forum_posts[post_list].POST_ID}">¶</a>
 					</span>
@@ -27,7 +27,7 @@
 			</ul>
 			<div class="new_post">
 				<form action="" method="post" id="post_form">
-					<img src="{$user_icon}" alt="Sie!" />
+					<img class="user" src="{$user_icon}" alt="" title="Sie!" />
 					<div>
 						<span>Auf "{$forum_info.topic_title}" antworten:</span><br />
 						<textarea type="text" id="post_text"></textarea>

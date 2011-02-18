@@ -75,17 +75,6 @@ tr.headline {
 	display:block;
 	overflow-y:hidden;
 }
-.activeUser img{
-	display: block;
-	height: 23px;
-	width: 23px;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px 3px 3px 3px;
-	margin: 4px 0 0 4px;
-	padding: 2px;
-	box-shadow: 1px 2px 4px #888;
-	float: left;
-}
 .scrollNews {
 	height:70px;
 	box-shadow: 1px 1px 2px 3px #888888 inset;
@@ -236,4 +225,18 @@ div.tooltip > img{
 	border: 1px solid #CCCCCC;
 	border-radius: 5px;
 	background: rgba(0,0,0,0.5);
+}
+img.user {
+	display: block;
+	height: 22px;
+	width: 22px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+	margin: 3px 0px 0px 3px;
+	padding: 2px;
+	float:left;
+	box-shadow: 1px 2px 4px #888;
+}
+img.user:hover {
+	-moz-transform: rotate(-10deg) scale(1.2);
 }

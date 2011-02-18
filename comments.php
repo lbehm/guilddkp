@@ -73,6 +73,7 @@
 					'i' => ($comments['user_icon'] != '')? $comments['user_icon']:"http://www.gravatar.com/avatar/".$comments['emailHash']."?d=identicon",
 					'm' => bbDeCode(nl2br($comments['comment_text'])),
 					'r' => $comments['comment_ranking'],
+					'D' => date('G:i', $comments['comment_date']),
 					'd' => date('G:i - d.m.', $comments['comment_date'])
 				);
 				if($comments['comment_respond_to_id']!='')

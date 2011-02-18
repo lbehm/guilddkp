@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<title>{$title}</title>
@@ -48,7 +48,7 @@
 					{if $LOGIN}<h1><a href="#">Shoutbox</a></h1>
 					<div class="shoutbox">
 						<form action="#" method="post" id="comment_form" class="comment_box comment">
-							<img src="{$user_icon}" title="Sie!" alt="Sie!" />
+							<img class="user" src="{$user_icon}" title="Sie!" alt="" />
 							<div>
 								<input type="text" class="sBText" />
 								<input type="submit" class="submit_comment" value="Beitrag senden!" />
@@ -58,7 +58,7 @@
 						</ul>
 					</div>
 					{/if}<h1><a href="#">Raid-Planer</a></h1>
-					<div class="calendar"><div name="calendar" id="calendar"></div></div>
+					<div class="calendar"><div id="calendar"></div></div>
 					{if $FORUM_SEC}
 					{section name=forum_list loop=$FORUM_SEC}
 						<h1><a href="#">{$FORUM_SEC[forum_list].title}</a></h1>

@@ -19,7 +19,7 @@ $(function() {
 				{
 					$.each(j.d,function(i, c)
 					{
-						var new_post = '<li id="'+c.id+'" class="comment" style="display:none;"><img src="'+c.i+'" alt="'+c.u+'" title="'+c.u+'" /><div class="comment_msg"><a href="user-'+c.n+'" class="comment_head">'+c.u+'</a><div>'+c.m+'</div></div></li>';
+						var new_post = '<li id="'+c.id+'" class="comment" style="display:none;"><a href="user-'+c.n+'"><img class="user" src="'+c.i+'" alt="'+c.u+'" title="'+c.u+'" /></a><div class="comment_msg"><a href="user-'+c.n+'" class="comment_head">'+c.u+'</a><span>'+c.D+'</span><div>'+c.m+'</div></div></li>';
 						if(!c.re)
 						{
 							if(!build)

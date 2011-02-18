@@ -1,3 +1,4 @@
+@import "comments.css";
 .news {
 	background: #FFFFFF;
 	padding: 5px 3px 3px 4px;
@@ -15,76 +16,21 @@
 .news_headline{
 	border-bottom: 1px dotted #B2C1C9;
 }
+.news .news_date {
+	visibility: hidden;
+	color: rgba(0,0,0,0.7);
+}
+.news:hover .news_date {
+	visibility: visible;
+}
+.news .fb_like {
+	visibility: hidden;
+}
+.news:hover .fb_like {
+	visibility: visible;
+}
 .news p {
 	font-size: 1.2em;
     line-height: 1.7em;
 	font: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
-}
-.comments_div {
-	border: 1px solid #AAAAAA;
-	border-radius: 5px 5px 5px 5px;
-	padding: 3px 3px 3px 3px;
-}
-.comments_div .comments_headline {
-	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
-	font-size: 1.6em;
-	text-decoration: underline;
-}
-.comments_div #comments_sec {
-	padding-left: 10px;
-}
-.comments_div .comment {
-	display: block;
-	float: clear;
-	margin: 5px 5px 0px 0px;
-	padding-bottom: 5px;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px 3px 3px 3px;
-	box-shadow: 2px 2px 5px #888;
-}
-.comments_div .comment img {
-	display: block;
-	height: 25px;
-	width: 25px;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px 3px 3px 3px;
-	margin: 4px 0 0 4px;
-	padding: 2px;
-	position: absolute;
-	box-shadow: 1px 2px 4px #888;
-}
-.comments_div .comment_msg {
-	margin: 5px 0px 0px 40px;
-	font-size: 1.2em;
-}
-.comments_div .comment_msg a {
-	color: black;
-}
-.comments_div .anwser_link {
-	float: right;
-	margin: 1px 5px 0px 3px;
-	opacity:0.5;
-}
-.comments_div .anwser_link:hover {
-	opacity:1;
-}
-.comments_div .comment_box {
-	margin-left: 10px;
-	margin-bottom: 10px;
-	padding: 5px;
-}
-.comments_div .comment_box div {
-	margin-left: 40px;
-}
-.comments_div .comment_box textarea {
-	border: 1px solid #C0C0C0;
-	border-radius: 5px 5px 5px 5px;
-	box-shadow: 1px 1px 1px 1px #888888 inset;
-	width: 98%;
-	padding: 5px;
-	margin-top: 5px;
-	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
-}
-.comments_div .submit_comment_news {
-	margin: 3px 2px 2px 0px;
 }
