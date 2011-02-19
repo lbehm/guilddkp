@@ -1,6 +1,6 @@
 .comments_div {
 	border: 1px solid #AAAAAA;
-	border-radius: 5px 5px 5px 5px;
+	border-radius: 5px;
 	padding: 3px 3px 3px 3px;
 }
 .comments_div .comments_headline {
@@ -16,12 +16,12 @@
 	margin: 5px 5px 0px 0px;
 	padding-bottom: 5px;
 	border: 1px solid #CCCCCC;
-	border-radius: 3px 3px 3px 3px;
+	border-radius: 3px;
 	box-shadow: 2px 2px 5px #888;
 }
 .comments_div .comment_msg {
 	margin: 5px 0px 0px 40px;
-	font-size: 1.2em;
+	font-size: 14px;
 }
 .comments_div .comment_msg > a {
 	color: black;
@@ -57,7 +57,7 @@ margin-top: 5px;
 }
 .comments_div .comment_box textarea {
 	border: 1px solid #C0C0C0;
-	border-radius: 5px 5px 5px 5px;
+	border-radius: 5px;
 	box-shadow: 1px 1px 1px 1px #888888 inset;
 	width: 98%;
 	padding: 5px;

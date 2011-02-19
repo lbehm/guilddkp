@@ -4,11 +4,10 @@
 }
 .shoutbox .comment {
 	display: block;
-	float: clear;
 	margin: 5px 5px 0px 0px;
 	padding-bottom: 5px;
 	border: 1px solid #CCCCCC;
-	border-radius: 3px 3px 3px 3px;
+	border-radius: 3px;
 	box-shadow: 2px 2px 5px #888;
 }
 .shoutbox .comment_msg {
@@ -40,7 +39,7 @@
 }
 .shoutbox input.sBText {
 	border: 1px solid #C0C0C0;
-	border-radius: 3px 3px 3px 3px;
+	border-radius: 3px;
 	box-shadow: 1px 1px 1px 1px #888888 inset;
 	width: 137px;
 	padding: 5px;

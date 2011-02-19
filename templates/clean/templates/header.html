@@ -7,7 +7,6 @@
 		<link type="text/css" rel="stylesheet" href="templates/clean/templates/shoutbox.css">
 		<link type="text/css" rel="stylesheet" href="templates/clean/templates/news.css">
 		<link type="text/css" rel="stylesheet" href="templates/clean/templates/forum.css">
-		<meta content="text/html" http-equiv="content-type">
 		<meta charset="utf-8">
 		<link type="text/css" href="templates/clean/script/ui/themes/smoothness/jquery-ui-1.8.5.custom.css" rel="Stylesheet" />	
 		<script type="text/javascript" src="templates/clean/script/js/jquery-1.4.2.min.js"></script>
@@ -22,11 +21,11 @@
 		<img class="footer" src="./templates/clean/images/swFooter_1280.png" alt="" />
 		{if $FB}<div id="fb-root"></div>{/if}
 		<div id="box"></div>
-		<table id="body" cellpadding="0" cellspacing="0">
+		<table id="body">
 			<tr class="header">
-				<td colspan="2" style="width:950px; text-align:right;">
+				<td colspan="2">
 					<a href="{$base_page}"><img src="templates/clean/images/logo.png" class="logo" alt="Logo"></a>
-					<!--Menü oben-->
+					<!--MenÃ¼ oben-->
 					<span class="user_menu">{if $LOGIN}<a id="logout_btn" href="login.php?logout=t">Logout</a> | <a id="usercp_btn" href="user">Mein Profil</a> | <a href="">Nachrichten</a>{else}<a id="login_btn" href="">Login</a> | <a id="reg_btn" href="">Registrieren</a>{/if}</span>
 				</td>
 				<td class="topsearch">
@@ -43,7 +42,7 @@
 				</td>
 				<td></td>
 			</tr>
-			<tr width="100%" height="100%">
+			<tr>
 				<td id="sideFrame">
 					{if $LOGIN}<h1><a href="#">Shoutbox</a></h1>
 					<div class="shoutbox">
@@ -83,4 +82,4 @@
 					<h1 class="search"><a href="#">Suche</a></h1>
 					<div class="search"></div>
 				</td>
-				<td id="main_box" width="950px">
+				<td id="main_box">

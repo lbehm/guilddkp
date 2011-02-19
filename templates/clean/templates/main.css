@@ -1,5 +1,5 @@
 ﻿body {
-	font-family:"Arial","Helvetica","Verdana","sans-serif";
+	font-family:Arial,Helvetica,Verdana,Sans-Serif;
 	font-size:10px;
 	margin:0px;
 	min-height:100%;
@@ -39,10 +39,15 @@ table#body {
 	height:100%;
 	border:0px;
 	position:relative;
+	border-spacing:0px;
 }
 tr.header {
 	background:url('./../images/header.png') repeat-x;
 	height:78px;
+}
+tr.header td:first-child {
+	width:950px;
+	text-align:right;
 }
 img.logo {
 	opacity:0.5;
@@ -77,7 +82,6 @@ tr.headline {
 }
 .scrollNews {
 	height:70px;
-	box-shadow: 1px 1px 2px 3px #888888 inset;
 }
 #sideFrame {
 	width:200px;
@@ -185,6 +189,10 @@ div#reg_box > div > span.btns {
 	display:none;
 }
 
+td#main_box {
+	width:950px;
+}
+
 /*
  * BB-Codes
  */
@@ -231,7 +239,7 @@ img.user {
 	height: 22px;
 	width: 22px;
 	border: 1px solid #CCCCCC;
-	border-radius: 3px 3px 3px 3px;
+	border-radius: 3px;
 	margin: 3px 0px 0px 3px;
 	padding: 2px;
 	float:left;

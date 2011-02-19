@@ -39,7 +39,7 @@ $(document).ready(function(){
 										$("div.login_loading").text("Login erfolgreich");
 										$("div.login_loading").show('slide', {}, 200, function()
 										{
-											window.location = window.location.href;
+											window.location.reload();
 										});
 									});
 								}
@@ -88,7 +88,7 @@ $(document).ready(function(){
 							cache: false,
 							success: function(h)
 							{
-								window.location = window.location.href;
+								window.location.reload();
 							}
 					});
 				},

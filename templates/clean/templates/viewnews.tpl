@@ -21,7 +21,7 @@
 							$.each(j.d,
 								function(i, c)
 								{
-									var new_post = '<li id="'+c.id+'" class="comment" style="display:none;"><img class="user" src="'+c.i+'" alt="'+c.u+'" /><div class="comment_msg"><a class="comment_head" name="co_'+c.id+'" href="#co_'+c.id+'">'+c.u+'<span>'+c.d+'</span></a><button class="anwser_link ui-widget ui-state-default" onClick="javascript:anwser_comment('+c.id+');">Antworten</button><div>'+c.m+'</div></div>'+'<ul></ul></li>';
+									var new_post = '<li id="'+c.id+'" class="comment" style="display:none;"><img class="user" src="'+c.i+'" alt="'+c.u+'" /><div class="comment_msg"><a class="comment_head" name="co_'+c.id+'" href="#co_'+c.id+'">'+c.u+'<span>'+c.d+'</span></a>{/literal}{if $LOGIN}<button class="anwser_link ui-widget ui-state-default" onClick="javascript:anwser_comment('+c.id+');">Antworten</button>{/if}{literal}<div>'+c.m+'</div></div>'+'<ul></ul></li>';
 									if(!c.re)
 										$("ul#comments_sec").append(new_post);
 									else
@@ -97,11 +97,13 @@
 		<div class="news{if $news_obj[news_list].STICKY} news_sticky{/if}">
 			<span class="news_headline"><a href="{$domain}/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}">{$news_obj[news_list].HEADLINE} >></a></span><br />
 			<span class="news_date">{$news_obj[news_list].AUTHOR} @ {$news_obj[news_list].TIME}</span>
-			{if $FB}<span class="fb_like" style="float:right;"><fb:like href="{$domain}/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}" layout="button_count" font="lucida grande"></fb:like></span>{/if}<p>{$news_obj[news_list].MESSAGE}</p>
+			{if $FB}<span class="fb_like"><fb:like href="{$domain}/news-{$news_obj[news_list].ID}-{$news_obj[news_list].CLEANTITLE}" layout="button_count" font="lucida grande"></fb:like></span>{/if}
+			<div>{$news_obj[news_list].MESSAGE}</div>
 			{if $SHOW_COMMENTS}
 			<div class="comments_div">
 				<span class="comments_headline">Kommentare:</span>
 				<ul id="comments_sec" style="display:none;"></ul>
+				{if $LOGIN}
 				<form action="#" method="post" id="comment_form" class="comment_box comment">
 					<img class="user" src="{$user_icon}" alt="" />
 					<div><span class="comments_headline">Auf "{$news_obj[news_list].HEADLINE}" antworten:</span><br />
@@ -109,6 +111,7 @@
 						<input type="submit" class="submit_comment_news ui-widget ui-state-default" value="Beitrag senden!" />
 					</div>
 				</form>
+				{/if}
 			</div>
 			{/if}
 		</div>

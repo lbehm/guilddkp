@@ -4,11 +4,11 @@
 	padding: 5px 3px 3px 4px;
 	margin: 5px 2px 1px 2px;
 	border: 1px solid #AAAAAA;
-	border-radius: 5px 5px 5px 5px;
+	border-radius: 5px;
 	box-shadow: 5px 5px 10px #888;
 }
 .news_headline, .news_headline a {
-	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	font-family: Verdana,"Trebuchet MS",Helvetica,Arial,Sans-Serif;
 	color: black;
 	font-size: 1.6em;
 	text-decoration: none;
@@ -24,13 +24,15 @@
 	visibility: visible;
 }
 .news .fb_like {
+	float:right;
 	visibility: hidden;
 }
 .news:hover .fb_like {
 	visibility: visible;
 }
-.news p {
-	font-size: 1.2em;
-    line-height: 1.7em;
-	font: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+.news > div {
+	margin:0px 5px 5px 5px;
+	font-size: 14px;
+    line-height: 16px;
+	font-family: Verdana,"Trebuchet MS",Helvetica,Arial,sans-serif;
 }
