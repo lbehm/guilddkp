@@ -45,24 +45,6 @@ while( $news = $db->fetch_record($result) )
 	{
 		if($user->check_auth('rank_read_comment'))
 		{
-			$sql="SELECT c.*, u.user_displayname FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND c.comment_page = 'news' AND c.comment_attach_id = '".$news['news_id']."';";
-			$comment_result = $db->query($sql);
-			$comments_counter = 0;
-			while($comments = $db->fetch_record($comment_result))
-			{
-				$tpl->append('comments_obj', 
-					array(
-						'news_id' => $news['news_id'],
-						'comment_id' => $comments['comment_id'],
-						'user_name' => ($comments['user_displayname']!='')?$comments['user_displayname'] : $comments['user_name'],
-						'comment_text' => $comments['comment_text'],
-						'comment_ranking' => $comments['comment_ranking'],
-						'comment_date' => date('G:i - d.m.', $comments['comment_date'])
-					)
-				);
-				$comments_counter ++;
-			}
-			$db->free_result($comment_result);
 			$tpl->assign('SHOW_COMMENTS', true);
 		}
 	}
@@ -80,9 +62,11 @@ while( $news = $db->fetch_record($result) )
 			'MESSAGE' => bbDeCode(nl2br($news['news_message']))
 		)
 	);
+	if($newsid)
+		$single_news_title = ": ".$news['news_headline'];
 }
 $db->free_result($result);	
 
-$tpl->assign('title', $config->get('title').' - News');
+$tpl->assign('title', $config->get('title').' - News'.$single_news_title);
 $tpl->display('viewnews.tpl');
 ?>
