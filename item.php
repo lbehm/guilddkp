@@ -30,11 +30,23 @@
 					)
 				);
 		}
+		/*
+		wrong displayid
+		elseif($item['category']==15)
+			if($item['subcategory']==2 || $item['subcategory']==5)
+				$model = array(
+					'flash'=>array(
+						'model'=>$item['displayid'],
+						'type'=>8,
+						'contentPath'=>'http://static.wowhead.com/modelviewer/&amp;blur=1,'
+					)
+				);*/
 		else
 			$model = false;
 		$tpl->append('itemPage',array(
 			'info'=>array(
 				'name'=>$item['name'],
+				'icon'=>$item['icon'],
 				'quality'=>$item['quality'],
 				'displayID'=>$item['displayid'],
 				'model'=>$model

@@ -1,0 +1,25 @@
+.itemPage {
+	background: #FFFFFF;
+	padding: 5px 3px 3px 4px;
+	margin: 5px 2px 1px 2px;
+	border: 1px solid #AAAAAA;
+	border-radius: 5px;
+	box-shadow: 5px 5px 10px #888;
+}
+.itemPage .item_headline {
+	font-size: 25px;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	margin:3px 5px 5px 40px;
+	border-bottom: 1px dotted #B2C1C9;
+}
+.itemPage img.item_image {
+	display: block;
+	height: 22px;
+	width: 22px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px;
+	margin: 3px 0px 0px 3px;
+	padding: 2px;
+	float:left;
+	box-shadow: 1px 2px 4px #888;
+}
