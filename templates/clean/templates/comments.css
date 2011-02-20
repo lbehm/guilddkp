@@ -2,6 +2,7 @@
 	border: 1px solid #AAAAAA;
 	border-radius: 5px;
 	padding: 3px 3px 3px 3px;
+	clear:both;
 }
 .comments_div .comments_headline {
 	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;

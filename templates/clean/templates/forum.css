@@ -47,6 +47,7 @@
 	display:block;
 	vertical-align:middle;
 	margin:4px 3px 0px 5px;
+	cursor: pointer;
 }
 div#new_topic > span, div#new_topic > input, div#new_topic > textarea {
 	display:block;

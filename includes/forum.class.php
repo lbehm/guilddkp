@@ -126,7 +126,7 @@
 				'topic_title' => $topic['topic_title'],
 				'topic_cleantitle' => str_replace(array('|',' ','-'),array('','_','_'),$topic['topic_title']),
 				'last_post_id' => $last_post_id,
-				'TABLE_FOOTER_STATUS' => 'Es wurden '.$topic['post_count'].' Beiträge gefunden.'
+				'TABLE_FOOTER_STATUS' => 'Es wurden '.$topic['post_count'].' BeitrÃ¤ge gefunden.'
 			));
 
 			$tpl->assign('title', $config->get('title').' - Forum - '.$topic['topic_title']);
@@ -188,7 +188,7 @@
 						'title'=>$topic['title'],
 						'cleantitle'=>str_replace(array('|',' ','-'),array('','_','_'),$topic['title']),
 						'forum'=>$topic['forum'],
-						'sticky'=>$topic['sticky'],
+						'sticky'=>($topic['sticky'])?1:0,
 						'closed'=>$topic['closed'],
 						'last_poster'=>$usernames[$topic['last_poster']]['display'],
 						'last_poster_name'=>$usernames[$topic['last_poster']]['name'],
@@ -205,7 +205,7 @@
 				));
 			}
 		}
-//Löschen (nur mit "delete" tagn)
+//LÃ¶schen (nur mit "delete" tagn)
 		function delete_post($forum_id, $topic_id, $post_id)
 		{
 			if($this->check_post($forum_id, $topic_id, $post_id))

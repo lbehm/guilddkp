@@ -120,6 +120,7 @@
 		//User-Daten
 		$tpl->append('userPage',array(
 			'info'=>array(
+				'id'=>$result_user["user_id"],
 				'username'=>htmlentities($result_user["user_displayname"],ENT_QUOTES,'UTF-8'),
 				'user_icon'=>($result_user['user_icon'] != '')?$result_user['user_icon']:"http://www.gravatar.com/avatar/".md5($result_user['user_email'])."?d=identicon",
 				'email'=>$result_user["user_email"],
