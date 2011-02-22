@@ -58,7 +58,7 @@
 				die();
 			}
 			$q_last_id = ($last_id) ? " AND c.comment_id > ".$last_id : "";
-			$sql="SELECT c.*, u.user_name, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM ".T_COMMENTS." c, ".T_USER." u WHERE c.user_id = u.user_id AND ( c.comment_page = '".$comment_page."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$comment_attach."'".$q_last_id." ORDER BY c.comment_date ".$comment_sort." LIMIT ".(($limit)?$limit:25).";";
+			$sql="SELECT c.*, u.user_name, u.user_displayname, u.user_icon, MD5(u.user_email) as emailHash FROM (".T_COMMENTS." c JOIN ".T_USER." u ON c.user_id = u.user_id) WHERE ( c.comment_page = '".$comment_page."' OR c.comment_page = 'comment') AND c.comment_attach_id = '".$comment_attach."'".$q_last_id." ORDER BY c.comment_date ".$comment_sort." LIMIT ".(($limit)?$limit:25).";";
 			$comment_result = $db->query($sql);
 			$comments_counter = 0;
 			$comm=array();
