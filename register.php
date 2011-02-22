@@ -22,7 +22,6 @@
 			die();
 		}
 		
-
 		$b_day = explode('/', $data['registration']['birthday']);
 		$insert_data=array(
 			'user_name'=>$data['registration']['accname'],
@@ -70,7 +69,7 @@
 		2,
 		'".md5(uniqid($insert_data['user_name']))."',
 		1,
-		'".date($insert_data['birthday'])."',
+		'".date('j.n.Y',$insert_data['birthday'])."',
 		'".$db->sql_escape($insert_data['first_name'])."',
 		'".$db->sql_escape($insert_data['last_name'])."',
 		'".$db->sql_escape($insert_data['facebook_name'])."'
