@@ -27,7 +27,7 @@
 		}
 		function get($key, $sec='general')
 		{
-			return $this->_config[$sec][$key];
+			return (array_key_exists($sec,$this->_config))?((array_key_exists($key,$this->_config[$sec]))?$this->_config[$sec][$key]:false):false;
 		}
 		function get_config()
 		{
@@ -147,7 +147,7 @@
 						'val'=>$v['val']
 					);
 			// return updated section
-			return $this->_cache[$sec];
+			return;
 		}
 		/**
 		 * set

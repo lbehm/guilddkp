@@ -10,13 +10,13 @@
 	require_once('filehandler.php');
 	require_once('IDS/Init.php');
 	require_once('input.php');
+	$config = new config_handler($root_dir."/includes/config.php");
 	require_once('mysql.php');
 	require_once('session.php');
 	require_once('bbcode.php');
 	if(!defined('api'))
 		require_once('tpl/Smarty.class.php');
 
-	$config = new config_handler($root_dir."/includes/config.php");
 	$cache = new cache_handler($root_dir."/includes/cache/");
 	// IDS
 	if($config->get('ids_enabled'))

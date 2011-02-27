@@ -219,22 +219,9 @@ class User extends Session
         if ($this->lang_name=='de_de')
         {
         	setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu');
-        	$this->style['date_notime_long']	= ($this->lang['style_date_notime_long']) ? $this->lang['style_date_notime_long'] : 'j F, Y';
-        	$this->style['date_notime_short']	= ($this->lang['style_date_notime_short']) ? $this->lang['style_date_notime_short'] : 'd.m.y';
-        	$this->style['date_time']			= ($this->lang['style_date_time']) ? $this->lang['style_date_time'] : 'd.m.y H:i';
-        	$this->style['time']				= ($this->lang['style_time']) ? $this->lang['style_time'] : 'H:i';
-        	$this->style['strtime_date']		= ($this->lang['style_strtime_date']) ? $this->lang['style_strtime_date'] : '%A %d.%B %Y';
-        	$this->style['strtime_date_short']  = ($this->lang['style_strtime_date_short']) ? $this->lang['style_strtime_date_short'] : '%a %d.%m %H:%M';
 
-        }else {
-        	$this->style['date_notime_long']	= ($this->lang['style_date_notime_long']) ? $this->lang['style_date_notime_long'] : 'F j, Y' ;
-        	$this->style['date_notime_short']	= ($this->lang['style_date_notime_short']) ? $this->lang['style_date_notime_short'] : 'm/d/y' ;
-        	$this->style['date_time']			= ($this->lang['style_date_time']) ? $this->lang['style_date_time'] : 'd.m.y h:ia T' ;
-        	$this->style['time']				= ($this->lang['style_time']) ? $this->lang['style_time'] : 'h:ia';
-        	$this->style['strtime_date']		= ($this->lang['style_strtime_date']) ? $this->lang['style_strtime_date'] : '%A %B %d %Y';
-        	$this->style['strtime_date_short']  = ($this->lang['style_strtime_date_short']) ? $this->lang['style_strtime_date_short'] : '%a %m.%d %I:%M %p';
         }
-
+		
         //$tpl->setTpl(($this->style['template_path'] && (($this->style['template_path'])!=''))?($this->style['template_path']):$config->get('default_template'));
 
         //
@@ -318,25 +305,10 @@ class User extends Session
             return false;
         }
 
-        // If right_option ends with a '_' it's checking for any permissions of that type
-        $exact = ( strrpos($right_option, '_') == (strlen($right_option) - 1) ) ? false : true;
-
-        if( ($exact) && (isset($auth[$right_option])) && ($auth[$right_option] >= $p_need) )
+        if((isset($auth[$right_option])) && ($auth[$right_option] >= $p_need))
 			return true;
 		else
-		{
-			foreach ( $auth as $right => $value )
-			{
-				if ( preg_match('/^('.$right_option.'.+)$/', $option, $match) )
-				{
-					if ( $auth[$match[1]] >= $p_need )
-					{
-						return true;
-					}
-				}
-			}
-		}
-        return false;
+			return false;
     }
 
 	function get_auth($right_option, $user_id=0)

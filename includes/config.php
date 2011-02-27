@@ -4,6 +4,7 @@
 domain = "http://localhost/guilddkp"
 main_page = "news"
 title = "Guild-DKP"
+debug = 0
 online = 1
 offline_msg = "Die Seite ist zur Zeit nicht verfuegbar! Bitte versuchen Sie es spaeter wieder. Danke!"
 allow_reg = 1

@@ -19,7 +19,7 @@
 		$tpl->assign('title', $config->get('title').' - '.htmlentities($result_user["user_displayname"],ENT_QUOTES,'UTF-8'));
 		$sql = 'SELECT * FROM '.T_CHAR." WHERE user_id = '".$result_user['user_id']."' LIMIT 1";
 		$query_char = $db->query($sql) or die("Datenbankabfrage ist fehlgeschlagen!");
-		$result_char = $db->fetch_record($result_char);
+		$result_char = $db->fetch_record($query_char);
 		if ($result_char) {
 			$skill_1_1 = intval($result_char["char_skill_1_1"]);
 			$skill_1_2 = intval($result_char["char_skill_1_2"]);
@@ -92,12 +92,12 @@
 					'char_hp'=>$result_char["char_health"],
 					'char_bar_k'=>$result_char["char_bar_k"],
 					'char_bar_v'=>$result_char["char_bar_v"],
-					'char_prof1_lang'=>($skill[$result_char["char_prof_1_k"]])?$skill[$result_char["char_prof_1_k"]]['lang']:"Kein Beruf",
-					'char_prof1_image'=>($skill[$result_char["char_prof_1_k"]])?$skill[$result_char["char_prof_1_k"]]['icon']:"",
+					'char_prof1_lang'=>(array_key_exists($result_char["char_prof_1_k"], $skill))?$skill[$result_char["char_prof_1_k"]]['lang']:"Kein Beruf",
+					'char_prof1_image'=>(array_key_exists($result_char["char_prof_1_k"], $skill))?$skill[$result_char["char_prof_1_k"]]['icon']:"",
 					'char_prof1_value'=>$result_char["char_prof_1_v"],
 					'char_prof1_percent'=>(int)($result_char["char_prof_1_v"] /450 *100),
-					'char_prof2_lang'=>($skill[$result_char["char_prof_2_k"]])?$skill[$result_char["char_prof_2_k"]]['lang']:"Kein Beruf",
-					'char_prof2_image'=>($skill[$result_char["char_prof_2_k"]])?$skill[$result_char["char_prof_2_k"]]['icon']:"",
+					'char_prof2_lang'=>(array_key_exists($result_char["char_prof_2_k"], $skill))?$skill[$result_char["char_prof_2_k"]]['lang']:"Kein Beruf",
+					'char_prof2_image'=>(array_key_exists($result_char["char_prof_2_k"], $skill))?$skill[$result_char["char_prof_2_k"]]['icon']:"",
 					'char_prof2_value'=>$result_char["char_prof_2_v"],
 					'char_prof2_percent'=>(int)($result_char["char_prof_2_v"] /450 *100),
 					'char_talents1_name'=>$talents_1_name,

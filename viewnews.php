@@ -39,6 +39,7 @@ else
 $cur_news_number = 0;
 $sticky_news = 0;
 $news_array = array();
+$single_news_title = '';
 while( $news = $db->fetch_record($result) )
 {
 	if ($news['nocomments']==0 && $newsid)

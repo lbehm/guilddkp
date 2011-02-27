@@ -85,7 +85,7 @@
 			$db->free_result($comment_result);
 			$cache->set('comment', 'last_id_'.$comment_page.'_'.$comment_attach, (int)$last_id);
 
-			if($comm['data'])
+			if(array_key_exists('data', $comm))
 				$json=array('li'=>$last_id, 'e'=>0,'d'=>$comm['data']);
 			else
 				$json = array('e'=>1);

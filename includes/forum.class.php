@@ -73,7 +73,7 @@
 				'forum_id' => $forum['forum_id'],
 				'forum_name' => $forum['forum_name'],
 				'forum_desc' => $forum['forum_desc'],
-				'closed'=>$forum['closed']
+				'closed'=>$forum['forum_closed']
 			));
 
 			$tpl->assign('title', $config->get('title').' - Forum - '.$topic['topic_title']);
@@ -125,8 +125,7 @@
 				'forum_desc' => $forum['forum_desc'],
 				'topic_title' => $topic['topic_title'],
 				'topic_cleantitle' => str_replace(array('|',' ','-'),array('','_','_'),$topic['topic_title']),
-				'last_post_id' => $last_post_id,
-				'TABLE_FOOTER_STATUS' => 'Es wurden '.$topic['post_count'].' Beiträge gefunden.'
+				'last_post_id' => $last_post_id
 			));
 
 			$tpl->assign('title', $config->get('title').' - Forum - '.$topic['topic_title']);
@@ -139,6 +138,7 @@
 			$psql="SELECT p.*, MD5(u.user_email) as hash, u.user_icon FROM ".T_POST." p, ".T_USER." u WHERE p.post_user_id = u.user_id AND p.topic_id = '".$topic_id."' AND p.post_delete = '0' AND p.post_timestamp > (SELECT post_timestamp FROM ".T_POST." WHERE post_id = '".$last_id."') ORDER BY p.post_timestamp ASC";
 			$pquery=$db->query($psql);
 			$last_post_id = 0;
+			$posts = array();
 			while($post=$db->fetch_record($pquery))
 			{
 				$posts[$post['post_id']] = array(

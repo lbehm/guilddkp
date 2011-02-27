@@ -111,7 +111,7 @@ class dbal_mysql extends dbal
      */
     function sql_query($query, $params = false)
     {
-        global $table_prefix;
+        global $table_prefix, $config;
 
         if ( $query != '' )
         {
@@ -141,8 +141,8 @@ class dbal_mysql extends dbal
             {
                 $message = $this->sql_error($query);
 
-                if ( DEBUG )
-                {
+				if($config->get('debug'))
+				{
                     echo $message;
                 }
                 // FIXME: I don't think this is a good idea. If there's an error and it's not debugging, then it should be a hard error.
@@ -153,8 +153,8 @@ class dbal_mysql extends dbal
             }
 
             // SQL Reporting
-            if ( DEBUG == 2 )
-            {
+			if($config->get('debug') == 2)
+			{
                 $this->queries[] = $query;
             }
 
