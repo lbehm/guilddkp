@@ -22,7 +22,8 @@
 				return false;
 			$this->_config = parse_ini_file($this->_filename, true);
 			foreach($this->_config['define'] as $k=>$v)
-				define($k, $v);
+				if(!defined($k))
+					define($k, $v);
 			return true;
 		}
 		function get($key, $sec='general')

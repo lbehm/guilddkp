@@ -1,0 +1,81 @@
+div.item_tooltip {
+	width:320px;
+	color:#FFFFFF;
+	font-size:12px;
+	font-family:Verdana,sans-serif;
+	margin:5px;
+	padding: 5px;
+	background: rgba(0,0,30,0.9);
+	border-color: #CCCCCC;
+	border-radius: 5px;
+	box-shadow: 1px 2px 4px #888;
+	display:inline-block;
+}
+.item_name, .item_heroic, 
+.item_dps, .item_stats, .item_durability, 
+.item_races, .item_classes, .item_level, .item_skill, .item_event, .item_reputation, .item_arena, 
+.item_itemlevel, .item_gearscore, .item_use, .item_eqstats, .item_price {
+	display:block;
+	clear:both;
+}
+.item_name {
+	font-size: 14px;
+}
+.item_weaponTypes {
+	display:block;
+}
+.item_class, .item_speed {
+	float:right;
+}
+.Iquali_0 {
+	color: #9D9D9D !important;
+}
+.Iquali_1 {
+	color: #FFFFFF !important;
+}
+.Iquali_2 {
+	color: #1EFF00 !important;
+}
+.Iquali_3 {
+	color: #0070DD !important;
+}
+.Iquali_4 {
+	color: #A335EE !important;
+}
+.Iquali_5 {
+	color: #FF8000 !important;
+}
+.Iquali_6 {
+	color: #E5CC80 !important;
+}
+.Iquali_7 {
+	color: #E5CC80 !important;
+}
+.Iquali_8 {
+	color: #FFFF98 !important;
+}
+.Iquali_9 {
+	color: #71D5FF !important;
+}
+.Iquali_10 {
+	color: #FF4040 !important;
+}
+.Qquali, .item_desc {
+	color: #FFD100 !important;
+}
+.item_heroic, .item_use, .item_eqstats {
+	color: #1EFF00 !important;
+}
+.item_price > span {
+	padding-right: 15px;
+	background: none no-repeat scroll right center transparent;
+}
+.item_price > .moneygold {
+	background-image: url("http://static.wowhead.com/images/icons/money-gold.gif");
+}
+.item_price > .moneysilver {
+	background-image: url("http://static.wowhead.com/images/icons/money-silver.gif");
+}
+.item_price > .moneycopper {
+	background-image: url("http://static.wowhead.com/images/icons/money-copper.gif");
+}

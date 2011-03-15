@@ -1,4 +1,5 @@
-﻿body {
+@import "item_tooltip.css";
+body {
 	font-family:Arial,Helvetica,Verdana,Sans-Serif;
 	font-size:10px;
 	margin:0px;

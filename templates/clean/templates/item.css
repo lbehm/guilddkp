@@ -23,3 +23,13 @@
 	float:left;
 	box-shadow: 1px 2px 4px #888;
 }
+.itemPage > .item_stats {
+	display:inline-block;
+	width:100%;
+}
+.itemPage .item_model {
+	float:right;
+	border-radius: 5px;
+	box-shadow: 1px 2px 4px #888;
+	margin:5px;
+}

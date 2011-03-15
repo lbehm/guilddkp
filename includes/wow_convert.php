@@ -7,7 +7,7 @@
 			'icon'=>'trade_alchemy',
 			'special'=>array(
 				1=>'Meister der Elixiere',
-				2=>'Meister der Tränke',
+				2=>'Meister der Tr&auml;nke',
 				3=>'Meister der Transmutation'
 			)
 		),
@@ -20,7 +20,7 @@
 		),
 		794=>array(
 			'title'=>'Archaeology',
-			'lang'=>'Archäologie',
+			'lang'=>'Arch&auml;ologie',
 			'type'=>0,
 			'icon'=>'trade_archaeology'
 		),
@@ -42,8 +42,8 @@
 			'type'=>1,
 			'icon'=>'trade_engineering',
 			'special'=>array(
-				1=>'Gobliningenieur',
-				2=>'Gnomeningenieur'
+				20219=>'Gnomeningenieur',
+				20222=>'Gobliningenieur'
 			)
 		),
 		773=>array(
@@ -66,13 +66,13 @@
 		),
 		182=>array(
 			'title'=>'Herbalism',
-			'lang'=>'Kräuterkunde',
+			'lang'=>'Kr&auml;uterkunde',
 			'type'=>1,
 			'icon'=>'spell_nature_naturetouchgrow'
 		),
 		393=>array(
 			'title'=>'Skinning',
-			'lang'=>'Kürschnerei',
+			'lang'=>'K&uuml;rschnerei',
 			'type'=>1,
 			'icon'=>'inv_misc_pelt_wolf_01'
 		),
@@ -82,9 +82,9 @@
 			'type'=>1,
 			'icon'=>'inv_misc_armorkit_17',
 			'special'=>array(
-				1=>'Drachenlederverarbeitung',
-				2=>'Elementarlederverarbeitung',
-				3=>'Stammeslederverarbeitung'
+				10656=>'Drachenschuppenlederverarbeitung',
+				10658=>'Elementarlederverarbeitung',
+				10660=>'Stammeslederverarbeitung'
 			)
 		),
 		164=>array(
@@ -93,9 +93,11 @@
 			'type'=>1,
 			'icon'=>'trade_blacksmithing',
 			'special'=>array(
-				1=>'Hammerschmiedemeister',
-				2=>'Axtschmiedemeister',
-				3=>'Schwertschmiedemeister'
+				9787=>'Waffenschmied',
+				9788=>'R&uuml;stungsschmied',
+				17039=>'Schwertschmiedemeister',
+				17040=>'Hammerschmiedemeister',
+				17041=>'Axtschmiedemeister'
 			)
 		),
 		197=>array(
@@ -104,9 +106,9 @@
 			'type'=>1,
 			'icon'=>'trade_tailoring',
 			'special'=>array(
-				1=>'Mondstoffschneiderei',
-				2=>'Zauberfeuerschneiderei',
-				3=>'Schattenzwirnschneiderei'
+				26797=>'Zauberfeuerschneiderei',
+				26798=>'Mondstoffschneiderei',
+				26801=>'Schattenzwirnschneiderei'
 			)
 		),
 		333=>array(
@@ -150,7 +152,7 @@
 			)
 		),
 		3 => array(
-			'name'=>'Jäger',
+			'name'=>'J&auml;ger',
 			'icon'=>'class_hunter',
 			1=>array(
 				'name'=>'Tierherrschaft',
@@ -161,7 +163,7 @@
 				'icon'=>'ability_marksmanship'
 			),
 			3=>array(
-				'name'=>'Überleben',
+				'name'=>'&Uuml;berleben',
 				'icon'=>'ability_hunter_swiftstrike'
 			)
 		),
@@ -177,7 +179,7 @@
 				'icon'=>'ability_backstab'
 			),
 			3=>array(
-				'name'=>'Täuschung',
+				'name'=>'T&auml;uschung',
 				'icon'=>'ability_stealth'
 			)
 		),
@@ -221,7 +223,7 @@
 				'icon'=>'spell_nature_lightning'
 			),
 			2=>array(
-				'name'=>'Verstärker',
+				'name'=>'Verst&auml;rker',
 				'icon'=>'spell_nature_lightningshield'
 			),
 			3=>array(
@@ -253,11 +255,11 @@
 				'icon'=>'spell_shadow_deathcoil'
 			),
 			2=>array(
-				'name'=>'Dämonologie',
+				'name'=>'D&auml;monologie',
 				'icon'=>'spell_shadow_metamorphosis'
 			),
 			3=>array(
-				'name'=>'Zerstörung',
+				'name'=>'Zerst&ouml;rung',
 				'icon'=>'spell_shadow_rainoffire'
 			)
 		),
@@ -297,5 +299,64 @@
 			)
 		)
 	);
-
+	$reputation = array(
+		0=>"Hasserf&uuml;llt",
+		1=>"Feindselig",
+		2=>"Unfreundlich",
+		3=>"Neutral",
+		4=>"Freundlich",
+		5=>"Wohlwollend",
+		6=>"Respektvoll",
+		7=>"Ehrf&uuml;rchtig"
+	);
+	$factions = array(
+		47 => "Eisenschmiede",
+		54 => "Gnomeregangnome",
+		59 => "Thoriumbruderschaft",
+		67 => "Horde",
+		68 => "Unterstadt",
+		69 => "Darnassus",
+		72 => "Sturmwind",
+		76 => "Orgrimmar",
+		81 => "Donnerfels",
+		270 => "Stamm der Zandalari",
+		529 => "Argentumd&auml;mmerung",
+		530 => "Dunkelspeertrolle",
+		576 => "Holzschlundfeste",
+		609 => "Zirkel des Cenarius",
+		910 => "Brut Nozdormus",
+		911 => "Silbermond",
+		922 => "Tristessa",
+		930 => "Die Exodar",
+		932 => "Die Aldor",
+		933 => "Das Konsortium",
+		934 => "Die Seher",
+		935 => "Die Sha'tar",
+		941 => "Die Mag'har",
+		942 => "Expedition des Cenarius",
+		946 => "Ehrenfeste",
+		947 => "Thrallmar",
+		967 => "Das Violette Auge",
+		970 => "Sporeggar",
+		978 => "Kurenai",
+		989 => "H&uuml;ter der Zeit",
+		990 => "Die W&auml;chter der Sande",
+		1011 => "Unteres Viertel",
+		1012 => "Die Todesh&ouml;rigen",
+		1015 => "Netherschwingen",
+		1031 => "Himmelswache der Sha'tari",
+		1037 => "Vorposten der Allianz",
+		1038 => "Ogri'la",
+		1052 => "Expedition der Horde",
+		1073 => "Die Kalu'ak",
+		1077 => "Offensive der Zerschmetterten Sonne",
+		1090 => "Kirin Tor",
+		1091 => "Der Wyrmruhpakt",
+		1098 => "Ritter der Schwarzen Klinge",
+		1104 => "Stamm der Wildherzen",
+		1105 => "Die Orakel",
+		1106 => "Argentumkreuzzug",
+		1119 => "Die S&ouml;hne Hodirs",
+		1156 => "Das &auml;scherne Verdikt"
+	);
 ?>
