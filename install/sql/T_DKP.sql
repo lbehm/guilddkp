@@ -7,7 +7,7 @@ CREATE TABLE `dkp_dkp` (
 `dkp_note`  text CHARACTER SET utf8 COLLATE utf8_bin NULL ,
 `dkp_time`  int(10) UNSIGNED NOT NULL,
 PRIMARY KEY (`dkp_id`),
-CONSTRAINT `fk_dkp_user_id` FOREIGN KEY (`user_id`) REFERENCES `dkp_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+CONSTRAINT `fk_dkp_char_id` FOREIGN KEY (`char_id`) REFERENCES `dkp_char` (`char_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_bin

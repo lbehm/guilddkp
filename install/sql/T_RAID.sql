@@ -17,6 +17,7 @@ CREATE TABLE `dkp_raid_type` (
 `raid_short_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT 'Raidabkuerzung' ,
 `raid_difficult`  enum('40','25H','25','10H','10','5H','5') CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'Schwierigkeitsgrad, wenn keine Instanz: NULL' ,
 `raid_zone`  mediumint(8) UNSIGNED NULL DEFAULT NULL COMMENT 'MapID, wenn keine Instanz: NULL' ,
+`raid_icon`  varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' ,
 PRIMARY KEY (`raid_type`)
 )
 ENGINE=InnoDB
