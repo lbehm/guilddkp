@@ -148,7 +148,7 @@
 						'val'=>$v['val']
 					);
 			// return updated section
-			return;
+			return true;
 		}
 		/**
 		 * set
