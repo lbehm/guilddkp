@@ -84,6 +84,31 @@ tr.headline {
 .scrollNews {
 	height:70px;
 }
+.headline .quick_dkp {
+	background-color: #EEEEEE;
+	display: block;
+	height: 50px;
+	max-width: 200px;
+	margin: 8px;
+	overflow-y: auto;
+	box-shadow: 1px 1px 5px 5px #EEEEEE;
+	font-family: Verdana;
+	cursor: default;
+}
+.headline .quick_dkp div {
+	font-size: 12px;
+	text-decoration: underline;
+}
+.headline .quick_dkp ul, #activities .dkpRank ul {
+	margin: 0px;
+	padding: 0px;
+}
+.headline .quick_dkp li, #activities .dkpRank li {
+	list-style-type: none;
+}
+.headline .quick_dkp li span, #activities .dkpRank li span {
+	float: right;
+}
 #sideFrame {
 	width:200px;
 	vertical-align:top;
@@ -92,18 +117,72 @@ tr.headline {
 	height:100%;
 }
 #sideFrame > div{
-	width:194px;
 	box-shadow: 1px 2px 1px #888;
 	padding:0px;
 	margin:0px;
 }
 #sideFrame .ui-accordion-header {
 	box-shadow: 1px 2px 1px #888;
-	width:194px;
 }
 #sideFrame .ui-accordion-content {
 	top:0px;
 	overflow:hidden;
+}
+#activities {
+	width: 210px;
+	vertical-align: top;
+	position: fixed;
+	padding: 5px 3px 3px 3px;
+	height:100%;
+}
+#activities > div{
+	box-shadow: 1px 2px 1px #888;
+	padding:0px;
+	margin:0px;
+}
+#activities .ui-accordion-header {
+	box-shadow: 1px 2px 1px #888;
+}
+#activities .ui-accordion-content {
+	top:0px;
+	overflow:hidden;
+}
+#activities .dkpRank ul {
+	padding: 3px 3px 5px 5px;
+}
+#activities .dkpRank li {
+	margin: 1px 0px 0px 0px;
+	font-size: 10px;
+}
+#activities .lastRaids ul, #activities .lastItems ul {
+	margin: 0px;
+	padding: 0px;
+}
+#activities .lastRaids li, #activities .lastItems li {
+	list-style-type: none;
+	height: 30px;
+	padding-bottom: 5px;
+	border-bottom: 1px dotted #B2C1C9;
+}
+#activities .lastRaids li > a, #activities .lastItems li > a {
+	border-bottom: 1px dotted #B2C1C9;
+	color: black;
+	display: block;
+	margin-left: 37px;
+	text-decoration: none;
+	overflow-x: hidden;
+	height: 15px;
+}
+#activities .lastItems li .loot_details {
+	margin-left: 7px;
+}
+#activities .lastRaids li .raid_details {
+	margin-top: 1px;
+	margin-left: 37px;
+	display: block;
+}
+#activities .lastRaids li .raid_details a {
+	margin-right: 1px;
 }
 .calendar {
 	max-height:183px;
@@ -235,7 +314,10 @@ div.tooltip > img{
 	border-radius: 5px;
 	background: rgba(0,0,0,0.5);
 }
-img.user {
+img.user:hover {
+	-moz-transform: rotate(-10deg) scale(1.2);
+}
+img.icon {
 	display: block;
 	height: 22px;
 	width: 22px;
@@ -245,7 +327,4 @@ img.user {
 	padding: 2px;
 	float:left;
 	box-shadow: 1px 2px 4px #888;
-}
-img.user:hover {
-	-moz-transform: rotate(-10deg) scale(1.2);
 }

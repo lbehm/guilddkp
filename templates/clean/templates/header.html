@@ -27,7 +27,7 @@
 			<tr class="header">
 				<td colspan="2">
 					<a href="{$base_page}"><img src="templates/clean/images/logo.png" class="logo" alt="Logo"></a>
-					<!--Menü oben-->
+					<!--Men&uuml; oben-->
 					<span class="user_menu">{if $LOGIN}<a id="logout_btn" href="login.php?logout=t">Logout</a> | <a id="usercp_btn" href="user">Mein Profil</a> | <a href="">Nachrichten</a>{else}<a id="login_btn" href="">Login</a> | <a id="reg_btn" href="">Registrieren</a>{/if}</span>
 				</td>
 				<td class="topsearch">
@@ -42,14 +42,19 @@
 				<td class="scrollNews">
 					{$headspace}
 				</td>
-				<td></td>
+				{if $quickDKP}<td><div class="quick_dkp">
+					<div class="head">DKP &Uuml;bersicht:</div>
+					<ul>{section name=dkp_list loop=$quickDKP}
+						<li><a class="bb_class" style="background-image:url('{$icon_repo}{$quickDKP[dkp_list].icon}.jpg');" href="char-{$quickDKP[dkp_list].id}-{$quickDKP[dkp_list].name}">{$quickDKP[dkp_list].name}</a><span class="dkp">{$quickDKP[dkp_list].dkp} DKP</span></li>
+					{/section}</ul>
+				</div></td>{else}<td></td>{/if}
 			</tr>
 			<tr>
 				<td id="sideFrame">
 					{if $LOGIN}<h1><a href="#">Shoutbox</a></h1>
 					<div class="shoutbox">
 						<form action="#" method="post" id="comment_form" class="comment_box comment">
-							<img class="user" src="{$user_icon}" title="Sie!" alt="" />
+							<img class="user icon" src="{$user_icon}" title="Sie!" alt="" />
 							<div>
 								<input type="text" class="sBText" />
 								<input type="submit" class="submit_comment" value="Beitrag senden!" />

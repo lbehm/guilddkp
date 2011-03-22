@@ -3,21 +3,21 @@
 {if $raidPage.error == "raid"}
 Raid nicht gefunden
 {else}
-	<img class="raid_image" src="{$icon_repo_large}{$raidPage.info.icon}.jpg" alt="" />
+	<img class="icon" src="{$icon_repo_large}{$raidPage.info.icon}.jpg" alt="" />
 	<div class="raid_headline">{$raidPage.info.title}</div>
 	<span class="raid_date">Raidleader: {$raidPage.info.leader_name} - Start: {$raidPage.info.start} Ende: {$raidPage.info.end}</span>
 
 	<div class="raid_kills">
 	{section name=kills_list loop=$raidPage.kills}
-		<div class="boss_name">{$raidPage.kills[kills_list].name}</div>
+		<div class="boss_name">{$raidPage.kills[kills_list].name}<span>( More )</span></div>
 		<div class="boss_details">
 			<span class="boss_dkp">Erhalten: {$raidPage.kills[kills_list].dkp} DKP</span>
 			<div class="loot_list">
 			{section name=loot_list loop=$raidPage.kills[kills_list].loot}
 				<div class="loot_item">
-					<img class="item_image" src="{$icon_repo_large}{$raidPage.kills[kills_list].loot[loot_list].item_icon}.jpg" alt="" />
+					<img class="icon" src="{$icon_repo_large}{$raidPage.kills[kills_list].loot[loot_list].item_icon}.jpg" alt="" />
 					<a href="item={$raidPage.kills[kills_list].loot[loot_list].item_id}">{$raidPage.kills[kills_list].loot[loot_list].item_name}</a>
-					<span class="loot_details">Für <span class="loot_dkp">{$raidPage.kills[kills_list].loot[loot_list].dkp}</span> DKP @ <a class="loot_looter" href="char-{$raidPage.kills[kills_list].loot[loot_list].looter_id}-{$raidPage.kills[kills_list].loot[loot_list].looter}">{$raidPage.kills[kills_list].loot[loot_list].looter}</a></span>
+					<span class="loot_details">F&uuml;r <span class="loot_dkp">{$raidPage.kills[kills_list].loot[loot_list].dkp}</span> DKP @ <a class="loot_looter" href="char-{$raidPage.kills[kills_list].loot[loot_list].looter_id}-{$raidPage.kills[kills_list].loot[loot_list].looter}">{$raidPage.kills[kills_list].loot[loot_list].looter}</a></span>
 				</div>
 			{/section}
 			</div>
@@ -59,16 +59,12 @@ Raid nicht gefunden
 	</div>
 	
 	<script type="text/javascript">{literal}
-		$("div.raidPage > .raid_kills > .boss_name").click(function()
-		{
-			$(this).next().toggle('slide', {direction:'up'}, 200);
-			return false;
-		}).next().hide();
+		$("div.raidPage > .raid_kills > .boss_name").click(function(){$(this).next().toggle('slide', {direction:'up'}, 200);return false;}).next().hide();
 	{/literal}</script>
 	<!-- 
 		layout like news
-		accordion für bosse
-			aufklappen für loot
+		accordion f&uuml;r bosse
+			aufklappen f&uuml;r loot
 	-->
 {/if}
 </div>

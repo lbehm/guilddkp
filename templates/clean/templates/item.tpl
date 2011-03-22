@@ -3,7 +3,7 @@
 {if $itemPage.error == "item"}
 Item nicht gefunden
 {else}
-	<img class="item_image" src="{$icon_repo_large}{$itemPage.info.icon}.jpg" alt="" />
+	<img class="icon" src="{$icon_repo_large}{$itemPage.info.icon}.jpg" alt="" />
 	<div class="item_headline">{$itemPage.info.name}</div>
 
 	<div class="item_stats">

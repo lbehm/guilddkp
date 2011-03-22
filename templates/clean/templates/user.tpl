@@ -3,7 +3,7 @@
 {if $userPage.error == "user"}
 User nicht gefunden
 {else}
-	<img class="user user_image" src="{$userPage.info.user_icon}" alt="" />
+	<img class="user icon user_image" src="{$userPage.info.user_icon}" alt="" />
 	<div class="user_headline">
 		Profil - {$userPage.info.username}
 	</div>
@@ -12,7 +12,7 @@ User nicht gefunden
 	<div class="user_contact">
 		<table border="0" cellspacing="0" cellpadding="4px">
 			<tr><th>Name</th><td>{$userPage.info.firstname} {$userPage.info.lastname}</td></tr>
-			{if $userPage.info.gender}<tr><th>Geschlecht</th><td>{if $userPage.info.gender == 1}Männlich{elseif $userPage.info.gender == 2}Weiblich{/if}</td></tr>{/if}
+			{if $userPage.info.gender}<tr><th>Geschlecht</th><td>{if $userPage.info.gender == 1}M&auml;nnlich{elseif $userPage.info.gender == 2}Weiblich{/if}</td></tr>{/if}
 			{if $userPage.info.bday}<tr><th>Geburtstag</th><td>{$userPage.info.bday}</td></tr>{/if}
 			{if $userPage.info.town}<tr><th>Wohnort</th><td>{$userPage.info.town}</td></tr>{/if}
 			{if $userPage.info.country}<tr><th>Land</th><td>{$userPage.info.country}{if $userPage.info.state} - {$userPage.info.state}{/if}</td></tr>{/if}
@@ -129,7 +129,7 @@ User nicht gefunden
 							$.each(j.d,
 								function(i, c)
 								{
-									var new_post = '<li id="'+c.id+'" class="comment" style="display:none;"><img class="user" src="'+c.i+'" alt="'+c.u+'" /><div class="comment_msg"><a class="comment_head" name="co_'+c.id+'" href="#co_'+c.id+'">'+c.u+'<span>'+c.d+'</span></a>{/literal}{if $LOGIN}<button class="anwser_link ui-widget ui-state-default" onClick="javascript:anwser_comment('+c.id+');">Antworten</button>{/if}{literal}<div>'+c.m+'</div></div>'+'<ul></ul></li>';
+									var new_post = '<li id="'+c.id+'" class="comment" style="display:none;"><img class="user icon" src="'+c.i+'" alt="'+c.u+'" /><div class="comment_msg"><a class="comment_head" name="co_'+c.id+'" href="#co_'+c.id+'">'+c.u+'<span>'+c.d+'</span></a>{/literal}{if $LOGIN}<button class="anwser_link ui-widget ui-state-default" onClick="javascript:anwser_comment('+c.id+');">Antworten</button>{/if}{literal}<div>'+c.m+'</div></div>'+'<ul></ul></li>';
 									if(!c.re)
 										$("ul#comments_sec").append(new_post);
 									else
@@ -167,7 +167,7 @@ User nicht gefunden
 			});
 			function anwser_comment(comment_id)
 			{
-				$("#comments_sec li.comment#"+comment_id).append('<form style="display:none;" action="#" method="post" id="comment_anwser_form_'+comment_id+'" class="comment_box comment">{/literal}<img class="user" src="{$user_icon}" alt="" />{literal}<div><textarea type="text" id="comment_'+comment_id+'"></textarea><input type="submit" class="submit_comment_user ui-widget ui-state-default" id="'+comment_id+'" value="Jetzt Antworten!" /><input type="button" class="comment_form_esc ui-widget ui-state-default" onClick="close_comment_form('+comment_id+');" value="Abbrechen" /></div></form>');
+				$("#comments_sec li.comment#"+comment_id).append('<form style="display:none;" action="#" method="post" id="comment_anwser_form_'+comment_id+'" class="comment_box comment">{/literal}<img class="user icon" src="{$user_icon}" alt="" />{literal}<div><textarea type="text" id="comment_'+comment_id+'"></textarea><input type="submit" class="submit_comment_user ui-widget ui-state-default" id="'+comment_id+'" value="Jetzt Antworten!" /><input type="button" class="comment_form_esc ui-widget ui-state-default" onClick="close_comment_form('+comment_id+');" value="Abbrechen" /></div></form>');
 				$("#comments_sec li.comment#"+comment_id+" > form").show('slide', {direction:'up'}, 500, function(){$("#comment_anwser_form_"+comment_id+" #comment_"+comment_id)[0].focus();});
 				$("li#"+comment_id+" > div > button")[0].disabled = true;
 				$("#comment_anwser_form_"+comment_id).submit(function()
@@ -205,7 +205,7 @@ User nicht gefunden
 		<ul id="comments_sec"></ul>
 		{if $LOGIN}
 		<form action="#" method="post" id="comment_form" class="comment_box comment">
-			<img class="user" src="{$user_icon}" alt="" />
+			<img class="user icon" src="{$user_icon}" alt="" />
 			<div><span class="comments_headline">{$userPage.info.username} etwas schreiben:</span><br />
 				<textarea type="text" id="user_comment_text"></textarea>
 				<input type="submit" class="submit_comment_user ui-widget ui-state-default" value="Beitrag senden!" />

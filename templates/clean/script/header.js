@@ -1,7 +1,7 @@
 ﻿$(function() {
 	$( "#calendar" ).datepicker({showOtherMonths: true,selectOtherMonths: true});
 	$( "#sideFrame" ).accordion({ animated: 'bounceslide',autoHeight: false });
-
+	$( "#activities" ).accordion({ animated: 'bounceslide',autoHeight: false });
 });
 
 $(document).ready(function(){
@@ -47,7 +47,7 @@ $(document).ready(function(){
 								{
 									$("div.login_loading").hide('slide', {}, 200, function()
 									{
-										$("div.login_loading").html('<div style="padding:3px;" class="ui-state-error ui-corner-all">Login fehlgeschlagen!<br />Bitte &uuml;berprüfen Sie Ihre Logindaten!</div><div class="loginfailbtns"><button width="100%" id="btn_back">Zurück</button><button id="btn_lostpwd">Passwort vergessen</button></div>');
+										$("div.login_loading").html('<div style="padding:3px;" class="ui-state-error ui-corner-all">Login fehlgeschlagen!<br />Bitte &uuml;berpr&uuml;fen Sie Ihre Logindaten!</div><div class="loginfailbtns"><button width="100%" id="btn_back">Zur&uuml;ck</button><button id="btn_lostpwd">Passwort vergessen</button></div>');
 										$("div.login_loading > div.loginfailbtns button").button();
 										$("div.login_loading > div.loginfailbtns button#btn_back").click(function(){
 											$("div.login_loading").hide('slide', {}, 200, function()
@@ -109,7 +109,7 @@ $(document).ready(function(){
 			xfbml: true
 		});
 		$("div#reg_box")[0].title = "Registrieren";
-		$("div#reg_box")[0].innerHTML = '<div id="reg_step_1"><span class="title">Willkommen!</span><div>Requiem bietet Ihnen weitaus mehr, als Sie bisher sehen können!<br />Werden auch Sie ein Mitglied unserer Comunity und und genießen Sie es!<br />In den folgenden Schritten können Sie sich mit unserer Platform im Web verbinden und die Gilde neu erleben!</div><span class="btns"><button class="btn_next">Weiter</button></span></div>';
+		$("div#reg_box")[0].innerHTML = '<div id="reg_step_1"><span class="title">Willkommen!</span><div>Requiem bietet Ihnen weitaus mehr, als Sie bisher sehen k&ouml;nnen!<br />Werden auch Sie ein Mitglied unserer Comunity und und genießen Sie es!<br />In den folgenden Schritten k&ouml;nnen Sie sich mit unserer Platform im Web verbinden und die Gilde neu erleben!</div><span class="btns"><button class="btn_next">Weiter</button></span></div>';
 		$("div#reg_box btns").buttonset();
 		$("div#reg_box").dialog(
 		{

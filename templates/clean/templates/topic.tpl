@@ -12,10 +12,10 @@
 			</script>
 			<ul>
 				<li class="headline"><a href="{$domain}/forum-{$forum_info.forum_id}-{$forum_info.forum_cleantitle}">{$forum_info.forum_name}</a> &gt;&gt; {$forum_info.topic_title}</li>
-				<!-- Buttons für Seite vor/zurück -->
+				<!-- Buttons f&uuml;r Seite vor/zur&uuml;ck -->
 				{section name=post_list loop=$forum_posts}
 				<li>
-					<img class="user" src="{$forum_posts[post_list].POST_ICON}" title="{$forum_posts[post_list].POST_AUTOR}" alt="" />
+					<img class="user icon" src="{$forum_posts[post_list].POST_ICON}" title="{$forum_posts[post_list].POST_AUTOR}" alt="" />
 					<span class="title">{$forum_posts[post_list].POST_AUTOR}
 						<a class="controls fixlink" name="{$forum_posts[post_list].POST_ID}" href="{$domain}/topic-{$forum_info.topic_id}-{$forum_info.topic_cleantitle}#{$forum_posts[post_list].POST_ID}">¶</a>
 					</span>
@@ -27,7 +27,7 @@
 			</ul>
 			<div class="new_post">
 				<form action="" method="post" id="post_form">
-					<img class="user" src="{$user_icon}" alt="" title="Sie!" />
+					<img class="user icon" src="{$user_icon}" alt="" title="Sie!" />
 					<div>
 						<span>Auf "{$forum_info.topic_title}" antworten:</span><br />
 						<textarea type="text" id="post_text"></textarea>
@@ -38,9 +38,9 @@
 		{else}
 			<div class="access_denied">
 				<span>Zugriff verweigert</span>
-				<div>Sie haben keine ausreichenden Berechtigungen, um auf Das Forum Zugreifen zu können.<br />
+				<div>Sie haben keine ausreichenden Berechtigungen, um auf Das Forum Zugreifen zu k&ouml;nnen.<br />
 				{if $LOGIN}
-				Wenden Sie sich für weitere Fragen an den Administrator!
+				Wenden Sie sich f&uuml;r weitere Fragen an den Administrator!
 				{else}
 				Melden Sie sich an um auf gesperrte Inhalte zuzugreifen!
 				{/if}

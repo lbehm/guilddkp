@@ -1,6 +1,45 @@
 
 				</td>
-				<td class="error_box"></td>
+				<td id="activities">
+				{if $activities.dkpRank}
+					<h1><a href="#">DKP Ranking</a></h1>
+					<div class="dkpRank">
+						<ul>
+						{section name=dkpRank loop=$activities.dkpRank}
+							<li><a class="bb_class" style="background-image:url('{$icon_repo}{$activities.dkpRank[dkpRank].icon}.jpg');" href="char-{$activities.dkpRank[dkpRank].id}-{$activities.dkpRank[dkpRank].name}">{$activities.dkpRank[dkpRank].name}</a><span class="dkp">{$activities.dkpRank[dkpRank].dkp} DKP</span></li>
+						{/section}
+						</ul>
+					</div>
+				{/if}
+				{if $activities.lastRaids}
+					<h1><a href="#">Letzte Raids</a></h1>
+					<div class="lastRaids">
+						<ul>
+						{section name=lastRaids loop=$activities.lastRaids}
+							<li>
+								<img class="icon" src="{$icon_repo_large}{$activities.lastRaids[lastRaids].icon}.jpg" alt="" title="{$activities.lastRaids[lastRaids].name}" />
+								<a href="raid-{$activities.lastRaids[lastRaids].id}">{$activities.lastRaids[lastRaids].short_name} @ {$activities.lastRaids[lastRaids].date}</a>
+								<span class="raid_details">{section name=loot loop=$activities.lastRaids[lastRaids].loot}<a href="item={$activities.lastRaids[lastRaids].loot[loot].item_id}"><img src="{$icon_repo_tiny}{$activities.lastRaids[lastRaids].loot[loot].item_icon}.gif" alt="" title="{$activities.lastRaids[lastRaids].loot[loot].item_name}" /></a>{/section}</span>
+							</li>
+						{/section}
+						</ul>
+					</div>
+				{/if}
+				{if $activities.lastItems}
+					<h1><a href="#">Letzte Items</a></h1>
+					<div class="lastItems">
+						<ul>
+						{section name=lastItems loop=$activities.lastItems}
+							<li>
+								<img class="icon" src="{$icon_repo_large}{$activities.lastItems[lastItems].item_icon}.jpg" alt="" title="{$activities.lastItems[lastItems].item_name}" />
+								<a href="item={$activities.lastItems[lastItems].item_id}">{$activities.lastItems[lastItems].item_name}</a>
+								<span class="loot_details">F&uuml;r <span class="loot_dkp">{$activities.lastItems[lastItems].dkp}</span> DKP @ <a class="loot_looter" href="char-{$activities.lastItems[lastItems].looter_id}-{$activities.lastItems[lastItems].looter}">{$activities.lastItems[lastItems].looter}</a></span>
+							</li>
+						{/section}
+						</ul>
+					</div>
+				{/if}
+				</td>
 			</tr>
 		</table>
 	</body>

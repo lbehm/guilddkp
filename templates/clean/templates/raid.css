@@ -12,17 +12,6 @@
 	margin:3px 5px 5px 40px;
 	border-bottom: 1px dotted #B2C1C9;
 }
-.raidPage img.raid_image {
-	display: block;
-	height: 22px;
-	width: 22px;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px;
-	margin: 3px 0px 0px 3px;
-	padding: 2px;
-	float:left;
-	box-shadow: 1px 2px 4px #888;
-}
 .raidPage .raid_date {
 	color: rgba(0,0,0,0.7);
 }
@@ -31,6 +20,11 @@
 	margin-top:5px;
 	padding-top:5px;
 	border-top:1px dotted #B2C1C9;
+}
+.raidPage .raid_kills .boss_name span {
+	font-size:8px;
+	color: #909090;
+	margin-left: 5px;
 }
 .raidPage .raid_kills {
 	margin-bottom:5px;
@@ -57,17 +51,6 @@
 	display: block;
 	margin-left: 37px;
 	text-decoration: none;
-}
-.raidPage .raid_kills .boss_details .loot_item .item_image {
-	display: block;
-	height: 22px;
-	width: 22px;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px;
-	margin: 3px 0px 0px 3px;
-	padding: 2px;
-	float:left;
-	box-shadow: 1px 2px 4px #888;
 }
 .raidPage .raid_kills .boss_details .boss_attendees table td {
 	width: 200px;

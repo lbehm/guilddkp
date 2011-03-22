@@ -1,7 +1,13 @@
 <?php
-/*
- *BBCode 2 HTML
- */
+	if(!defined('intern'))
+	{
+		header('HTTP/1.0 404 Not Found');
+		exit;
+	}
+	/**
+	 * includes/bbcode.php
+	 * by devimplode
+	 */
 include_once('wow_convert.php');
 function bbDeCode($string) {
 	$preg = array(

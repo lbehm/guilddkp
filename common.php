@@ -14,6 +14,7 @@
 	require_once('mysql.php');
 	require_once('session.php');
 	require_once('bbcode.php');
+	require_once('functions.php');
 	if(!defined('api'))
 		require_once('tpl/Smarty.class.php');
 
@@ -95,7 +96,7 @@
 			$active_user[] = $k;
 		$currentUser="";
 		foreach($active_user as $k=>$v)
-			$currentUser.='<a href="user-'.$v['name'].'"><img class="user" alt="'.$v['displayname'].'" title="'.$v['displayname'].'" src="'.(($v['icon']!='')?$v['icon']:"http://www.gravatar.com/avatar/".$v['hash']."?d=identicon").'" /></a>';
+			$currentUser.='<a href="user-'.$v['name'].'"><img class="user icon" alt="'.$v['displayname'].'" title="'.$v['displayname'].'" src="'.(($v['icon']!='')?$v['icon']:"http://www.gravatar.com/avatar/".$v['hash']."?d=identicon").'" /></a>';
 		$tpl->assign('ACTIVE_USER', $currentUser);
 		if($user->check_auth('rank_read_forum'))
 		{
@@ -103,6 +104,8 @@
 			$forum=new forum;
 			$forum->generate_menu();
 		}
+		funct::generateQuickDKP();
+		funct::generateMenu('right_bar');
 	}
 	
 

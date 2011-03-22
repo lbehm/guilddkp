@@ -1,4 +1,13 @@
 <?php
+	if(!defined('intern'))
+	{
+		header('HTTP/1.0 404 Not Found');
+		exit;
+	}
+	/**
+	 * includes/wow_convert.php
+	 * by devimplode
+	 */
 	$skill = array(
 		171=>array(
 			'title'=>'Alchemy',

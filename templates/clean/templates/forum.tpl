@@ -9,10 +9,10 @@
 			</script>
 			<ul>
 				<li class="headline">{$forum_info.forum_name}</li>
-				<!-- Buttons für Seite vor/zurück -->
+				<!-- Buttons f&uuml;r Seite vor/zur&uuml;ck -->
 				{section name=topic_list loop=$forum_topics}
 				<li>
-					<img class="user" src="{$forum_topics[topic_list].icon}" title="{$forum_topics[topic_list].last_poster}" alt="" />
+					<img class="user icon" src="{$forum_topics[topic_list].icon}" title="{$forum_topics[topic_list].last_poster}" alt="" />
 					<span class="title"><a href="{$domain}/topic-{$forum_topics[topic_list].id}-{$forum_topics[topic_list].cleantitle}">{$forum_topics[topic_list].title}</a></span>
 					<span class="time">Letzter Beitrag: {$forum_topics[topic_list].last_poster} - {$forum_topics[topic_list].time}</span>
 				</li>
@@ -21,9 +21,9 @@
 		{else}
 			<div class="access_denied">
 				<span>Zugriff verweigert</span>
-				<div>Sie haben keine ausreichenden Berechtigungen, um auf Das Forum Zugreifen zu können.<br />
+				<div>Sie haben keine ausreichenden Berechtigungen, um auf Das Forum Zugreifen zu k&ouml;nnen.<br />
 				{if $LOGIN}
-				Wenden Sie sich für weitere Fragen an den Administrator!
+				Wenden Sie sich f&uuml;r weitere Fragen an den Administrator!
 				{else}
 				Melden Sie sich an um auf gesperrte Inhalte zuzugreifen!
 				{/if}
