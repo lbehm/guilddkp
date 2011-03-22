@@ -20,6 +20,7 @@
 	margin-top:5px;
 	padding-top:5px;
 	border-top:1px dotted #B2C1C9;
+	cursor: pointer;
 }
 .raidPage .raid_kills .boss_name span {
 	font-size:8px;
