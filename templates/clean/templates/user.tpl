@@ -9,19 +9,57 @@ User nicht gefunden
 	</div>
 
 	{if $LOGIN}
-	<div class="user_contact">
-		<table border="0" cellspacing="0" cellpadding="4px">
-			<tr><th>Name</th><td>{$userPage.info.firstname} {$userPage.info.lastname}</td></tr>
-			{if $userPage.info.gender}<tr><th>Geschlecht</th><td>{if $userPage.info.gender == 1}M&auml;nnlich{elseif $userPage.info.gender == 2}Weiblich{/if}</td></tr>{/if}
-			{if $userPage.info.bday}<tr><th>Geburtstag</th><td>{$userPage.info.bday}</td></tr>{/if}
-			{if $userPage.info.town}<tr><th>Wohnort</th><td>{$userPage.info.town}</td></tr>{/if}
-			{if $userPage.info.country}<tr><th>Land</th><td>{$userPage.info.country}{if $userPage.info.state} - {$userPage.info.state}{/if}</td></tr>{/if}
-			{if $userPage.info.facebook}<tr><th>Facebook</th><td><a class="fb" href="http://www.facebook.com/profile.php?id={$userPage.info.facebook}" target="_blank">Zum Profil</a></td></tr>{/if}
-			{if $userPage.info.icq}<tr><th>ICQ</th><td><img src="http://status.icq.com/online.gif?icq={$userPage.info.icq}&img=5">{$userPage.info.icq}</td></tr>{/if}
-			{if $userPage.info.skype}<tr><th>Skype</th><td><a href="skype:{$userPage.info.skype}?call"><img src="http://mystatus.skype.com/smallclassic/{$userPage.info.skype}" style="border: none;" width="114" height="20" alt="{$userPage.info.skype}" /></a></td></tr>{/if}
-			{if $userPage.info.msn}<tr><th>MSN</th><td>{$userPage.info.msn}</td></tr>{/if}
-		</table>
-	</div>
+		{if $userPage.editMode}
+			<div class="user_contact">
+				<form action="#" method="post" id="userDetails_form">
+					<table border="0" cellspacing="0" cellpadding="4px">
+						<tbody>
+							<tr><th>Name</th><td><input type="text" id="firstname" name="firstname" value="{$userPage.info.firstname}" /></td></tr>
+							<tr><th></th><td><input type="text" id="firstname" name="lastname" value="{$userPage.info.lastname}" /></td></tr>
+							<tr><th>Foto</th><td><img class="icon" src="{$userPage.info.user_icon}" alt="" /><input type="text" id="icon" name="icon" /></td></tr>
+							<tr><th>Geschlecht</th><td><span id="gender">{if $userPage.info.gender == 1}M&auml;nnlich{elseif $userPage.info.gender == 2}Weiblich{/if}</span></td></tr>
+							<tr><th>Geburtstag</th><td><input type="text" id="bday" name="bday" value="{$userPage.info.bday}" /></td></tr>
+							<tr><th>Wohnort</th><td><input type="text" id="town" name="town" value="{$userPage.info.town}" /></td></tr>
+							<!--<tr><th>Land</th><td>{$userPage.info.country}{if $userPage.info.state} - {$userPage.info.state}{/if}</td></tr>-->
+							{if $FB}<tr><th>Facebook</th><td><a class="fb" href="http://www.facebook.com/profile.php?id={$userPage.info.facebook}" target="_blank">Zum Profil</a></td></tr>{/if}
+							<tr><th>ICQ</th><td><img src="http://status.icq.com/online.gif?icq={$userPage.info.icq}&img=5" /><input type="text" id="icq" name="icq" value="{$userPage.info.icq}" /></td></tr>
+							<tr><th>Skype</th><td><input type="text" id="skype" name="skype" value="{$userPage.info.skype}" /></a></td></tr>
+							<tr><th>MSN</th><td><input type="text" id="msn" name="msn" value="{$userPage.info.msn}" /></td></tr>
+							<tr class="need_editMode"><th></th><td><input class="saveBtn" type="button" value="Speichern"/></td></tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+			<script type="text/javascript">
+			{literal}
+				$(function()
+				{
+					$(".userPage .user_contact form input, .userPage .user_contact form img.icon").click(function(e){
+						$(this.parentNode.parentNode.parentNode.parentNode.parentNode).addClass("editMode");
+					});
+					$(".userPage .user_contact form img.icon").click(function(e){
+						this.style.display = 'none';
+						this.nextSibling.style.display = 'inline';
+						this.nextSibling.focus();
+					});
+				});
+			{/literal}
+			</script>
+		{else}
+			<div class="user_contact">
+				<table border="0" cellspacing="0" cellpadding="4px">
+					<tr><th>Name</th><td>{$userPage.info.firstname} {$userPage.info.lastname}</td></tr>
+					{if $userPage.info.gender}<tr><th>Geschlecht</th><td>{if $userPage.info.gender == 1}M&auml;nnlich{elseif $userPage.info.gender == 2}Weiblich{/if}</td></tr>{/if}
+					{if $userPage.info.bday}<tr><th>Geburtstag</th><td>{$userPage.info.bday}</td></tr>{/if}
+					{if $userPage.info.town}<tr><th>Wohnort</th><td>{$userPage.info.town}</td></tr>{/if}
+					<!--{if $userPage.info.country}<tr><th>Land</th><td>{$userPage.info.country}{if $userPage.info.state} - {$userPage.info.state}{/if}</td></tr>{/if}-->
+					{if $userPage.info.facebook}<tr><th>Facebook</th><td><a class="fb" href="http://www.facebook.com/profile.php?id={$userPage.info.facebook}" target="_blank">Zum Profil</a></td></tr>{/if}
+					{if $userPage.info.icq}<tr><th>ICQ</th><td><img src="http://status.icq.com/online.gif?icq={$userPage.info.icq}&img=5">{$userPage.info.icq}</td></tr>{/if}
+					{if $userPage.info.skype}<tr><th>Skype</th><td><a href="skype:{$userPage.info.skype}?call"><img src="http://mystatus.skype.com/smallclassic/{$userPage.info.skype}" style="border: none;" width="114" height="20" alt="{$userPage.info.skype}" /></a></td></tr>{/if}
+					{if $userPage.info.msn}<tr><th>MSN</th><td>{$userPage.info.msn}</td></tr>{/if}
+				</table>
+			</div>
+		{/if}
 	{/if}
 	{if $userPage.error != "char"}
 	<div class="user_charinfo">

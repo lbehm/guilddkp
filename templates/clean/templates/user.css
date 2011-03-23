@@ -35,6 +35,43 @@
 .userPage .user_contact table td {
 	padding-bottom:15px;
 }
+.userPage .user_contact form input {
+	border: none;
+	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	padding: 2px 5px 2px 5px;
+	cursor: pointer;
+}
+.userPage .user_contact form img.icon {
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+}
+.userPage .user_contact form input#icon {
+	display: none;
+}
+.userPage .user_contact form.editMode input {
+	border: 1px solid #C0C0C0;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 1px 1px 1px 1px #888888 inset;
+}
+.userPage .user_contact form tr.need_editMode {
+	display: none;
+}
+.userPage .user_contact form.editMode tr.need_editMode {
+	display: table-row;
+}
+.userPage .user_contact form.editMode span#gender {
+	
+}
+.userPage .user_contact form input.saveBtn {
+	box-shadow: 1px 1px 1px #888888;
+}
+.userPage .user_contact form input.saveBtn:hover {
+	box-shadow: 2px 2px 5px #AAAAAA;
+}
+.userPage .user_contact form input.saveBtn:active {
+	box-shadow: 1px 1px 1px 1px #888888 inset;
+}
 .userPage .user_contact table td a.fb {
 	background-color: #5B74A8;
 	border-color: #29447E #29447E #1A356E;

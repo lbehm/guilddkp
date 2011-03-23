@@ -116,7 +116,13 @@
 			$tpl->append('userPage',array(
 				'error'=>"char"
 			),true);
-		
+		if($username == $user->data['user_name'])
+		{
+			// Eigenes Profil - switch to edit-mode
+			$tpl->append('userPage',array(
+				'editMode'=>true
+			),true);
+		}
 		//User-Daten
 		$tpl->append('userPage',array(
 			'info'=>array(
