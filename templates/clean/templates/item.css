@@ -12,17 +12,6 @@
 	margin:3px 5px 5px 40px;
 	border-bottom: 1px dotted #B2C1C9;
 }
-.itemPage img.item_image {
-	display: block;
-	height: 22px;
-	width: 22px;
-	border: 1px solid #CCCCCC;
-	border-radius: 3px;
-	margin: 3px 0px 0px 3px;
-	padding: 2px;
-	float:left;
-	box-shadow: 1px 2px 4px #888;
-}
 .itemPage > .item_stats {
 	display:inline-block;
 	width:100%;
