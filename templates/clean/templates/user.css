@@ -49,6 +49,12 @@
 .userPage .user_contact form input#icon {
 	display: none;
 }
+.userPage .user_contact form.editMode img.icon {
+	display: none;
+}
+.userPage .user_contact form.editMode input#icon {
+	display: inline;
+}
 .userPage .user_contact form.editMode input {
 	border: 1px solid #C0C0C0;
 	border-radius: 3px 3px 3px 3px;

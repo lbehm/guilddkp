@@ -21,6 +21,7 @@ template_debug = 0
 ids_enabled = 0
 facebook = 1
 facebook_appid = ""
+facebook_apikey = ""
 facebook_secret = ""
 session_cleanup = 60
 session_length = 86400
