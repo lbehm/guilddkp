@@ -155,5 +155,206 @@
 			}
 			$tpl->append('activities', array('dkpRank'=>$dkpRank), true);
 		}
+		function getDKP()
+		{
+			global $config, $db, $classes;
+			$out="";
+			$out.="--[START]\n";
+			$out.="-------------------------------------------------\n";
+			$out.="----              dkp_list.lua               ----\n";
+			$out.="----  dkp_list.lua is generated from getDKP  ----\n";
+			$out.="----  created on: ".date('j.n.Y G:i:s')."\n";
+			$out.="----          by: ".$config->get('domain')."\n";
+			$out.="-------------------------------------------------\n\n";
+			$out.="multiTable = {\n";
+			$out.="\t[1] = {\n\t\t[\"dkp\"] = {\n";
+			$out.="\t\t\t[\"name\"] = \"dkp\",\n";
+			$out.="\t\t\t[\"disc\"] = \"Raid DKP\",\n";
+			$out.="\t\t\t[\"events\"] = \"\"\n\t\t},\n\t},\n}\n";
+			$out.= "DKPInfo = {\n";
+			$out.= "\t[\"date\"] = \"".date('j.n.Y G:i:s')."\",\n";
+			$out.= "\t[\"timestamp\"] = \"".time()."\",\n";
+			$out.= "\t[\"process_dkp_ver\"] = \"2.65\",\n";
+			$out.= "\t[\"total_players\"] = ".$db->query_first("SELECT count(char_id) FROM ".T_CHAR."").",\n";
+			$out.= "\t[\"total_items\"] = ".$db->query_first("SELECT count(loot_id) FROM ".T_LOOT."").",\n";
+			$out.= "\t[\"total_points\"] = ".$db->query_first("SELECT sum(dkp) FROM ".T_DKP."").",\n";
+			$out.= "}\n";
+			$out.="gdkp = {\n";
+			$out.="\t[\"players\"] = {\n";
+			$query=$db->query("SELECT sum(d.dkp) as dkp_current, c.* FROM ".T_CHAR." c JOIN ".T_DKP." d ON c.char_id=d.char_id group by c.char_id");
+			while($char=$db->fetch_record($query))
+			{
+				$out.="\t\t[\"".self::strto_wowutf($char['char_name'])."\"] = {\n";
+				$out.="\t\t\t[\"dkp_current\"] = ".$char['dkp_current'].",\n";
+				$out.="\t\t\t[\"class\"] = \"".self::strto_wowutf(html_entity_decode($classes[$char['char_class_id']]['name'],ENT_COMPAT,'UTF-8'))."\",\n";
+				$out.="\t\t\t[\"rcount\"] = ".$db->query_first("SELECT count(DISTINCT b.raid_id) FROM ".T_BOSS." b JOIN ".T_BA." ba ON b.boss_id=ba.boss_id where ba.char_id='".$char['char_id']."'").",\n";
+				$out.="\t\t},\n";
+			}
+			$db->free_result($query);
+			$out.="\t}\n";
+			$out.="}\n";
+			$out.="DKP_ITEMS = {\n";
+			$items=array();
+			$query=$db->query("SELECT c.char_name, d.dkp, i.name_de as name FROM ".T_CHAR." c JOIN ".T_DKP." d JOIN ".T_LOOT." l JOIN ".T_ITEMS." i ON  c.char_id=d.char_id AND c.char_id=l.char_id AND l.loot_id=d.dkp_ref_id AND l.item_id=i.id WHERE d.dkp_ref='loot'");
+			while($data=$db->fetch_record($query))
+			{
+				$items[$data['char_name']][]=array(
+					'name'=>$data['name'],
+					'dkp'=>$data['dkp']
+				);
+			}
+			foreach($items as $char=>$loot)
+			{
+				$out.="\t[\"".self::strto_wowutf($char)."\"] = {\n";
+				$out.="\t\t[\"Items\"] = {\n";
+				foreach($loot as $i=>$item)
+				{
+					$out.="\t\t\t[".$i."] = {\n";
+					$out.="\t\t\t\t[\"name\"] = \"".self::strto_wowutf($item['name'])."\",\n";
+					$out.="\t\t\t\t[\"dkp\"] = ".$item['dkp']."\n";
+					$out.="\t\t\t},\n";
+				}
+				$out.="\t\t},\n";
+				$out.="\t},\n";
+			}
+			$out.="}\n";
+			$out.="-- ItemId deactive\n\n-- No Alliases --\n\n-- RaidPlaner Data deactive\n\n--[END]\n";
+			
+			return $out;
+		}
+		function strto_wowutf($s)
+		{
+			$f[]='À';
+			$f[]='Á';
+			$f[]='Â';
+			$f[]='Ã';
+			$f[]='Ä';
+			$f[]='Å';
+			$f[]='Æ';
+			$f[]='Ç';
+			$f[]='È';
+			$f[]='É';
+			$f[]='Ê';
+			$f[]='Ë';
+			$f[]='Ì';
+			$f[]='Í';
+			$f[]='Î';
+			$f[]='Ï';
+			$f[]='Ð';
+			$f[]='Ñ';
+			$f[]='Ò';
+			$f[]='Ó';
+			$f[]='Ô';
+			$f[]='Õ';
+			$f[]='Ö';
+			$f[]='×';
+			$f[]='Ø';
+			$f[]='Ù';
+			$f[]='Ú';
+			$f[]='Û';
+			$f[]='Ü';
+			$f[]='Ý';
+			$f[]='Þ';
+			$f[]='ß';
+			$f[]='à';
+			$f[]='á';
+			$f[]='â';
+			$f[]='ã';
+			$f[]='ä';
+			$f[]='å';
+			$f[]='æ';
+			$f[]='ç';
+			$f[]='è';
+			$f[]='é';
+			$f[]='ê';
+			$f[]='ë';
+			$f[]='ì';
+			$f[]='í';
+			$f[]='î';
+			$f[]='ï';
+			$f[]='ð';
+			$f[]='ñ';
+			$f[]='ò';
+			$f[]='ó';
+			$f[]='ô';
+			$f[]='õ';
+			$f[]='ö';
+			$f[]='÷';
+			$f[]='ø';
+			$f[]='ù';
+			$f[]='ú';
+			$f[]='û';
+			$f[]='ü';
+			$f[]='ý';
+			$f[]='þ';
+			$f[]='ÿ';
+			$f[]='"';
+			$r[]='\195\128';
+			$r[]='\195\129';
+			$r[]='\195\130';
+			$r[]='\195\131';
+			$r[]='\195\132';
+			$r[]='\195\133';
+			$r[]='\195\134';
+			$r[]='\195\135';
+			$r[]='\195\136';
+			$r[]='\195\137';
+			$r[]='\195\138';
+			$r[]='\195\139';
+			$r[]='\195\140';
+			$r[]='\195\141';
+			$r[]='\195\142';
+			$r[]='\195\143';
+			$r[]='\195\144';
+			$r[]='\195\145';
+			$r[]='\195\146';
+			$r[]='\195\147';
+			$r[]='\195\148';
+			$r[]='\195\149';
+			$r[]='\195\150';
+			$r[]='\195\151';
+			$r[]='\195\152';
+			$r[]='\195\153';
+			$r[]='\195\154';
+			$r[]='\195\155';
+			$r[]='\195\156';
+			$r[]='\195\157';
+			$r[]='\195\158';
+			$r[]='\195\159';
+			$r[]='\195\160';
+			$r[]='\195\161';
+			$r[]='\195\162';
+			$r[]='\195\163';
+			$r[]='\195\164';
+			$r[]='\195\165';
+			$r[]='\195\166';
+			$r[]='\195\167';
+			$r[]='\195\168';
+			$r[]='\195\169';
+			$r[]='\195\170';
+			$r[]='\195\171';
+			$r[]='\195\172';
+			$r[]='\195\173';
+			$r[]='\195\174';
+			$r[]='\195\175';
+			$r[]='\195\176';
+			$r[]='\195\177';
+			$r[]='\195\178';
+			$r[]='\195\179';
+			$r[]='\195\180';
+			$r[]='\195\181';
+			$r[]='\195\182';
+			$r[]='\195\183';
+			$r[]='\195\184';
+			$r[]='\195\185';
+			$r[]='\195\186';
+			$r[]='\195\187';
+			$r[]='\195\188';
+			$r[]='\195\189';
+			$r[]='\195\190';
+			$r[]='\195\191';
+			$r[]='';
+			return str_replace($f,$r,$s);
+		}
 	}
 ?>

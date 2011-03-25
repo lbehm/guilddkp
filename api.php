@@ -43,6 +43,9 @@
 				die('0');
 			}
 			break;
+		case 'getDKP':
+			die(funct::getDKP());
+			break;
 		default :
 			die();
 	}

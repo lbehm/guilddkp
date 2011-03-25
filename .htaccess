@@ -26,3 +26,4 @@ RewriteRule ^([^/]*)zone=([^-]*)$ $1zone.php?id=$2 [L]
 RewriteRule ^([^/]*)npc=([^-]*)$ $1npc.php?id=$2 [L]
 
 RewriteRule ^([^/]*)api$ $1api.php [L]
+RewriteRule ^([^/]*)getdkp(.*)$ $1api.php?p=getDKP [L]

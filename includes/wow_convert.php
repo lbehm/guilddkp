@@ -241,7 +241,7 @@
 			)
 		),
 		8 => array(
-			'name'=>'Imba',
+			'name'=>'Magier',
 			'icon'=>'class_mage',
 			1=>array(
 				'name'=>'Arkan',
