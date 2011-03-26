@@ -137,7 +137,7 @@
 			if($dkpRank===false)
 			{
 				$dkpRank=array();
-				$query=$db->query("SELECT c.char_id, c.char_name, c.char_class_id, sum(d.dkp) as dkp FROM ".T_CHAR." c JOIN ".T_DKP." d ON c.char_id=d.char_id GROUP BY c.char_id ORDER BY d.dkp DESC LIMIT 20");
+				$query=$db->query("SELECT c.char_id, c.char_name, c.char_class_id, sum(d.dkp) as dkp FROM ".T_CHAR." c JOIN ".T_DKP." d ON c.char_id=d.char_id GROUP BY c.char_id ORDER BY dkp DESC LIMIT 20");
 				while($char=$db->fetch_record($query))
 				{
 					$dkpRank[]=array(
