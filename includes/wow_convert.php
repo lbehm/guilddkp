@@ -178,7 +178,7 @@
 		),
 		4 => array(
 			'name'=>'Schurke',
-			'icon'=>'class_rouge',
+			'icon'=>'class_rogue',
 			1=>array(
 				'name'=>'Meucheln',
 				'icon'=>'ability_rogue_eviscerate'
