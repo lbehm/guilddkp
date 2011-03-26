@@ -31,7 +31,7 @@
 					self::generateLastItems();
 				break;
 				case 'last_activities':
-					
+
 				break;
 				default:
 					return false;
@@ -40,7 +40,7 @@
 		function generateQuickDKP()
 		{
 			global $cache, $user, $db, $tpl, $classes;
-			$quickDKP=$cache->get('user__'.$user->data['user_id'], 'quickDKP');
+			$quickDKP=$cache->get('user_'.$user->data['user_id'], 'quickDKP');
 			if($quickDKP===false)
 			{
 				$quickDKP=array();
@@ -53,7 +53,7 @@
 						'icon'=>$classes[$char['char_class_id']]['icon'],
 						'dkp'=>(isset($char['dkp']))?$char['dkp']:'0'
 					);
-					
+
 				}
 				$db->free_result($charQuery);
 				$cache->set('user_'.$user->data['user_id'], 'quickDKP', $quickDKP);
@@ -137,7 +137,7 @@
 			if($dkpRank===false)
 			{
 				$dkpRank=array();
-				$query=$db->query("SELECT c.char_id, c.char_name, c.char_class_id, sum(d.dkp) as dkp FROM ".T_CHAR." c JOIN ".T_DKP." d ON c.char_id=d.char_id GROUP BY c.char_id ORDER BY d.dkp DESC");
+				$query=$db->query("SELECT c.char_id, c.char_name, c.char_class_id, sum(d.dkp) as dkp FROM ".T_CHAR." c JOIN ".T_DKP." d ON c.char_id=d.char_id GROUP BY c.char_id ORDER BY d.dkp DESC LIMIT 20");
 				while($char=$db->fetch_record($query))
 				{
 					$dkpRank[]=array(
@@ -219,7 +219,7 @@
 			}
 			$out.="}\n";
 			$out.="-- ItemId deactive\n\n-- No Alliases --\n\n-- RaidPlaner Data deactive\n\n--[END]\n";
-			
+
 			return $out;
 		}
 		function strto_wowutf($s)
