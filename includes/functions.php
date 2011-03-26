@@ -356,5 +356,10 @@
 			$r[]='';
 			return str_replace($f,$r,$s);
 		}
+		function importArsenalChar($charname, $realmname)
+		{
+			require_once("armory_importer.php");
+			return armory_importer::importChar($charname, $realmname);
+		}
 	}
 ?>

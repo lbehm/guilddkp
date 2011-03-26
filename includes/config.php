@@ -30,6 +30,8 @@ cookie_name = "req"
 cookie_path = "/guilddkp"
 cookie_domain = "localhost"
 shoutBox_limit = 7
+startDKP = 10
+armory_URL = "http://inferna-server.de/extern/arsenal/"
 
 [IDS]
 Database = 0

@@ -46,6 +46,9 @@
 		case 'getDKP':
 			die(funct::getDKP());
 			break;
+		case 'importChar':
+			print_r(funct::importArsenalChar($in->get('c', ''), $in->get('r', '')));
+			break;
 		default :
 			die();
 	}
