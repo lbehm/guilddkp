@@ -21,6 +21,8 @@
 			$charData=self::GetCharData($xml);
 			//print_r($charData);
 			$bar_convert=array(
+				'r'=>'rage',
+				'e'=>'energy',
 				'm'=>'mana',
 				'p'=>'runepower'
 			);
