@@ -5,6 +5,7 @@ CREATE TABLE `dkp_raid` (
 `raid_start`  int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Time: Raidbeginn' ,
 `raid_end`  int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Time: Raidende' ,
 `raid_note`  text CHARACTER SET utf8 COLLATE utf8_bin NULL ,
+`raid_plan`  bit NOT NULL DEFAULT b'1' COMMENT '0: durchgefuehrter Raid, 1: geplanter Raid; keine Auflistung unter letzte Raid' ,
 PRIMARY KEY (`raid_id`)
 )
 ENGINE=InnoDB
