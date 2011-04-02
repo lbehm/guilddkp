@@ -179,7 +179,7 @@
 				$topics_arr=array();
 				$topic_counter = 0;
 				//$topic_request = $this->get_topics($forum['forum_id'], $rank_read_topic);
-				$tsql="SELECT topic_id as id, topic_title as title, forum_id as forum, topic_sticky as sticky, topic_closed as closed, topic_last_poster as last_poster, topic_edit_timestamp as timestamp FROM ".T_TOPIC." WHERE forum_id = '".$forum['id']."' AND topic_hidden <= '".$rank_read_forum."' ORDER BY topic_edit_timestamp DESC LIMIT 5";
+				$tsql="SELECT topic_id as id, topic_title as title, forum_id as forum, topic_sticky as sticky, topic_closed as closed, topic_last_poster as last_poster, topic_edit_timestamp as timestamp FROM ".T_TOPIC." WHERE forum_id = '".$forum['id']."' AND topic_delete = '0' AND topic_hidden <= '".$rank_read_forum."' ORDER BY topic_edit_timestamp DESC LIMIT 5";
 				$tquery=$db->query($tsql);
 				while($topic = $db->fetch_record($tquery))
 				{
