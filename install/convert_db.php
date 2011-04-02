@@ -4,7 +4,9 @@
 	******/
 
 	define('intern', true);
-	require(dirname(__file__)."\..\includes\mysql.php");
+	require(dirname(__file__)."/../includes/filehandler.php");
+	$config = new config_handler(dirname(__file__)."/..includes/config.php");
+	require(dirname(__file__)."/../includes/mysql.php");
 	$eqdkp = new dbal_mysql;
 	$eqdkp->sql_connect("localhost", "eqdkp", "root", "", false);
 
@@ -15,6 +17,73 @@
 		'news' => array(),
 		'user' => array()
 	);
+	
+	if($_REQUEST['only'] == 'char')
+	{
+		$guilddkp->query("DELETE FROM dkp_char");
+		$guilddkp->query("DELETE FROM dkp_dkp");
+		$query=$eqdkp->query("select * from eqdkp_members m JOIN eqdkp_member_additions ma ON m.member_id=ma.member_id");
+		while($member=$eqdkp->fetch_record($query))
+		{
+			$bar_convert=array(
+				'm'=>'mana',
+				'rp'=>'runepower',
+				'r'=>'rage',
+				'e'=>'energy'
+			);
+			$member['second_name']=$bar_convert[$member['second_name']];
+			$class_convert=array(
+				12=>1,	// warrior
+				13=>2,	// paladin
+				4=>3,	// hunter
+				2=>4,	// rogue
+				6=>5,	// priest
+				20=>6,	// DK
+				9=>7,	// shaman
+				11=>8,	// mage
+				10=>9,	// warlock
+				7=>11,	// druid
+			);
+			$member['member_class_id']=$class_convert[$member['member_class_id']];
+			$race_convert=array(
+				2=>1,		// human
+				7=>2,		// orc
+				3=>3,		// dwarf
+				4=>4,		// night elf
+				6=>5,		// undead
+				8=>6,		// tauren
+				1=>7,		// gnome
+				5=>8,		// troll
+				10=>10,		// blood elf
+				9=>11,		// draenei
+			);
+			$member['member_race_id']=$race_convert[$member['member_race_id']];
+			$gender_convert=array(
+				'Female'=>1,
+				'Male'=>0
+			);
+			$member['gender']=$gender_convert[$member['gender']];
+			$prof_convert=array(
+				'enchanting'=>333,
+				'tailoring'=>197,
+				'jewelcrafting'=>755,
+				'mining'=>186,
+				'blacksmithing'=>164,
+				'inscription'=>773,
+				'alchemy'=>171,
+				'herbalism'=>182,
+				'skinning'=>393,
+				'leatherworking'=>165,
+				'engineering'=>202
+			);
+			$member['prof1_name']=$prof_convert[$member['prof1_name']];
+			$member['prof2_name']=$prof_convert[$member['prof2_name']];
+			$sql="INSERT INTO `dkp_char` (`char_name`, `char_guild`, `char_level`, `char_race_id`, `char_class_id`, `char_gender`, `char_skill_1_1`, `char_skill_1_2`, `char_skill_1_3`, `char_skill_2_1`, `char_skill_2_2`, `char_skill_2_3`, `char_prof_1_k`, `char_prof_1_v`, `char_prof_2_k`, `char_prof_2_v`, `char_health`, `char_bar_k`, `char_bar_v`, `char_update`) VALUES('".$member['member_name']."', '".$member['guild']."', '".$member['member_level']."', '".$member['member_race_id']."', '".$member['member_class_id']."', '".$member['gender']."', '".$member['skill_1']."', '".$member['skill_2']."', '".$member['skill_3']."', '".$member['skill2_1']."', '".$member['skill2_2']."', '".$member['skill2_3']."', '".$member['prof1_name']."', '".$member['prof1_value']."', '".$member['prof2_name']."', '".$member['prof2_value']."', '".$member['health_bar']."', '".$member['second_name']."', '".$member['second_bar']."', '".time()."')";
+			$guilddkp->query($sql);
+			$guilddkp->query("INSERT INTO dkp_dkp (char_id, dkp_ref, dkp_ref_id, dkp, dkp_note, dkp_time) VALUES('".$guilddkp->insert_id()."', 'other', null, '10', 'Start-DKP', '".time()."')");
+		}
+	}
+			die($sql);
 
 	if( ( ($_REQUEST['only'] == 'news') || (!isset($_REQUEST['news'])) ) && ($_REQUEST['without'] != 'news') )
 	{
