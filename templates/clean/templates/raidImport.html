@@ -1,0 +1,147 @@
+<html>
+	<head>
+		<title>Raid-Import</title>
+		<script type="text/javascript" src="templates/clean/script/js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="templates/clean/script/js/jquery-ui-1.8.5.custom.min.js"></script>
+		<script type="text/javascript" src="templates/clean/script/js/jquery.ui.lang-de.js"></script>
+		<script type="text/javascript">
+			{literal}
+			$(function(){
+				$("form.importString").submit(function(e){
+					$.ajax({
+					type:'POST',
+					url:'api.php',
+					data:'p=importDKP&importString='+$("form.importString > textarea").val(),
+					dataType:'json',
+					success:function(raid)
+					{
+						if(!raid)
+							return false;
+						$("ol.raidInfo input.zone")[0].value=raid.zone;
+						$("ol.raidInfo input.difficulty")[0].value=raid.difficulty;
+						$("ol.raidInfo input.start")[0].value=raid.start;
+						$("ol.raidInfo input.end")[0].value=raid.end;
+						$("ol.raidInfo input.note")[0].value=raid.note;
+						$.each(raid.boss, function(i,boss){
+							$("ol.boss").append("<li id='"+i+"'><ol><li><a href='http://de.wowhead.com/npc="+boss.id+"'>"+boss.name+"</a></li></ol></li>");
+							$("ol.boss > li#"+i+" ol").append("<li>Datum: <input class='time' type='text' value='"+boss.time+"' /></li>");
+							$("ol.boss > li#"+i+" ol").append("<li>Schwierigkeitsgrad: <input class='difficulty' type='text' value='"+boss.difficulty+"' /></li>");
+							$("ol.boss > li#"+i+" ol").append("<li>DKP: <input class='dkp' type='text' value='"+boss.dkp+"' /></li>");
+							$("ol.boss > li#"+i+" ol").append("<li class='del'>Entfernen</li>");
+							$("ol.boss > li#"+i+" ol").append("<li>Loot:</li><li class='loot'><ol></ol></li>");
+							$.each(boss.loot, function(j,loot){
+								$("ol.boss > li#"+i+" > ol > li.loot > ol").append("<li id='"+j+"'><ol><li><a href='item="+loot.itemid+"'>"+loot.name+"</a></li></ol></li>");
+								$("ol.boss > li#"+i+" > ol > li.loot > ol > li#"+j+" > ol").append("<li>Looter:<input class='looter' type='text' value='"+loot.looter+"' /></li>");
+								$("ol.boss > li#"+i+" > ol > li.loot > ol > li#"+j+" > ol").append("<li>Anzahl:<input class='count' type='text' value='"+loot.count+"' /></li>");
+								$("ol.boss > li#"+i+" > ol > li.loot > ol > li#"+j+" > ol").append("<li>DKP:<input class='dkp' type='text' value='"+loot.dkp+"' /></li>");
+							});
+							$("ol.boss > li#"+i+" > ol").append("<li>Teilnehmer:</li><li class='chars'><ol></ol></li>");
+							$.each(boss.chars, function(j,char){
+								$("ol.boss > li#"+i+" > ol > li.chars > ol").append("<li id='"+j+"'><ol><li>"+char+"</li></ol></li>");
+								$("ol.boss > li#"+i+" > ol > li.chars > ol > li#"+j+" > ol").append("<li>Rolle:<select class='role' type='role'><option value='dd'>DeamageDealer</option><option value='tank'>Tank</option><option value='heal'>Healer</option></select></li>");
+								
+							});
+						});
+						$("ol.boss > li > ol > li.loot > ol > li > ol").append("<li class='del'>Entfernen</li>");
+						$("ol.boss > li > ol > li.chars > ol > li").append(" <span class='del'>Entfernen</span>");
+						$("span.del").click(function(e){
+							raid.boss[$(this.parentNode.parentNode.parentNode.parentNode.parentNode).get(0).id]['chars'][$(this.parentNode).get(0).id]=null;
+							$(this.parentNode).remove();
+						});
+						$("ol.boss > li > ol > li.del").click(function(e){
+							raid.boss[$(this.parentNode.parentNode).get(0).id]=null;
+							$(this.parentNode.parentNode).remove();
+						});
+						$("ol.boss > li > ol > li.loot > ol > li > ol > li.del").click(function(e){
+							raid.boss[$(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).get(0).id]['loot'][$(this.parentNode.parentNode).get(0).id]=null;
+							$(this.parentNode.parentNode).remove();
+						});
+						
+						
+						$("body > input.send").click(function(e)
+						{
+							var send = {};
+							send.name=$("ol.raidInfo > li .zone").val();
+							send.difficulty=$("ol.raidInfo > li .difficulty").val();
+							send.start=$("ol.raidInfo > li .start").val();
+							send.end=$("ol.raidInfo > li .end").val();
+							send.note=$("ol.raidInfo > li .note").val();
+							send.boss= new Array();
+							$.each(raid.boss, function(i,boss){
+								if(boss!=null)
+								{
+									send.boss[i]={};
+									send.boss[i].name=$("ol.boss > li#"+i+" > ol > li > a").get(0).innerHTML;
+									send.boss[i].npc_id=boss.id;
+									send.boss[i].time=$("ol.boss > li#"+i+" > ol > li > input.time").val();
+									send.boss[i].difficulty=$("ol.boss > li#"+i+" > ol > li > input.difficulty").val();
+									send.boss[i].dkp=$("ol.boss > li#"+i+" > ol > li > input.dkp").val();
+									send.boss[i].loot= new Array();
+									$.each(boss.loot, function(j,loot){
+										if(loot!=null)
+										{
+											send.boss[i].loot[j]={};
+											send.boss[i].loot[j].itemid=boss.loot[j].itemid;
+											send.boss[i].loot[j].looter=$("ol.boss > li#"+i+" > ol > li.loot > ol > li#"+j+" > ol > li > input.looter").val();
+											send.boss[i].loot[j].count=$("ol.boss > li#"+i+" > ol > li.loot > ol > li#"+j+" > ol > li > input.count").val();
+											send.boss[i].loot[j].dkp=$("ol.boss > li#"+i+" > ol > li.loot > ol > li#"+j+" > ol > li > input.dkp").val();
+										}
+									});
+									send.boss[i].char= new Array();;
+									$.each(boss.chars, function(j,char){
+										if(char!=null)
+										{
+											send.boss[i].char[j]={};
+											send.boss[i].char[j].name=char;
+											send.boss[i].char[j].role=$("ol.boss > li#"+i+" > ol > li.chars > ol > li#"+j+" > ol > li > select.role > option:selected").val();
+											//alert(send.boss[i].char[j].name);
+										}
+									});
+									//		alert(send.boss[i].loot[j].count+' * '+send.boss[i].loot[j].itemid+' @ '+send.boss[i].loot[j].looter+' to '+send.boss[i].loot[j].dkp);
+									//send.boss[i].note=$("ol.raidInfo > li .note").val();
+								}
+							});
+
+							var jsonString = JSON.stringify(send);
+							//alert(send);
+							alert(jsonString);
+							$.ajax({
+								type:'POST',
+								url:'api.php',
+								data:'p=importRaid&importData='+jsonString,
+								dataType:'json',
+								success:function(html)
+								{
+									
+								}
+							});
+						});
+						
+					}});
+					
+					
+					return false;
+				});
+			});
+			{/literal}
+		</script>
+	</head>
+	<body>
+		
+		<form class="importString" method="post" action="#">
+			<textarea name="importString"></textarea>
+			<input type="submit" value="Auslesen">
+		</form>
+		<h1>Raid</h1>
+		<ol class="raidInfo">
+			<li><input type="text" name="zone" class="zone" /></li>
+			<li><input type="text" name="difficulty" class="difficulty" /></li>
+			<li><input type="text" name="start" class="start" /></li>
+			<li><input type="text" name="end" class="end" /></li>
+			<li><input type="text" name="note" class="note" /></li>
+		</ol>
+		<ol class="boss">
+		</ol>
+		<input class="send" type="button" value="Eintragen" />
+	</body>
+</head>

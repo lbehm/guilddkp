@@ -26,11 +26,16 @@
 		$tpl->append('raidPage',array(
 			'info'=>$r_info
 		),true);
-		
+		$raid_planer=true;
+		$kills=array();
 		$b_query=$db->query("SELECT b.*, n.name FROM ( ".T_BOSS." b JOIN ".T_NPC." n ON b.npc_id = n.id) WHERE b.raid_id = '".$raid['raid_id']."'");
 		while($boss=$db->fetch_record($b_query))
 			if($boss['npc_id'])
 			{
+				$tpl->append('raidPage',array(
+					'past'=>true
+				),true);
+				$raid_planer=false;
 				$loot=array();
 				$attendees_out=array(
 					'dd'=>array(),
@@ -73,9 +78,31 @@
 					'attendees'=>$attendees_out,
 				);
 			}
+		$db->free_result($b_query);
+
 		$tpl->append('raidPage',array(
 			'kills'=>$kills
 		),true);
+		if($raid_planer)
+		{
+			$ra=array();
+			$ra_query=$db->query("SELECT ra.*, c.char_name, c.char_class_id FROM ".T_RA." ra JOIN ".T_CHAR." c ON ra.char_id=c.char_id WHERE raid_id='".$raid['raid_id']."'");
+			while($char=$db->fetch_record($ra_query))
+			{
+				$ra[$char['ra_status']][$char['ra_category']][]=array(
+					'id'=>$char['char_id'],
+					'name'=>$char['char_name'],
+					'note'=>$char['ra_note'],
+					'icon'=>$classes[$char['char_class_id']]['icon'],
+				);
+			}
+			$tpl->append('raidPage',array(
+				'plan'=>$ra,
+				'admin'=>($user->data['auth']['rank_raidplan'] >= 255)?true:false
+			),true);
+
+			$db->free_result($ra_query);
+		}
 		
 		$tpl->assign('title',$config->get('title').' - Raid: '.$raid['raid_name']);
 	}

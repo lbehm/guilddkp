@@ -39,8 +39,10 @@
 				{
 					if($config->get('startDKP'))
 					{
-						return($db->query("INSERT INTO ".T_DKP." (char_id, dkp_ref, dkp_ref_id, dkp, dkp_note, dkp_time) VALUES('".$db->insert_id()."', 'other', null, '".$config->get('startDKP')."', 'Start-DKP', '".time()."')"));
+						$char_id=$db->insert_id();
+						$db->query("INSERT INTO ".T_DKP." (char_id, dkp_ref, dkp_ref_id, dkp, dkp_note, dkp_time) VALUES('".$char_id."', 'other', null, '".$config->get('startDKP')."', 'Start-DKP', '".time()."')");
 					}
+					return $char_id;
 				}
 			}
 
@@ -97,7 +99,7 @@
 			{
 				$curl = @curl_init($url);
 				$cookie = "cookieLangId=".$lang.";";
-		  
+
 				@curl_setopt($curl, CURLOPT_COOKIE, $cookie);
 				@curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.2) Gecko/20070220 Firefox/2.0.0.2');
 				@curl_setopt($curl, CURLOPT_TIMEOUT, 20);

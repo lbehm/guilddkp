@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * raid.php
+	 * api.php
 	 * by devimplode
 	 */
 	define('loadet', true);
@@ -47,7 +47,20 @@
 			die(funct::getDKP());
 			break;
 		case 'importChar':
-			print_r(funct::importArsenalChar($in->get('c', ''), $in->get('r', '')));
+			die(json_encode(funct::importArsenalChar($in->get('c', ''), $in->get('r', ''))));
+			break;
+		case 'importDKP':
+			$str=$in->get('importString','');
+			die(json_encode(funct::importRaidTracker($str)));
+			break;
+		case 'importRaid':
+			die(json_encode(funct::insertRaid(json_decode((string)$in->get('importData','')))));
+			break;
+		case 'raidAttend':
+			die(json_encode(funct::attendRaid((int)$in->get('raid',0),(string)$in->get('char',''),(string)$in->get('status',''),$in->get('role',''))));
+			break;
+		case 'raidModAttend':
+			die(json_encode(funct::modRaidattend((int)$in->get('raid',0),(string)$in->get('char',''),(string)$in->get('status',''),$in->get('role',''))));
 			break;
 		default :
 			die();

@@ -154,17 +154,17 @@ tr.headline {
 	margin: 1px 0px 0px 0px;
 	font-size: 10px;
 }
-#activities .lastRaids ul, #activities .lastItems ul {
+#activities .lastRaids ul, #activities .nextRaids ul, #activities .lastItems ul {
 	margin: 0px;
 	padding: 0px;
 }
-#activities .lastRaids li, #activities .lastItems li {
+#activities .lastRaids li, #activities .nextRaids li, #activities .lastItems li {
 	list-style-type: none;
 	height: 30px;
 	padding-bottom: 5px;
 	border-bottom: 1px dotted #B2C1C9;
 }
-#activities .lastRaids li > a, #activities .lastItems li > a {
+#activities .lastRaids li > a, #activities .nextRaids li > a, #activities .lastItems li > a {
 	border-bottom: 1px dotted #B2C1C9;
 	color: black;
 	display: block;
@@ -176,10 +176,11 @@ tr.headline {
 #activities .lastItems li .loot_details {
 	margin-left: 7px;
 }
-#activities .lastRaids li .raid_details {
+#activities .lastRaids li .raid_details, #activities .nextRaids .raid_details {
 	margin-top: 1px;
 	margin-left: 37px;
 	display: block;
+	cursor:default;
 }
 #activities .lastRaids li .raid_details a {
 	margin-right: 1px;

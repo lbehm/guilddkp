@@ -18,6 +18,7 @@
 				case 'right_bar':
 					self::generateMenu('dkp_ranking');
 					self::generateMenu('last_raids');
+					self::generateMenu('next_raids');
 					self::generateMenu('last_items');
 					//self::generateMenu('last_activities');
 				break;
@@ -26,6 +27,9 @@
 				break;
 				case 'last_raids':
 					self::generateLastRaids();
+				break;
+				case 'next_raids':
+					self::generateNextRaids();
 				break;
 				case 'last_items':
 					self::generateLastItems();
@@ -51,7 +55,8 @@
 						'id'=>$char['char_id'],
 						'name'=>$char['char_name'],
 						'icon'=>$classes[$char['char_class_id']]['icon'],
-						'dkp'=>(isset($char['dkp']))?$char['dkp']:'0'
+						'dkp'=>(isset($char['dkp']))?$char['dkp']:'0',
+						'roles'=>$classes[$char['char_class_id']]['roles']
 					);
 
 				}
@@ -95,7 +100,7 @@
 			if($lastRaids===false)
 			{
 				$lastRaids=array();
-				$query=$db->query("SELECT r.raid_id, rt.raid_name, rt.raid_short_name, rt.raid_difficult, rt.raid_zone, rt.raid_icon, r.raid_start, r.raid_end, r.raid_note FROM ".T_RAID." r JOIN ".T_RT." rt ON r.raid_type = rt.raid_type ORDER BY r.raid_end DESC LIMIT 5");
+				$query=$db->query("SELECT r.raid_id, rt.raid_name, rt.raid_short_name, rt.raid_difficult, rt.raid_zone, rt.raid_icon, r.raid_start, r.raid_end, r.raid_note FROM ".T_RAID." r JOIN ".T_RT." rt ON r.raid_type = rt.raid_type WHERE r.raid_plan='0' ORDER BY r.raid_end DESC LIMIT 5");
 				while($raid=$db->fetch_record($query))
 				{
 					$lastItems=array();
@@ -129,6 +134,39 @@
 					$cache->set('activities', 'lastRaids', $lastRaids);
 			}
 			$tpl->append('activities', array('lastRaids'=>$lastRaids), true);
+		}
+		function generateNextRaids()
+		{
+			global $cache, $db, $tpl;
+			$nextRaids=$cache->get('activities', 'nextRaids');
+			if($nextRaids===false)
+			{
+				$nextRaids=array();
+				$query=$db->query("SELECT r.raid_id, rt.raid_name, rt.raid_short_name, rt.raid_difficult, rt.raid_zone, rt.raid_icon, r.raid_start, r.raid_end, r.raid_note FROM ".T_RAID." r JOIN ".T_RT." rt ON r.raid_type = rt.raid_type WHERE r.raid_plan='1' AND r.raid_start > '".time()."' ORDER BY r.raid_start ASC LIMIT 5");
+				while($raid=$db->fetch_record($query))
+				{
+					$ra=array();
+					$ra['sign']=$db->query_first("SELECT COUNT(*) FROM ".T_RA." ra WHERE raid_id='".$raid['raid_id']."' AND ra_status='sign'");
+					$ra['agree']=$db->query_first("SELECT COUNT(*) FROM ".T_RA." ra WHERE raid_id='".$raid['raid_id']."' AND ra_status='agree'");
+					$ra['disagree']=$db->query_first("SELECT COUNT(*) FROM ".T_RA." ra WHERE raid_id='".$raid['raid_id']."' AND ra_status='disagree'");
+					$ra['maybe']=$db->query_first("SELECT COUNT(*) FROM ".T_RA." ra WHERE raid_id='".$raid['raid_id']."' AND ra_status='maybe'");
+					$nextRaids[]=array(
+						'id'=>$raid['raid_id'],
+						'name'=>$raid['raid_name'],
+						'short_name'=>$raid['raid_short_name'],
+						'icon'=>$raid['raid_icon'],
+						'difficult'=>$raid['raid_difficult'],
+						'date'=>date("d.m. (G:i)", $raid['raid_start']),
+						'attendees'=>$ra
+					);
+				}
+				$db->free_result($query);
+				if(!count($nextRaids))
+					$cache->set('activities', 'nextRaids', (int)0);
+				else
+					$cache->set('activities', 'nextRaids', $nextRaids, 300);
+			}
+			$tpl->append('activities', array('nextRaids'=>$nextRaids), true);
 		}
 		function generateDkpRanking()
 		{
@@ -360,6 +398,70 @@
 		{
 			require_once("armory_importer.php");
 			return armory_importer::importChar($charname, $realmname);
+		}
+		function importRaidTracker($str)
+		{
+			require_once("raidlog_importer.php");
+			return(raidLog::parseRaid($str));
+		}
+		function insertRaid($data)
+		{
+			require_once("raidlog_importer.php");
+			return(raidLog::insertRaid($data));
+		}
+		function checkCharName($charname)
+		{
+			global $db;
+			$id=$db->query_first("SELECT char_id FROM ".T_CHAR." WHERE char_name='".$db->sql_escape($charname)."'");
+			if($id)
+				return $id;
+			else
+				return self::importArsenalChar($charname, 'Acheron');
+		}
+		function attendRaid($raid_id, $char_id, $status, $role=false)
+		{
+			global $user, $db;
+			if($status=='sign')
+			{
+				if($user->data['auth']['rank_raidplan'] >= 255)
+				{
+					$id=$db->query_first("SELECT char_id FROM ".T_CHAR." WHERE char_name='".$db->sql_escape($char_id)."'");
+					if($id)
+					{
+						if($db->query("UPDATE ".T_RA." SET ra_status='".$db->sql_escape($status)."' WHERE raid_id='".$db->sql_escape($raid_id)."' AND char_id='".$id."'"))
+						{
+							return(array('url'=>'raid-'.$raid_id));
+						}
+					}
+				}
+			}
+			else
+			{
+				$id=$db->query_first("SELECT user_id FROM ".T_CHAR." WHERE char_id='".$db->sql_escape($char_id)."'");
+				if($id==$user->data['user_id'])
+				{
+					$db->query("DELETE FROM ".T_RA." WHERE char_id IN (SELECT char_id FROM ".T_CHAR." WHERE user_id='".$id."') AND raid_id='".$db->sql_escape($raid_id)."'");
+					if($db->query("INSERT INTO ".T_RA." (raid_id, char_id, ra_status, ra_category, ra_time) VALUES('".$db->sql_escape($raid_id)."', '".$db->sql_escape($char_id)."', '".$db->sql_escape($status)."', '".$db->sql_escape($role)."', '".time()."')"))
+						return(array('url'=>'raid-'.$raid_id));
+				}
+			}
+			return 0;
+		}
+		function modRaidattend($raid_id, $char_id, $status, $role=false)
+		{
+			global $user, $db;
+			if($user->data['auth']['rank_raidplan'] >= 255)
+			{
+				$id=$db->query_first("SELECT char_id FROM ".T_CHAR." WHERE char_name='".$db->sql_escape($char_id)."'");
+				if($id)
+				{
+					$role_str=($role)?", ra_category='".$db->sql_escape($role)."'":"";
+					if($db->query("UPDATE ".T_RA." SET ra_status='".$db->sql_escape($status)."'".$role_str." WHERE raid_id='".$db->sql_escape($raid_id)."' AND char_id='".$id."'"))
+					{
+						return(array('url'=>'raid-'.$raid_id));
+					}
+				}
+			}
 		}
 	}
 ?>

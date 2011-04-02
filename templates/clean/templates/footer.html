@@ -1,6 +1,20 @@
 
 				</td>
 				<td id="activities">
+				{if $activities.nextRaids}
+					<h1><a href="#">Raidplaner</a></h1>
+					<div class="nextRaids">
+						<ul>
+						{section name=nextRaids loop=$activities.nextRaids}
+							<li>
+								<img class="icon" src="{$icon_repo_large}{$activities.nextRaids[nextRaids].icon}.jpg" alt="" title="{$activities.nextRaids[nextRaids].name}" />
+								<a href="raid-{$activities.nextRaids[nextRaids].id}">{$activities.nextRaids[nextRaids].short_name} @ {$activities.nextRaids[nextRaids].date}</a>
+								<span class="raid_details">Anmeldung: <span title="Bestätigt" class="sign Iquali_5">{$activities.nextRaids[nextRaids].attendees.sign}</span> - <span title="Angemeldet" class="agree Iquali_3">{$activities.nextRaids[nextRaids].attendees.agree}</span> - <span title="Ersatzbank" class="maybe Iquali_6">{$activities.nextRaids[nextRaids].attendees.maybe}</span></span>
+							</li>
+						{/section}
+						</ul>
+					</div>
+				{/if}
 				{if $activities.lastRaids}
 					<h1><a href="#">Letzte Raids</a></h1>
 					<div class="lastRaids">

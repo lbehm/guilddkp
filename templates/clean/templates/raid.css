@@ -9,8 +9,26 @@
 .raidPage .raid_headline {
 	font-size: 25px;
 	font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	height: 30px;
 	margin:3px 5px 5px 40px;
 	border-bottom: 1px dotted #B2C1C9;
+}
+.raidPage .raid_headline > div{
+	display:inline-block;
+}
+.raidPage .raid_headline .raidPlanerBar {
+	display:inline-block;
+	float:right;
+}
+.raidPage .raid_headline .raidPlanerBar button {
+	color: #555555;
+	background: #E6E6E6;
+	border: 1px solid #D3D3D3;
+	margin: 0px 0px 0px 3px;
+	vertical-align: middle;
+}
+.raidPage .raid_headline .raidPlanerBar select {
+	vertical-align: middle;
 }
 .raidPage .raid_date {
 	color: rgba(0,0,0,0.7);
@@ -53,12 +71,16 @@
 	margin-left: 37px;
 	text-decoration: none;
 }
-.raidPage .raid_kills .boss_details .boss_attendees table td {
-	width: 200px;
-	border-left: 1px dotted #B2C1C9;
+.raidPage .boss_attendees, .raidPage .attendees {
+	cursor: default;
 }
-.raidPage .raid_kills .boss_details .boss_attendees ul {
+.raidPage .boss_attendees ul, .raidPage .attendees ul {
+	width: 190px;
 	padding-left: 5px;
 	margin: 0px;
 	list-style-type: none;
+	border-left: 1px dotted #B2C1C9;
+}
+.raidPage .attendees ul .placeholder {
+	height:20px;
 }

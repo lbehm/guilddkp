@@ -131,6 +131,13 @@
 		1 => array(
 			'name'=>'Krieger',
 			'icon'=>'class_warrior',
+			'roles'=>array(
+				'tank'=>true,
+				'dd'=>true,
+				'melee'=>true,
+				'range'=>false,
+				'heal'=>false
+			),
 			1=>array(
 				'name'=>'Waffen',
 				'icon'=>'ability_rogue_eviscerate'
@@ -147,6 +154,13 @@
 		2 => array(
 			'name'=>'Paladin',
 			'icon'=>'class_paladin',
+			'roles'=>array(
+				'tank'=>true,
+				'dd'=>true,
+				'melee'=>true,
+				'range'=>false,
+				'heal'=>true
+			),
 			1=>array(
 				'name'=>'Heilig',
 				'icon'=>'spell_holy_holybolt'
@@ -163,6 +177,13 @@
 		3 => array(
 			'name'=>'J&auml;ger',
 			'icon'=>'class_hunter',
+			'roles'=>array(
+				'tank'=>false,
+				'dd'=>true,
+				'melee'=>false,
+				'range'=>true,
+				'heal'=>false
+			),
 			1=>array(
 				'name'=>'Tierherrschaft',
 				'icon'=>'ability_hunter_beasttaming'
@@ -179,6 +200,13 @@
 		4 => array(
 			'name'=>'Schurke',
 			'icon'=>'class_rogue',
+			'roles'=>array(
+				'tank'=>false,
+				'dd'=>true,
+				'melee'=>true,
+				'range'=>false,
+				'heal'=>false
+			),
 			1=>array(
 				'name'=>'Meucheln',
 				'icon'=>'ability_rogue_eviscerate'
@@ -195,6 +223,13 @@
 		5 => array(
 			'name'=>'Priester',
 			'icon'=>'class_priest',
+			'roles'=>array(
+				'tank'=>false,
+				'dd'=>true,
+				'melee'=>false,
+				'range'=>true,
+				'heal'=>true
+			),
 			1=>array(
 				'name'=>'Disziplin',
 				'icon'=>'spell_holy_holybolt'
@@ -211,6 +246,13 @@
 		6 => array(
 			'name'=>'Todesritter',
 			'icon'=>'class_deathknight',
+			'roles'=>array(
+				'tank'=>true,
+				'dd'=>true,
+				'melee'=>true,
+				'range'=>false,
+				'heal'=>false
+			),
 			1=>array(
 				'name'=>'Blut',
 				'icon'=>'spell_deathknight_bloodpresence'
@@ -227,6 +269,13 @@
 		7 => array(
 			'name'=>'Schamane',
 			'icon'=>'class_shaman',
+			'roles'=>array(
+				'tank'=>false,
+				'dd'=>true,
+				'melee'=>true,
+				'range'=>true,
+				'heal'=>true
+			),
 			1=>array(
 				'name'=>'Elementar',
 				'icon'=>'spell_nature_lightning'
@@ -243,6 +292,13 @@
 		8 => array(
 			'name'=>'Magier',
 			'icon'=>'class_mage',
+			'roles'=>array(
+				'tank'=>false,
+				'dd'=>true,
+				'melee'=>false,
+				'range'=>true,
+				'heal'=>false
+			),
 			1=>array(
 				'name'=>'Arkan',
 				'icon'=>'spell_holy_magicalsentry'
@@ -259,6 +315,13 @@
 		9 => array(
 			'name'=>'Hexenmeister',
 			'icon'=>'class_warlock',
+			'roles'=>array(
+				'tank'=>false,
+				'dd'=>true,
+				'melee'=>false,
+				'range'=>true,
+				'heal'=>false
+			),
 			1=>array(
 				'name'=>'Gebrechen',
 				'icon'=>'spell_shadow_deathcoil'
@@ -275,6 +338,13 @@
 		11 => array(
 			'name'=>'Druide',
 			'icon'=>'class_druid',
+			'roles'=>array(
+				'tank'=>true,
+				'dd'=>true,
+				'melee'=>true,
+				'range'=>true,
+				'heal'=>true
+			),
 			1=>array(
 				'name'=>'Gleichgewicht',
 				'icon'=>'spell_nature_starfall'
@@ -367,5 +437,325 @@
 		1106 => "Argentumkreuzzug",
 		1119 => "Die S&ouml;hne Hodirs",
 		1156 => "Das &auml;scherne Verdikt"
+	);
+	$zones=array(
+		'Icecrown Citadel'=>array(
+			'name'=>'Eiskronenzitadelle',
+			'zone_id'=>'4812',
+			'difficulty'=>array(
+				1=>array(
+					'name'=>'Eiskronenzitadelle',
+					'short'=>'ICC10',
+					'creatures'=>array(
+						36612=>array(
+							'name'=>'Lord Marrowgar',
+							'name_de'=>'Lord Marrowgar',
+							'type'=>'boss',
+							'dkp'=>'10'
+						),
+						36855=>array(
+							'name'=>'Lady Deathwhisper',
+							'name_de'=>'Lady Deathwhisper',
+							'type'=>'boss',
+							'dkp'=>'10'
+						),
+						37813=>array(
+							'name'=>'Deathbringer Saurfang',
+							'name_de'=>'Deathbringer Saurfang',
+							'type'=>'boss',
+							'dkp'=>'10'
+						),
+					)
+				),
+				2=>array(
+					'name'=>'Eiskronenzitadelle - Heroisch',
+					'short'=>'ICC10-HM',
+					'creatures'=>array(
+						36612=>array(
+							'name'=>'Lord Marrowgar',
+							'name_de'=>'Lord Marrowgar',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+						36855=>array(
+							'name'=>'Lady Deathwhisper',
+							'name_de'=>'Lady Deathwhisper',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+						37813=>array(
+							'name'=>'Deathbringer Saurfang',
+							'name_de'=>'Deathbringer Saurfang',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+					)
+				),
+				3=>array(
+					'name'=>'Eiskronenzitadelle - 25',
+					'short'=>'ICC25',
+					'creatures'=>array(
+						36612=>array(
+							'name'=>'Lord Marrowgar',
+							'name_de'=>'Lord Marrowgar',
+							'type'=>'boss',
+							'dkp'=>'25'
+						),
+						36855=>array(
+							'name'=>'Lady Deathwhisper',
+							'name_de'=>'Lady Deathwhisper',
+							'type'=>'boss',
+							'dkp'=>'25'
+						),
+						37813=>array(
+							'name'=>'Deathbringer Saurfang',
+							'name_de'=>'Deathbringer Saurfang',
+							'type'=>'boss',
+							'dkp'=>'25'
+						),
+					)
+				),
+				4=>array(
+					'name'=>'Eiskronenzitadelle - 25 Heroisch',
+					'short'=>'ICC25-HM',
+					'creatures'=>array(
+						36612=>array(
+							'name'=>'Lord Marrowgar',
+							'name_de'=>'Lord Marrowgar',
+							'type'=>'boss',
+							'dkp'=>'25'
+						),
+						36855=>array(
+							'name'=>'Lady Deathwhisper',
+							'name_de'=>'Lady Deathwhisper',
+							'type'=>'boss',
+							'dkp'=>'25'
+						),
+						37813=>array(
+							'name'=>'Deathbringer Saurfang',
+							'name_de'=>'Deathbringer Saurfang',
+							'type'=>'boss',
+							'dkp'=>'25'
+						),
+					)
+				),
+			),
+		),
+		'Trail of the Crusader'=>array(
+			'name'=>'Pr&uuml;fung des Kreuzfahrers',
+			'zone_id'=>'4722',
+			'difficulty'=>array(
+				1=>array(
+					'name'=>'Pr&uuml;fung des Kreuzfahrers',
+					'short'=>'PdK10',
+					'creatures'=>array(
+						34797=>array(
+							'name'=>'Icehowl',
+							'name_de'=>'Icehowl',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34780=>array(
+							'name'=>'Lord Jaraxxus',
+							'name_de'=>'Lord Jaraxxus',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34459=>array(
+							'name'=>'Erin Misthoof',//Faction-Champions
+							'name_de'=>'Erin Misthoof',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34497=>array(
+							'name'=>'Fjola Lightbane',
+							'name_de'=>'Fjola Lightbane',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34564=>array(
+							'name'=>'Anub\'arak',
+							'name_de'=>'Anub\'arak',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+					)
+				),
+				2=>array(
+					'name'=>'Pr&uuml;fung des obersten Kreuzfahrers',
+					'short'=>'PdoK10',
+					'creatures'=>array(
+						34797=>array(
+							'name'=>'Icehowl',
+							'name_de'=>'Icehowl',
+							'type'=>'boss',
+							'dkp'=>'5'
+						),
+						34780=>array(
+							'name'=>'Lord Jaraxxus',
+							'name_de'=>'Lord Jaraxxus',
+							'type'=>'boss',
+							'dkp'=>'5'
+						),
+						34459=>array(
+							'name'=>'Erin Misthoof',//Faction-Champions
+							'name_de'=>'Erin Misthoof',
+							'type'=>'boss',
+							'dkp'=>'5'
+						),
+						34497=>array(
+							'name'=>'Fjola Lightbane',
+							'name_de'=>'Fjola Lightbane',
+							'type'=>'boss',
+							'dkp'=>'5'
+						),
+						34564=>array(
+							'name'=>'Anub\'arak',
+							'name_de'=>'Anub\'arak',
+							'type'=>'boss',
+							'dkp'=>'5'
+						),
+					)
+				),
+				3=>array(
+					'name'=>'Pr&uuml;fung des Kreuzfahrers 25',
+					'short'=>'PdK25',
+					'creatures'=>array(
+						34797=>array(
+							'name'=>'Icehowl',
+							'name_de'=>'Icehowl',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34780=>array(
+							'name'=>'Lord Jaraxxus',
+							'name_de'=>'Lord Jaraxxus',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34459=>array(
+							'name'=>'Erin Misthoof',//Faction-Champions
+							'name_de'=>'Erin Misthoof',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34497=>array(
+							'name'=>'Fjola Lightbane',
+							'name_de'=>'Fjola Lightbane',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						34564=>array(
+							'name'=>'Anub\'arak',
+							'name_de'=>'Anub\'arak',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+					)
+				),
+				4=>array(
+					'name'=>'Pr&uuml;fung des obersten Kreuzfahrers 25',
+					'short'=>'PdoK25',
+					'creatures'=>array(
+						34797=>array(
+							'name'=>'Icehowl',
+							'name_de'=>'Icehowl',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+						34780=>array(
+							'name'=>'Lord Jaraxxus',
+							'name_de'=>'Lord Jaraxxus',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+						34459=>array(
+							'name'=>'Erin Misthoof',//Faction-Champions
+							'name_de'=>'Erin Misthoof',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+						34497=>array(
+							'name'=>'Fjola Lightbane',
+							'name_de'=>'Fjola Lightbane',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+						34564=>array(
+							'name'=>'Anub\'arak',
+							'name_de'=>'Anub\'arak',
+							'type'=>'boss',
+							'dkp'=>'15'
+						),
+					)
+				),
+			),
+		),
+		'Vault of Archavon'=>array(
+			'name'=>'Archavons Kammer',
+			'zone_id'=>'4603',
+			'difficulty'=>array(
+				1=>array(
+					'name'=>'Archavons Kammer',
+					'short'=>'AK10',
+					'creatures'=>array(
+						31125=>array(
+							'name'=>'Archavon the Stone Watcher',
+							'name_de'=>'Archavon the Stone Watcher',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						33993=>array(
+							'name'=>'Emalon the Storm Watcher',
+							'name_de'=>'Emalon the Storm Watcher',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						35013=>array(
+							'name'=>'Koralon the Flame Watcher',
+							'name_de'=>'Koralon the Flame Watcher',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						38433=>array(
+							'name'=>'Toravon the Ice Watcher',
+							'name_de'=>'Toravon the Ice Watcher',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+					)
+				),
+				2=>array(
+					'name'=>'Archavons Kammer 25',
+					'short'=>'AK25',
+					'creatures'=>array(
+						31125=>array(
+							'name'=>'Archavon the Stone Watcher',
+							'name_de'=>'Archavon the Stone Watcher',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						33993=>array(
+							'name'=>'Emalon the Storm Watcher',
+							'name_de'=>'Emalon the Storm Watcher',
+							'type'=>'boss',
+							'dkp'=>'0'
+						),
+						35013=>array(
+							'name'=>'Koralon the Flame Watcher',
+							'name_de'=>'Koralon the Flame Watcher',
+							'type'=>'boss',
+							'dkp'=>'5'
+						),
+						38433=>array(
+							'name'=>'Toravon the Ice Watcher',
+							'name_de'=>'Toravon the Ice Watcher',
+							'type'=>'boss',
+							'dkp'=>'25'
+						),
+					)
+				),
+			),
+		)
 	);
 ?>
