@@ -541,7 +541,7 @@
 				),
 			),
 		),
-		'Trail of the Crusader'=>array(
+		'Trial of the Crusader'=>array(
 			'name'=>'Pr&uuml;fung des Kreuzfahrers',
 			'zone_id'=>'4722',
 			'difficulty'=>array(
@@ -658,7 +658,7 @@
 					'short'=>'PdoK25',
 					'creatures'=>array(
 						34797=>array(
-							'name'=>'Icehowl',
+							'name'=>'Northrend Beasts',
 							'name_de'=>'Icehowl',
 							'type'=>'boss',
 							'dkp'=>'15'

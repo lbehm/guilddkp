@@ -25,7 +25,8 @@
 			);
 
 			$data['raid_type']=$db->query_first("SELECT raid_type FROM ".T_RT." where raid_name='".$zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['name']."'");
-			$data['zone']=$zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['name'];
+			$zone=((string)$xml->zone=="Trail of the Crusader")?"Trial of the Crusader":(string)$xml->zone;// For this damn idiot who can't write!!
+			$data['zone']=$zones[$zone]['difficulty'][(int)$xml->difficulty]['name'];
 			$data['zone_short']=$zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['short'];
 			$data['zone_id']=$zones[(string)$xml->zone]['zone_id'];
 			$data['difficulty']=$difficulty[(int)$xml->difficulty];
@@ -45,7 +46,7 @@
 				$boss=false;
 				foreach($zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['creatures'] as $npc_id=>$creature)
 				{
-					if($creature['name_de']==(string)$v->name)
+					if($creature['name']==(string)$v->name)
 					{
 						$boss=array(
 							'name'=>$creature['name_de'],
