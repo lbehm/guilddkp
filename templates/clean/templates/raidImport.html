@@ -109,10 +109,9 @@
 								type:'POST',
 								url:'api.php',
 								data:'p=importRaid&importData='+jsonString,
-								dataType:'json',
 								success:function(html)
 								{
-									
+									$("body").append(html);
 								}
 							});
 						});

@@ -24,12 +24,12 @@
 				4=>'25H'
 			);
 
-			$data['raid_type']=$db->query_first("SELECT raid_type FROM ".T_RT." where raid_name='".$zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['name']."'");
 			$zone=((string)$xml->zone=="Trail of the Crusader")?"Trial of the Crusader":(string)$xml->zone;// For this damn idiot who can't write!!
-			$data['zone']=$zones[$zone]['difficulty'][(int)$xml->difficulty]['name'];
+			$data['raid_type']=$db->query_first("SELECT raid_type FROM ".T_RT." where raid_name='".html_entity_decode($zones[$zone]['difficulty'][(int)$xml->difficulty]['name'], ENT_COMPAT, 'UTF-8')."'");
+			$data['zone']=html_entity_decode($zones[$zone]['difficulty'][(int)$xml->difficulty]['name'], ENT_COMPAT, 'UTF-8');
 			$data['zone_short']=$zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['short'];
 			$data['zone_id']=$zones[(string)$xml->zone]['zone_id'];
-			$data['difficulty']=$difficulty[(int)$xml->difficulty];
+			$data['difficulty']=$zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['difficulty'];
 			$data['start']=date("d.m.Y (G:i:s)", self::rt2Timestamp($xml->start));
 			$data['start_timestamp']=self::rt2Timestamp($xml->start);
 			$data['end']=date("d.m.Y (G:i:s)", self::rt2Timestamp($xml->end));
@@ -49,9 +49,9 @@
 					if($creature['name']==(string)$v->name)
 					{
 						$boss=array(
-							'name'=>$creature['name_de'],
+							'name'=>$creature['name'],
 							'id'=>$npc_id,
-							'difficulty'=>($difficulty[(int)$v->difficulty])?$difficulty[(int)$v->difficulty]:$difficulty[(int)$xml->difficulty],
+							'difficulty'=>($zones[(string)$xml->zone]['difficulty'][(int)$v->difficulty]['difficulty'])?$zones[(string)$xml->zone]['difficulty'][(int)$v->difficulty]['difficulty']:$zones[(string)$xml->zone]['difficulty'][(int)$xml->difficulty]['difficulty'],
 							'time'=>date("d.m.Y (G:i:s)", self::rt2Timestamp($v->time)),
 							'timestamp'=>self::rt2Timestamp($v->time),
 							'dkp'=>$creature['dkp']
@@ -61,7 +61,7 @@
 				$data['boss'][]=($boss)?$boss:array(
 					'unknown'=>true,
 					'name'=>(string)$v->name,
-					'difficulty'=>(int)$v->difficulty,
+					'difficulty'=>$zones[(string)$xml->zone]['difficulty'][(int)$v->difficulty]['difficulty'],
 					'time'=>date("d.m.Y (G:i:s)", self::rt2Timestamp($v->time)),
 					'timestamp'=>self::rt2Timestamp($v->time),
 				);

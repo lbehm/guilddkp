@@ -446,78 +446,82 @@
 				1=>array(
 					'name'=>'Eiskronenzitadelle',
 					'short'=>'ICC10',
+					'difficulty'=>'10',
 					'creatures'=>array(
 						36612=>array(
 							'name'=>'Lord Marrowgar',
 							'name_de'=>'Lord Marrowgar',
 							'type'=>'boss',
-							'dkp'=>'10'
+							'dkp'=>'15'
 						),
 						36855=>array(
 							'name'=>'Lady Deathwhisper',
 							'name_de'=>'Lady Deathwhisper',
 							'type'=>'boss',
-							'dkp'=>'10'
+							'dkp'=>'15'
 						),
 						37813=>array(
 							'name'=>'Deathbringer Saurfang',
 							'name_de'=>'Deathbringer Saurfang',
 							'type'=>'boss',
-							'dkp'=>'10'
+							'dkp'=>'15'
 						),
 					)
 				),
 				2=>array(
-					'name'=>'Eiskronenzitadelle - Heroisch',
-					'short'=>'ICC10-HM',
+					'name'=>'Eiskronenzitadelle 25',
+					'short'=>'ICC25',
+					'difficulty'=>'25',
 					'creatures'=>array(
 						36612=>array(
 							'name'=>'Lord Marrowgar',
 							'name_de'=>'Lord Marrowgar',
 							'type'=>'boss',
-							'dkp'=>'15'
+							'dkp'=>'25'
 						),
 						36855=>array(
 							'name'=>'Lady Deathwhisper',
 							'name_de'=>'Lady Deathwhisper',
 							'type'=>'boss',
-							'dkp'=>'15'
+							'dkp'=>'25'
 						),
 						37813=>array(
 							'name'=>'Deathbringer Saurfang',
 							'name_de'=>'Deathbringer Saurfang',
 							'type'=>'boss',
-							'dkp'=>'15'
+							'dkp'=>'25'
 						),
 					)
 				),
 				3=>array(
-					'name'=>'Eiskronenzitadelle - 25',
-					'short'=>'ICC25',
+					'name'=>'Eiskronenzitadelle - Heroisch',
+					'short'=>'ICC10-HM',
+					'difficulty'=>'10H',
 					'creatures'=>array(
 						36612=>array(
 							'name'=>'Lord Marrowgar',
 							'name_de'=>'Lord Marrowgar',
 							'type'=>'boss',
-							'dkp'=>'25'
+							'dkp'=>'15'
 						),
 						36855=>array(
 							'name'=>'Lady Deathwhisper',
 							'name_de'=>'Lady Deathwhisper',
 							'type'=>'boss',
-							'dkp'=>'25'
+							'dkp'=>'15'
 						),
 						37813=>array(
 							'name'=>'Deathbringer Saurfang',
 							'name_de'=>'Deathbringer Saurfang',
 							'type'=>'boss',
-							'dkp'=>'25'
+							'dkp'=>'15'
 						),
 					)
 				),
 				4=>array(
 					'name'=>'Eiskronenzitadelle - 25 Heroisch',
 					'short'=>'ICC25-HM',
+					'difficulty'=>'25H',
 					'creatures'=>array(
 						36612=>array(
 							'name'=>'Lord Marrowgar',
@@ -548,6 +552,7 @@
 				1=>array(
 					'name'=>'Pr&uuml;fung des Kreuzfahrers',
 					'short'=>'PdK10',
+					'difficulty'=>'10',
 					'creatures'=>array(
 						34797=>array(
 							'name'=>'Icehowl',
@@ -562,14 +567,14 @@
 							'dkp'=>'0'
 						),
 						34459=>array(
-							'name'=>'Erin Misthoof',//Faction-Champions
-							'name_de'=>'Erin Misthoof',
+							'name'=>'Faction Champions',
+							'name_de'=>'Faction Champions',
 							'type'=>'boss',
 							'dkp'=>'0'
 						),
 						34497=>array(
-							'name'=>'Fjola Lightbane',
-							'name_de'=>'Fjola Lightbane',
+							'name'=>'Twin Val\'kyr',
+							'name_de'=>'Twin Val\'kyr',
 							'type'=>'boss',
 							'dkp'=>'0'
 						),
@@ -584,6 +589,7 @@
 				2=>array(
 					'name'=>'Pr&uuml;fung des obersten Kreuzfahrers',
 					'short'=>'PdoK10',
+					'difficulty'=>'10H',
 					'creatures'=>array(
 						34797=>array(
 							'name'=>'Icehowl',
@@ -598,14 +604,14 @@
 							'dkp'=>'5'
 						),
 						34459=>array(
-							'name'=>'Erin Misthoof',//Faction-Champions
-							'name_de'=>'Erin Misthoof',
+							'name'=>'Faction Champions',
+							'name_de'=>'Faction Champions',
 							'type'=>'boss',
 							'dkp'=>'5'
 						),
 						34497=>array(
-							'name'=>'Fjola Lightbane',
-							'name_de'=>'Fjola Lightbane',
+							'name'=>'Twin Val\'kyr',
+							'name_de'=>'Twin Val\'kyr',
 							'type'=>'boss',
 							'dkp'=>'5'
 						),
@@ -620,6 +626,7 @@
 				3=>array(
 					'name'=>'Pr&uuml;fung des Kreuzfahrers 25',
 					'short'=>'PdK25',
+					'difficulty'=>'25',
 					'creatures'=>array(
 						34797=>array(
 							'name'=>'Icehowl',
@@ -634,14 +641,14 @@
 							'dkp'=>'0'
 						),
 						34459=>array(
-							'name'=>'Erin Misthoof',//Faction-Champions
-							'name_de'=>'Erin Misthoof',
+							'name'=>'Faction Champions',
+							'name_de'=>'Faction Champions',
 							'type'=>'boss',
 							'dkp'=>'0'
 						),
 						34497=>array(
-							'name'=>'Fjola Lightbane',
-							'name_de'=>'Fjola Lightbane',
+							'name'=>'Twin Val\'kyr',
+							'name_de'=>'Twin Val\'kyr',
 							'type'=>'boss',
 							'dkp'=>'0'
 						),
@@ -656,6 +663,7 @@
 				4=>array(
 					'name'=>'Pr&uuml;fung des obersten Kreuzfahrers 25',
 					'short'=>'PdoK25',
+					'difficulty'=>'25H',
 					'creatures'=>array(
 						34797=>array(
 							'name'=>'Northrend Beasts',
@@ -670,14 +678,14 @@
 							'dkp'=>'15'
 						),
 						34459=>array(
-							'name'=>'Erin Misthoof',//Faction-Champions
-							'name_de'=>'Erin Misthoof',
+							'name'=>'Faction Champions',
+							'name_de'=>'Faction Champions',
 							'type'=>'boss',
 							'dkp'=>'15'
 						),
 						34497=>array(
-							'name'=>'Fjola Lightbane',
-							'name_de'=>'Fjola Lightbane',
+							'name'=>'Twin Val\'kyr',
+							'name_de'=>'Twin Val\'kyr',
 							'type'=>'boss',
 							'dkp'=>'15'
 						),
@@ -698,6 +706,7 @@
 				1=>array(
 					'name'=>'Archavons Kammer',
 					'short'=>'AK10',
+					'difficulty'=>'10',
 					'creatures'=>array(
 						31125=>array(
 							'name'=>'Archavon the Stone Watcher',
@@ -728,6 +737,7 @@
 				2=>array(
 					'name'=>'Archavons Kammer 25',
 					'short'=>'AK25',
+					'difficulty'=>'25',
 					'creatures'=>array(
 						31125=>array(
 							'name'=>'Archavon the Stone Watcher',
