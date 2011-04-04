@@ -7,7 +7,7 @@
 						<ul>
 						{section name=nextRaids loop=$activities.nextRaids}
 							<li>
-								<img class="icon" src="{$icon_repo_large}{$activities.nextRaids[nextRaids].icon}.jpg" alt="" title="{$activities.nextRaids[nextRaids].name}" />
+								<img class="icon" src="./templates/clean/images/raid_icons/{$activities.nextRaids[nextRaids].icon}.png" alt="" title="{$activities.nextRaids[nextRaids].name}" />
 								<a href="raid-{$activities.nextRaids[nextRaids].id}">{$activities.nextRaids[nextRaids].short_name} @ {$activities.nextRaids[nextRaids].date}</a>
 								<span class="raid_details">Anmeldung: <span title="Bestätigt" class="sign Iquali_5">{$activities.nextRaids[nextRaids].attendees.sign}</span> - <span title="Angemeldet" class="agree Iquali_3">{$activities.nextRaids[nextRaids].attendees.agree}</span> - <span title="Ersatzbank" class="maybe Iquali_6">{$activities.nextRaids[nextRaids].attendees.maybe}</span></span>
 							</li>
@@ -21,7 +21,7 @@
 						<ul>
 						{section name=lastRaids loop=$activities.lastRaids}
 							<li>
-								<img class="icon" src="{$icon_repo_large}{$activities.lastRaids[lastRaids].icon}.jpg" alt="" title="{$activities.lastRaids[lastRaids].name}" />
+								<img class="icon" src="./templates/clean/images/raid_icons/{$activities.lastRaids[lastRaids].icon}.png" alt="" title="{$activities.lastRaids[lastRaids].name}" />
 								<a href="raid-{$activities.lastRaids[lastRaids].id}">{$activities.lastRaids[lastRaids].short_name} @ {$activities.lastRaids[lastRaids].date}</a>
 								<span class="raid_details">{section name=loot loop=$activities.lastRaids[lastRaids].loot}<a href="item={$activities.lastRaids[lastRaids].loot[loot].item_id}"><img src="{$icon_repo_tiny}{$activities.lastRaids[lastRaids].loot[loot].item_icon}.gif" alt="" title="{$activities.lastRaids[lastRaids].loot[loot].item_name}" /></a>{/section}</span>
 							</li>

@@ -3,7 +3,7 @@
 {if $raidPage.error == "raid"}
 Raid nicht gefunden
 {else}
-	<img class="icon" src="{$icon_repo_large}{$raidPage.info.icon}.jpg" alt="" />
+	<img class="icon" src="./templates/clean/images/raid_icons/{$raidPage.info.icon}.png" alt="" />
 	<div class="raid_headline">
 		<div>{$raidPage.info.title}</div>
 		{if $LOGIN}{if not $raidPage.past}{if $quickDKP}<div class="raidPlanerBar">
