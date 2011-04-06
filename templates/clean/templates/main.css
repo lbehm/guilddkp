@@ -26,6 +26,10 @@ body {
 	body{
 		background:url("./../images/main_768.png") repeat-x fixed center top transparent;
 	}
+	ul.shoutbox {
+		overflow-y: scroll;
+		max-height: 400px;
+	}
 }
 body > img.footer {
 	width:100%;
